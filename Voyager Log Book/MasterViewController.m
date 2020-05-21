@@ -6,6 +6,7 @@
 //  Copyright © 2020 Camding Ltd. All rights reserved.
 //
 
+#import "AppDelegate.h"
 #import "MasterViewController.h"
 #import "DetailViewController.h"
 
@@ -34,10 +35,19 @@
 
 - (void)insertNewObject:(id)sender {
     NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-    Event *newEvent = [[Event alloc] initWithContext:context];
+    LogBookEntry *newEvent = [[LogBookEntry alloc] initWithContext:context];
         
     // If appropriate, configure the new managed object.
-    newEvent.timestamp = [NSDate date];
+    newEvent.dateOfDeparture = [NSDate now];
+    AppDelegate* appDelegate = (AppDelegate*) UIApplication.sharedApplication.delegate;
+    void (^ myLocationCallback)(CLLocation*) = ^(CLLocation* newLocation) {
+        if (newLocation && !newEvent.portOfDeparture) {
+            newEvent.portOfDeparture = [AppDelegate nicePosition:newLocation];
+        }
+        NSLog(@"OK!");
+    };
+    
+    [appDelegate getLocation:myLocationCallback];
         
     // Save the context.
     NSError *error = nil;
@@ -55,7 +65,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"showDetail"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        Event *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        LogBookEntry *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
         DetailViewController *controller = (DetailViewController *)[[segue destinationViewController] topViewController];
         controller.detailItem = object;
         controller.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
@@ -80,7 +90,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
-    Event *event = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    LogBookEntry *event = [self.fetchedResultsController objectAtIndexPath:indexPath];
     [self configureCell:cell withEvent:event];
     return cell;
 }
@@ -107,32 +117,48 @@
     }
 }
 
+- (NSString*) getStringOrEmpty:(NSString *) data defaultValue:(NSString *) defaultValue {
+    if (data)
+        return data.description;
+    else
+        return defaultValue;
+}
 
-- (void)configureCell:(UITableViewCell *)cell withEvent:(Event *)event {
-    cell.textLabel.text = event.timestamp.description;
+- (NSString*) getStringOrEmptyD:(NSDate *) data defaultValue:(NSString *) defaultValue {
+    if (data)
+        return data.description;
+    else
+        return defaultValue;
+}
+
+- (void)configureCell:(UITableViewCell *)cell withEvent:(LogBookEntry *)event {
+    NSString* portOfDeparture = [self getStringOrEmpty:event.portOfDeparture defaultValue:@"Unknown Port"];
+    NSString* dateOfDeparture = [self getStringOrEmptyD:event.dateOfDeparture defaultValue:@"Unknown Date"];
+    cell.textLabel.text =
+        [[portOfDeparture stringByAppendingString:@" "] stringByAppendingString:dateOfDeparture];
 }
 
 
 #pragma mark - Fetched results controller
 
-- (NSFetchedResultsController<Event *> *)fetchedResultsController {
+- (NSFetchedResultsController<LogBookEntry *> *)fetchedResultsController {
     if (_fetchedResultsController != nil) {
         return _fetchedResultsController;
     }
     
-    NSFetchRequest<Event *> *fetchRequest = Event.fetchRequest;
+    NSFetchRequest<LogBookEntry *> *fetchRequest = LogBookEntry.fetchRequest;
     
     // Set the batch size to a suitable number.
     [fetchRequest setFetchBatchSize:20];
     
     // Edit the sort key as appropriate.
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timestamp" ascending:NO];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateOfDeparture" ascending:NO];
 
     [fetchRequest setSortDescriptors:@[sortDescriptor]];
     
     // Edit the section name key path and cache name if appropriate.
     // nil for section name key path means "no sections".
-    NSFetchedResultsController<Event *> *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:@"Master"];
+    NSFetchedResultsController<LogBookEntry *> *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:@"Master"];
     aFetchedResultsController.delegate = self;
     
     NSError *error = nil;

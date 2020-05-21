@@ -16,6 +16,8 @@
 		85D93D5A2476F5E4002862CA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85D93D592476F5E4002862CA /* Assets.xcassets */; };
 		85D93D5D2476F5E4002862CA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85D93D5B2476F5E4002862CA /* LaunchScreen.storyboard */; };
 		85D93D602476F5E4002862CA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D93D5F2476F5E4002862CA /* main.m */; };
+		85D93D692476F800002862CA /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85D93D682476F800002862CA /* CloudKit.framework */; };
+		85D93D6B24770EF6002862CA /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85D93D6A24770EF6002862CA /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +36,9 @@
 		85D93D5C2476F5E4002862CA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		85D93D5E2476F5E4002862CA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		85D93D5F2476F5E4002862CA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		85D93D662476F7FA002862CA /* Voyager Log Book.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Voyager Log Book.entitlements"; sourceTree = "<group>"; };
+		85D93D682476F800002862CA /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		85D93D6A24770EF6002862CA /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +46,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85D93D6B24770EF6002862CA /* CoreLocation.framework in Frameworks */,
+				85D93D692476F800002862CA /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,6 +59,7 @@
 			children = (
 				85D93D462476F5DF002862CA /* Voyager Log Book */,
 				85D93D452476F5DF002862CA /* Products */,
+				85D93D672476F800002862CA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -66,6 +74,7 @@
 		85D93D462476F5DF002862CA /* Voyager Log Book */ = {
 			isa = PBXGroup;
 			children = (
+				85D93D662476F7FA002862CA /* Voyager Log Book.entitlements */,
 				85D93D472476F5DF002862CA /* AppDelegate.h */,
 				85D93D482476F5DF002862CA /* AppDelegate.m */,
 				85D93D4D2476F5DF002862CA /* SceneDelegate.h */,
@@ -82,6 +91,15 @@
 				85D93D4A2476F5DF002862CA /* Voyager_Log_Book.xcdatamodeld */,
 			);
 			path = "Voyager Log Book";
+			sourceTree = "<group>";
+		};
+		85D93D672476F800002862CA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				85D93D6A24770EF6002862CA /* CoreLocation.framework */,
+				85D93D682476F800002862CA /* CloudKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -299,6 +317,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Voyager Log Book/Voyager Log Book.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BYP69ABLJ5;
 				INFOPLIST_FILE = "Voyager Log Book/Info.plist";
@@ -316,6 +335,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Voyager Log Book/Voyager Log Book.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BYP69ABLJ5;
 				INFOPLIST_FILE = "Voyager Log Book/Info.plist";

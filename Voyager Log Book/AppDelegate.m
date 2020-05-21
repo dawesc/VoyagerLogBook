@@ -14,12 +14,71 @@
 
 @implementation AppDelegate
 
+- (instancetype)init {
+    if (self = [super init]) {
+        callbacks = [[NSMutableArray<LocationCallback> alloc] init];
+    }
+    return self;
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.delegate = self;
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
+    
     return YES;
 }
 
+#pragma mark - Location Manager methods
+-(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
+    CLLocation* location;
+    location = [[CLLocation alloc] init];
+    location = locations.lastObject;
+    NSLog(@"%@", location.description);
+    @synchronized (callbacks) {
+        for (LocationCallback callback in callbacks) {
+            callback(location);
+        }
+        [callbacks removeAllObjects];
+    }
+}
+
+-(void)locationManager:(CLLocationManager *)manager didFailWithError: (NSError *)error {
+    NSLog(@"didFailWithError: %@", error);
+    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Failed to Get Your Location" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [errorAlert show];
+}
+
+- (void)getLocation:(LocationCallback)callback {
+    @synchronized (callbacks) {
+        [callbacks addObject:callback];
+    }
+    [self.locationManager requestWhenInUseAuthorization];
+    [self.locationManager requestLocation];
+}
+
++ (NSString *)nicePosition:(CLLocation*) location {
+    double latitude  = location.coordinate.latitude;
+    double longitude = location.coordinate.longitude;
+
+    int latSeconds = (int)round(fabs(latitude * 3600));
+    int latDegrees = latSeconds / 3600;
+    latSeconds = latSeconds % 3600;
+    int latMinutes = latSeconds / 60;
+    latSeconds %= 60;
+
+    int longSeconds = (int)round(fabs(longitude * 3600));
+    int longDegrees = longSeconds / 3600;
+    longSeconds = longSeconds % 3600;
+    int longMinutes = longSeconds / 60;
+    longSeconds %= 60;
+
+    char latDirection = (latitude >= 0) ? 'N' : 'S';
+    char longDirection = (longitude >= 0) ? 'E' : 'W';
+
+    return [NSString stringWithFormat:@"%i° %i' %i\" %c, %i° %i' %i\" %c", latDegrees, latMinutes, latSeconds, latDirection, longDegrees, longMinutes, longSeconds, longDirection];
+}
 
 #pragma mark - UISceneSession lifecycle
 

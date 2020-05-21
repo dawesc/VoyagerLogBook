@@ -1,9 +1,67 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
-    <entity name="Event" representedClassName="Event" codeGenerationType="class">
-        <attribute name="timestamp" optional="YES" attributeType="Date"/>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19E287" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+    <entity name="AdditionalLBE" representedClassName="AdditionalLBE" syncable="YES" codeGenerationType="class">
+        <attribute name="info" optional="YES" attributeType="String"/>
+        <relationship name="infoType" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="AdditionalLBEField" inverseName="dataElements" inverseEntity="AdditionalLBEField"/>
+        <relationship name="logBookEntry" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="LogBookEntry" inverseName="additionalLBEField" inverseEntity="LogBookEntry"/>
+    </entity>
+    <entity name="AdditionalLBEField" representedClassName="AdditionalLBEField" syncable="YES" codeGenerationType="class">
+        <attribute name="fieldName" attributeType="String" defaultValueString=""/>
+        <attribute name="fieldType" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="dataElements" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="AdditionalLBE" inverseName="infoType" inverseEntity="AdditionalLBE"/>
+    </entity>
+    <entity name="AdditionalSoulInfo" representedClassName="AdditionalSoulInfo" syncable="YES" codeGenerationType="class">
+        <attribute name="info" optional="YES" attributeType="String"/>
+        <relationship name="infoType" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="AdditionalSoulInfoField" inverseName="dataElements" inverseEntity="AdditionalSoulInfoField"/>
+        <relationship name="soul" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Soul" inverseName="additionalInfo" inverseEntity="Soul"/>
+    </entity>
+    <entity name="AdditionalSoulInfoField" representedClassName="AdditionalSoulInfoField" syncable="YES" codeGenerationType="class">
+        <attribute name="fieldName" attributeType="String" defaultValueString=""/>
+        <relationship name="dataElements" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="AdditionalSoulInfo" inverseName="infoType" inverseEntity="AdditionalSoulInfo"/>
+    </entity>
+    <entity name="LogBookEntry" representedClassName="LogBookEntry" syncable="YES" codeGenerationType="class">
+        <attribute name="barometer" optional="YES" attributeType="String"/>
+        <attribute name="comments" optional="YES" attributeType="String"/>
+        <attribute name="dateOfArrival" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="dateOfArrivalEstimated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="dateOfDeparture" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="destination" optional="YES" attributeType="String"/>
+        <attribute name="eta" optional="YES" attributeType="String"/>
+        <attribute name="eventsToRemember" optional="YES" attributeType="String"/>
+        <attribute name="placesToRemember" optional="YES" attributeType="String"/>
+        <attribute name="portOfArrival" optional="YES" attributeType="String"/>
+        <attribute name="portOfDeparture" optional="YES" attributeType="String"/>
+        <attribute name="waveHeight" optional="YES" attributeType="String"/>
+        <attribute name="weatherConditions" optional="YES" attributeType="String"/>
+        <attribute name="windDirection" optional="YES" attributeType="String"/>
+        <attribute name="windSpeed" optional="YES" attributeType="String"/>
+        <relationship name="additionalLBEField" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="AdditionalLBE" inverseName="logBookEntry" inverseEntity="AdditionalLBE"/>
+        <relationship name="souls" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Soul" inverseName="logBookEntries" inverseEntity="Soul"/>
+        <relationship name="vessel" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Vessel" inverseName="logBookEntries" inverseEntity="Vessel"/>
+    </entity>
+    <entity name="Soul" representedClassName="Soul" syncable="YES" codeGenerationType="class">
+        <attribute name="forename" optional="YES" attributeType="String"/>
+        <attribute name="initials" optional="YES" attributeType="String"/>
+        <attribute name="surname" optional="YES" attributeType="String"/>
+        <relationship name="additionalInfo" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="AdditionalSoulInfo" inverseName="soul" inverseEntity="AdditionalSoulInfo"/>
+        <relationship name="logBookEntries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="LogBookEntry" inverseName="souls" inverseEntity="LogBookEntry"/>
+    </entity>
+    <entity name="Vessel" representedClassName="Vessel" syncable="YES" codeGenerationType="class">
+        <attribute name="captain" optional="YES" attributeType="String"/>
+        <attribute name="defaultVessel" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="homePort" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="owner" optional="YES" attributeType="String"/>
+        <attribute name="picture" optional="YES" attributeType="Binary"/>
+        <relationship name="logBookEntries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="LogBookEntry" inverseName="vessel" inverseEntity="LogBookEntry"/>
     </entity>
     <elements>
-        <element name="Event" positionX="261" positionY="189" width="128" height="60"/>
+        <element name="LogBookEntry" positionX="578.66796875" positionY="338.3359375" width="128" height="313"/>
+        <element name="Vessel" positionX="348.04296875" positionY="648.53125" width="128" height="148"/>
+        <element name="Soul" positionX="438.46484375" positionY="136.33203125" width="128" height="118"/>
+        <element name="AdditionalLBEField" positionX="777.0546875" positionY="565.6484375" width="128" height="88"/>
+        <element name="AdditionalSoulInfoField" positionX="666.87890625" positionY="66.9140625" width="128" height="73"/>
+        <element name="AdditionalSoulInfo" positionX="633.23046875" positionY="202.93359375" width="128" height="88"/>
+        <element name="AdditionalLBE" positionX="691.375" positionY="669.72265625" width="128" height="88"/>
     </elements>
 </model>
