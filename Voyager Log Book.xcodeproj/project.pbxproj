@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		85B4E0D424780B4400869FC0 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85B4E0D324780B4400869FC0 /* CoreMotion.framework */; };
 		85D93D492476F5DF002862CA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D93D482476F5DF002862CA /* AppDelegate.m */; };
 		85D93D4C2476F5DF002862CA /* Voyager_Log_Book.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 85D93D4A2476F5DF002862CA /* Voyager_Log_Book.xcdatamodeld */; };
 		85D93D4F2476F5DF002862CA /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D93D4E2476F5DF002862CA /* SceneDelegate.m */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		85B4E0D324780B4400869FC0 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		85D93D442476F5DF002862CA /* Voyager Log Book.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Voyager Log Book.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		85D93D472476F5DF002862CA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		85D93D482476F5DF002862CA /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -47,6 +49,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				85D93D6B24770EF6002862CA /* CoreLocation.framework in Frameworks */,
+				85B4E0D424780B4400869FC0 /* CoreMotion.framework in Frameworks */,
 				85D93D692476F800002862CA /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -96,6 +99,7 @@
 		85D93D672476F800002862CA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				85B4E0D324780B4400869FC0 /* CoreMotion.framework */,
 				85D93D6A24770EF6002862CA /* CoreLocation.framework */,
 				85D93D682476F800002862CA /* CloudKit.framework */,
 			);

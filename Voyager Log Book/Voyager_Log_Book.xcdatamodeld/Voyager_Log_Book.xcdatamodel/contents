@@ -26,9 +26,7 @@
         <attribute name="dateOfArrivalEstimated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="dateOfDeparture" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="destination" optional="YES" attributeType="String"/>
-        <attribute name="eta" optional="YES" attributeType="String"/>
-        <attribute name="eventsToRemember" optional="YES" attributeType="String"/>
-        <attribute name="placesToRemember" optional="YES" attributeType="String"/>
+        <attribute name="passageNotes" optional="YES" attributeType="String"/>
         <attribute name="portOfArrival" optional="YES" attributeType="String"/>
         <attribute name="portOfDeparture" optional="YES" attributeType="String"/>
         <attribute name="waveHeight" optional="YES" attributeType="String"/>
@@ -56,12 +54,12 @@
         <relationship name="logBookEntries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="LogBookEntry" inverseName="vessel" inverseEntity="LogBookEntry"/>
     </entity>
     <elements>
-        <element name="LogBookEntry" positionX="578.66796875" positionY="338.3359375" width="128" height="313"/>
-        <element name="Vessel" positionX="348.04296875" positionY="648.53125" width="128" height="148"/>
-        <element name="Soul" positionX="438.46484375" positionY="136.33203125" width="128" height="118"/>
-        <element name="AdditionalLBEField" positionX="777.0546875" positionY="565.6484375" width="128" height="88"/>
-        <element name="AdditionalSoulInfoField" positionX="666.87890625" positionY="66.9140625" width="128" height="73"/>
-        <element name="AdditionalSoulInfo" positionX="633.23046875" positionY="202.93359375" width="128" height="88"/>
         <element name="AdditionalLBE" positionX="691.375" positionY="669.72265625" width="128" height="88"/>
+        <element name="AdditionalLBEField" positionX="777.0546875" positionY="565.6484375" width="128" height="88"/>
+        <element name="AdditionalSoulInfo" positionX="633.23046875" positionY="202.93359375" width="128" height="88"/>
+        <element name="AdditionalSoulInfoField" positionX="666.87890625" positionY="66.9140625" width="128" height="73"/>
+        <element name="LogBookEntry" positionX="578.66796875" positionY="338.3359375" width="128" height="283"/>
+        <element name="Soul" positionX="438.46484375" positionY="136.33203125" width="128" height="118"/>
+        <element name="Vessel" positionX="348.04296875" positionY="648.53125" width="128" height="148"/>
     </elements>
 </model>

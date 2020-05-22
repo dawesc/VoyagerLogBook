@@ -11,8 +11,9 @@
 
 @interface DetailViewController : UIViewController
 
+@property (strong, nonatomic) IBOutlet UIView *logBookEntryView;
 @property (strong, nonatomic) LogBookEntry *detailItem;
-@property (weak, nonatomic) IBOutlet UILabel *detailDescriptionLabel;
++ (NSArray *)windDirections;
 
 @end
 

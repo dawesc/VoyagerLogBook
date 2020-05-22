@@ -44,11 +44,20 @@
         if (newLocation && !newEvent.portOfDeparture) {
             newEvent.portOfDeparture = [AppDelegate nicePosition:newLocation];
         }
-        NSLog(@"OK!");
+    };
+    void (^ myPressureCallback)(CMAltitudeData*) = ^(CMAltitudeData* newPressure) {
+        if (newPressure && !newEvent.barometer) {
+            NSNumberFormatter *formatter = [[NSNumberFormatter alloc]init];
+            formatter.maximumFractionDigits = 2;
+            formatter.minimumIntegerDigits = 1;
+            
+            newEvent.barometer = [NSString stringWithFormat:@"%@", [formatter stringFromNumber:newPressure.pressure]];
+        }
     };
     
     [appDelegate getLocation:myLocationCallback];
-        
+    [appDelegate getPressure:myPressureCallback];
+    
     // Save the context.
     NSError *error = nil;
     if (![context save:&error]) {
@@ -132,7 +141,7 @@
 }
 
 - (void)configureCell:(UITableViewCell *)cell withEvent:(LogBookEntry *)event {
-    NSString* portOfDeparture = [self getStringOrEmpty:event.portOfDeparture defaultValue:@"Unknown Port"];
+    NSString* portOfDeparture = [self getStringOrEmpty:event.destination defaultValue:@"Unknown Destination"];
     NSString* dateOfDeparture = [self getStringOrEmptyD:event.dateOfDeparture defaultValue:@"Unknown Date"];
     cell.textLabel.text =
         [[portOfDeparture stringByAppendingString:@" "] stringByAppendingString:dateOfDeparture];

@@ -16,7 +16,7 @@
 
 - (instancetype)init {
     if (self = [super init]) {
-        callbacks = [[NSMutableArray<LocationCallback> alloc] init];
+        lCallbacks = [[NSMutableArray<LocationCallback> alloc] init];
     }
     return self;
 }
@@ -27,6 +27,8 @@
     self.locationManager.delegate = self;
     self.locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
     
+    self.altimiter = [[CMAltimeter alloc] init];
+    
     return YES;
 }
 
@@ -36,11 +38,11 @@
     location = [[CLLocation alloc] init];
     location = locations.lastObject;
     NSLog(@"%@", location.description);
-    @synchronized (callbacks) {
-        for (LocationCallback callback in callbacks) {
+    @synchronized (lCallbacks) {
+        for (LocationCallback callback in lCallbacks) {
             callback(location);
         }
-        [callbacks removeAllObjects];
+        [lCallbacks removeAllObjects];
     }
 }
 
@@ -51,11 +53,26 @@
 }
 
 - (void)getLocation:(LocationCallback)callback {
-    @synchronized (callbacks) {
-        [callbacks addObject:callback];
+    @synchronized (lCallbacks) {
+        [(lCallbacks) addObject:callback];
     }
     [self.locationManager requestWhenInUseAuthorization];
     [self.locationManager requestLocation];
+}
+
+- (void)getPressure:(BarometricCallback)callback {
+    if (![CMAltimeter isRelativeAltitudeAvailable]) {
+        callback(nil);
+        return;
+    }
+    
+    // start altitude tracking
+    [self.altimiter startRelativeAltitudeUpdatesToQueue:[NSOperationQueue mainQueue] withHandler:^(CMAltitudeData * _Nullable altitudeData, NSError * _Nullable error) {
+        
+        callback(altitudeData);
+        [self.altimiter stopRelativeAltitudeUpdates];
+    }];
+    
 }
 
 + (NSString *)nicePosition:(CLLocation*) location {
