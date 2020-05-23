@@ -39,6 +39,10 @@
     UITextField*  t_windSpeed;
     
     UIScrollView* scrollView;
+    
+    bool didChange;
+    NSMutableArray* uiFields;
+    NSMutableArray* objectSetters;
 }
 
 @end
@@ -57,6 +61,7 @@
     field = [[UITextField alloc]  initWithFrame:CGRectZero];
     field.borderStyle = UITextBorderStyleRoundedRect;
     field.enabled = true;
+    field.delegate = self;
     return field;
 }
 - (UITextView*) setupTextView
@@ -66,8 +71,8 @@
     field.layer.borderWidth = 1.0f;
     field.layer.borderColor = [[UIColor grayColor] CGColor];
     field.editable = true;
-    field.text = @"Bob";
     field.scrollEnabled = false;
+    field.delegate = self;
     return field;
 }
 - (UITextField*) setupDatePicker
@@ -76,6 +81,7 @@
     UITextField* field;
     field = [[UITextField alloc] initWithFrame:CGRectZero];
     field.borderStyle = UITextBorderStyleRoundedRect;
+    field.delegate = self;
     return field;
 }
 - (UITextField*) setupPicker:(NSArray*) options
@@ -84,6 +90,7 @@
     UITextField* field;
     field = [[UITextField alloc]  initWithFrame:CGRectZero];
     field.borderStyle = UITextBorderStyleRoundedRect;
+    field.delegate = self;
     return field;
 }
 + (NSArray *)windDirections
@@ -98,6 +105,10 @@
 - (void)setupFields {
     if (l_barometer)
         return;
+    
+    uiFields = [[NSMutableArray alloc] init];
+    objectSetters = [[NSMutableArray alloc] init];
+    
     l_barometer = [self setupLabel:@"Barometer"];
     l_comments = [self setupLabel:@"Comments"];
     l_dateOfArrival = [self setupLabel:@"Date of Arrival"];
@@ -116,8 +127,10 @@
     t_barometer = [self setupTextField];
     t_comments = [self setupTextView];
     t_dateOfArrival = [self setupDatePicker];
+    [t_dateOfArrival.widthAnchor constraintEqualToConstant:200].active = true;
     t_dateOfArrivalEstimated = [self setupDatePicker];
     t_dateOfDeparture = [self setupDatePicker];
+    [t_dateOfDeparture.widthAnchor constraintEqualToConstant:200].active = true;
     t_destination = [self setupTextField];
     t_passageNotes = [self setupTextView];
     t_portOfArrival = [self setupTextField];
@@ -149,8 +162,8 @@
     UIView* arrival = [self makeTwo:portOfArrival rightControl:dateOfArrival leftBig:true rightBig:false isNarrow:true];
     
     
-    UIView* wind = [self makeTwo:windSpeed rightControl:windDirection leftBig:false rightBig:false isNarrow:true];
-    UIView* conditions = [self makeThree:barometer centerControl:waveHeight rightControl:wind];
+    UIView* wind = [self makeTwo:windSpeed rightControl:windDirection leftBig:false rightBig:false isNarrow:false];
+    UIView* barometerWave = [self makeTwo:barometer rightControl:waveHeight leftBig:false rightBig:false isNarrow:false];
 
     //Stack View
     UIStackView *stackView = [[UIStackView alloc] init];
@@ -167,7 +180,8 @@
     [stackView addArrangedSubview:arrival];
     //[stackView addArrangedSubview:souls];
     [stackView addArrangedSubview:weatherConditions];
-    [stackView addArrangedSubview:conditions];
+    [stackView addArrangedSubview:wind];
+    [stackView addArrangedSubview:barometerWave];
     [stackView addArrangedSubview:passageNotes];
     [stackView addArrangedSubview:comments];
 
@@ -316,10 +330,96 @@ outputText:(NSDate *) outputText
     return stackView;
 }
 
-- (void)configureView {
-// Update the user interface for the detail item.
-if (self.detailItem) {
+- (void)setEnabled:(bool) isEnabled {
+    t_barometer.enabled = isEnabled;
+    t_comments.editable = isEnabled;
+    t_dateOfArrival.enabled = isEnabled;
+    t_dateOfArrivalEstimated.enabled = isEnabled;
+    t_dateOfDeparture.enabled = isEnabled;
+    t_destination.enabled = isEnabled;
+    t_passageNotes.editable = isEnabled;
+    t_portOfArrival.enabled = isEnabled;
+    t_portOfDeparture.enabled = isEnabled;
+    t_waveHeight.enabled = isEnabled;
+    t_weatherConditions.enabled = isEnabled;
+    t_windDirection.enabled = isEnabled;
+    t_windSpeed.enabled = isEnabled;
 }
+
++ (NSDateFormatter *)dateFormatter
+{
+    static NSDateFormatter *_formatter;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _formatter = [[NSDateFormatter alloc] init];
+        [_formatter setFormatterBehavior:NSDateFormatterBehavior10_4];
+        [_formatter setDateStyle:NSDateFormatterShortStyle];
+        [_formatter setTimeStyle:NSDateFormatterShortStyle];
+    });
+    return _formatter;
+}
+
+- (NSDate*)stringToDate:(NSString*) str {
+    if (!str) return nil;
+    NSDateFormatter* formatter = [DetailViewController dateFormatter];
+    return [formatter dateFromString:str];
+
+}
+
+- (NSString*)dateToString:(NSDate*) date {
+    if (!date) return nil;
+    NSDateFormatter* formatter = [DetailViewController dateFormatter];
+    return [formatter stringFromDate:date];
+}
+
+- (NSString*)getText:(NSObject*) ultimateField  {
+    if (!ultimateField) return @"";
+    if ([ultimateField isKindOfClass:[NSDate class]]) {
+        return [self dateToString:((NSDate*) ultimateField)];
+    }
+    if ([ultimateField isKindOfClass:[NSString class]]) {
+        return ((NSString*) ultimateField);
+    }
+    return @"Unsupported field type";
+}
+
+- (void)linkField:(UIView*) control ultimateField:(NSObject*) ultimateField
+    objectSetter:(ObjectSetter) objectSetter {
+    
+    [uiFields addObject:control];
+    [objectSetters addObject:objectSetter];
+
+    if ([control isKindOfClass:[UITextField class]]) {
+        ((UITextField*) control).text = [self getText:ultimateField];
+    }
+    if ([control isKindOfClass:[UITextView class]]) {
+        ((UITextView*) control).text = [self getText:ultimateField];
+    }
+}
+
+- (void)configureView {
+    // Update the user interface for the detail item.
+    didChange = false;
+    [uiFields     removeAllObjects];
+    [objectSetters removeAllObjects];
+    
+    if (self.detailItem) {
+        [self setEnabled:true];
+        [self linkField:t_barometer ultimateField:self.detailItem.barometer objectSetter:^(NSString* newVal) { self.detailItem.barometer = newVal; }];
+        [self linkField:t_comments ultimateField:self.detailItem.comments objectSetter:^(NSString* newVal) { self.detailItem.comments = newVal; }];
+        [self linkField:t_dateOfArrival ultimateField:self.detailItem.dateOfArrival objectSetter:^(NSString* newVal) { self.detailItem.dateOfArrival = [self stringToDate:newVal]; }];
+        [self linkField:t_dateOfArrivalEstimated ultimateField:self.detailItem.dateOfArrivalEstimated objectSetter:^(NSString* newVal) { self.detailItem.dateOfArrivalEstimated = [self stringToDate:newVal]; }];
+        [self linkField:t_dateOfDeparture ultimateField:self.detailItem.dateOfDeparture objectSetter:^(NSString* newVal) { self.detailItem.dateOfDeparture = [self stringToDate:newVal]; }];
+        [self linkField:t_destination     ultimateField:self.detailItem.destination objectSetter:^(NSString* newVal) { self.detailItem.destination = newVal; }];
+        [self linkField:t_passageNotes ultimateField:self.detailItem.passageNotes objectSetter:^(NSString* newVal) { self.detailItem.passageNotes = newVal; }];
+        [self linkField:t_portOfArrival ultimateField:self.detailItem.portOfArrival objectSetter:^(NSString* newVal) { self.detailItem.portOfArrival = newVal; }];
+        [self linkField:t_portOfDeparture ultimateField:self.detailItem.portOfDeparture objectSetter:^(NSString* newVal) { self.detailItem.portOfDeparture = newVal; }];
+        [self linkField:t_weatherConditions ultimateField:self.detailItem.weatherConditions objectSetter:^(NSString* newVal) { self.detailItem.weatherConditions = newVal; }];
+        [self linkField:t_windDirection ultimateField:self.detailItem.windDirection objectSetter:^(NSString* newVal) { self.detailItem.windDirection = newVal; }];
+        [self linkField:t_windSpeed ultimateField:self.detailItem.windSpeed objectSetter:^(NSString* newVal) { self.detailItem.windSpeed = newVal; }];
+    } else {
+        [self setEnabled:false];
+    }
 }
 
 // Called when the UIKeyboardDidShowNotification is sent.
@@ -371,5 +471,32 @@ if (self.detailItem) {
     }
 }
 
+- (void)aTextFieldDidEndEditing:(UIView*) control fieldText:(NSString*) fieldText {
+    int index = 0;
+    for (UIView* textFieldArr in uiFields) {
+        if (control == textFieldArr) {
+            break;
+        }
+        ++index;
+    }
+    if (index >= [objectSetters count]) {
+        NSLog(@"Couldn't find setter!");
+        return;
+    }
+    ((ObjectSetter)[objectSetters objectAtIndex:index])(fieldText);
+}
+
+#pragma mark UITextFieldDelegate
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    return true;
+}
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    [self aTextFieldDidEndEditing:textField fieldText:textField.text];
+}
+
+#pragma mark <UITextFieldDelegate, UITextViewDelegate>
+- (void)textViewDidEndEditing:(UITextView *)textView {
+    [self aTextFieldDidEndEditing:textView fieldText:textView.text];
+}
 
 @end

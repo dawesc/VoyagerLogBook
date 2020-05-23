@@ -9,11 +9,20 @@
 #import <UIKit/UIKit.h>
 #import "Voyager_Log_Book+CoreDataModel.h"
 
-@interface DetailViewController : UIViewController
+@interface DetailViewController : UIViewController <UITextFieldDelegate, UITextViewDelegate>
+
+typedef void (^ ObjectSetter)(NSString*);
 
 @property (strong, nonatomic) IBOutlet UIView *logBookEntryView;
 @property (strong, nonatomic) LogBookEntry *detailItem;
 + (NSArray *)windDirections;
+
+#pragma mark UITextFieldDelegate
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField;        // return NO to disallow editing.
+- (void)textFieldDidEndEditing:(UITextField *)textField;             // may be called if forced even if shouldEndEditing returns NO (e.g. view removed from window) or endEditing:YES called
+
+#pragma mark <UITextFieldDelegate, UITextViewDelegate>
+- (void)textViewDidEndEditing:(UITextView *)textView;
 
 @end
 
