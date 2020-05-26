@@ -12,10 +12,18 @@
 @interface DetailViewController : UIViewController <UITextFieldDelegate, UITextViewDelegate>
 
 typedef void (^ ObjectSetter)(NSString*);
+typedef void (^ EditorAction)(UITextField*);
 
 @property (strong, nonatomic) IBOutlet UIView *logBookEntryView;
-@property (strong, nonatomic) LogBookEntry *detailItem;
+@property (strong, nonatomic) LogBookEntry    *logBookEntry;
+@property (strong, nonatomic) Vessel          *vessel;
+@property (strong, nonatomic) Soul            *souls;
+@property (strong, nonatomic) NSFetchedResultsController* fetchedResultsController;
+@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+
 + (NSArray *)windDirections;
+
+-(void) textFieldClicked:(UITextField*)sender;
 
 #pragma mark UITextFieldDelegate
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField;        // return NO to disallow editing.

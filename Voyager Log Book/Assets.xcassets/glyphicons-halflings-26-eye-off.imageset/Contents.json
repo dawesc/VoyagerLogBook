@@ -1,0 +1,23 @@
+{
+  "images" : [
+    {
+      "filename" : "glyphicons-halflings-26-eye-off.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "glyphicons-halflings-26-eye-off@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "glyphicons-halflings-26-eye-off@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

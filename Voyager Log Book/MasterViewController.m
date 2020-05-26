@@ -9,6 +9,8 @@
 #import "AppDelegate.h"
 #import "MasterViewController.h"
 #import "DetailViewController.h"
+#import "ActionSheetPicker.h"
+#import "NSString+FontAwesome.h"
 
 @interface MasterViewController ()
 
@@ -17,13 +19,23 @@
 @implementation MasterViewController
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    self.navigationItem.leftBarButtonItem = self.editButtonItem;
+  [super viewDidLoad];
+  // Do any additional setup after loading the view.
+  self.navigationItem.leftBarButtonItem = self.editButtonItem;
 
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
-    self.navigationItem.rightBarButtonItem = addButton;
-    self.detailViewController = (DetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
+  id fontAwesome = [UIFont fontWithName:kFontAwesomeFamilyName size:24];
+  NSDictionary *fontDictionary = @{NSFontAttributeName : fontAwesome};
+  
+  UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewLogBookEntry:)];
+  
+  UIBarButtonItem *soulBarButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForEnum:FAUsers] style:UIBarButtonItemStylePlain target:self action:@selector(showSouls:)];
+  [soulBarButton setTitleTextAttributes:fontDictionary forState:UIControlStateNormal];
+  
+  UIBarButtonItem *vesselBarButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForEnum:FAUsers] style:UIBarButtonItemStylePlain target:self action:@selector(showVessels:)];
+  [soulBarButton setTitleTextAttributes:fontDictionary forState:UIControlStateNormal];
+  
+  self.navigationItem.rightBarButtonItems = [[NSArray alloc] initWithObjects:soulBarButton, vesselBarButton, addButton,nil];
+  self.detailViewController = (DetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
 }
 
 
@@ -32,8 +44,26 @@
     [super viewWillAppear:animated];
 }
 
+- (void)saveContext:(NSManagedObjectContext*) context {
+  // Save the context.
+  NSError *error = nil;
+  if (![context save:&error]) {
+    // Replace this implementation with code to handle the error appropriately.
+    // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+    NSLog(@"Unresolved error %@, %@", error, error.userInfo);
+    abort();
+  }
+}
 
-- (void)insertNewObject:(id)sender {
+- (void)showSouls:(id)sender {
+  [self performSegueWithIdentifier:@"filterLogBookSegue" sender:self];
+}
+
+- (void)showVessels:(id)sender {
+  [self performSegueWithIdentifier:@"filterLogBookSegue" sender:self];
+}
+
+- (void)insertNewLogBookEntry:(id)sender {
     NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
     LogBookEntry *newEvent = [[LogBookEntry alloc] initWithContext:context];
         
@@ -43,6 +73,7 @@
     void (^ myLocationCallback)(CLLocation*) = ^(CLLocation* newLocation) {
         if (newLocation && !newEvent.portOfDeparture) {
             newEvent.portOfDeparture = [AppDelegate nicePosition:newLocation];
+            [self saveContext:context];
         }
     };
     void (^ myPressureCallback)(CMAltitudeData*) = ^(CMAltitudeData* newPressure) {
@@ -52,35 +83,33 @@
             formatter.minimumIntegerDigits = 1;
             
             newEvent.barometer = [NSString stringWithFormat:@"%@", [formatter stringFromNumber:newPressure.pressure]];
+            
+            [self saveContext:context];
         }
     };
     
     [appDelegate getLocation:myLocationCallback];
     [appDelegate getPressure:myPressureCallback];
     
-    // Save the context.
-    NSError *error = nil;
-    if (![context save:&error]) {
-        // Replace this implementation with code to handle the error appropriately.
-        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-        NSLog(@"Unresolved error %@, %@", error, error.userInfo);
-        abort();
-    }
+    [self saveContext:context];
 }
 
 
 #pragma mark - Segues
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([[segue identifier] isEqualToString:@"showDetail"]) {
-        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        LogBookEntry *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
-        DetailViewController *controller = (DetailViewController *)[[segue destinationViewController] topViewController];
-        controller.detailItem = object;
-        controller.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
-        controller.navigationItem.leftItemsSupplementBackButton = YES;
-        self.detailViewController = controller;
-    }
+  if ([[segue identifier] isEqualToString:@"showDetail"]) {
+    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+    LogBookEntry *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    DetailViewController *controller = (DetailViewController *)[[segue destinationViewController] topViewController];
+    controller.fetchedResultsController = self.fetchedResultsController;
+    controller.managedObjectContext = self.managedObjectContext;
+    controller.detailItem = object;
+    controller.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
+    controller.navigationItem.leftItemsSupplementBackButton = YES;
+    self.detailViewController = controller;
+  }
+  
 }
 
 

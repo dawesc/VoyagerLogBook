@@ -3,26 +3,34 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3CC59473753C9E0C49535373 /* Pods_Voyager_Log_Book.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09AE05A2A0DDF896355005DF /* Pods_Voyager_Log_Book.framework */; };
 		85B4E0D424780B4400869FC0 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85B4E0D324780B4400869FC0 /* CoreMotion.framework */; };
+		85B4E1032479567600869FC0 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 85B4E1022479567600869FC0 /* Podfile */; };
+		85D7F5B9247D48D300399D8D /* GenericDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D7F5B8247D48D300399D8D /* GenericDataViewController.m */; };
 		85D93D492476F5DF002862CA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D93D482476F5DF002862CA /* AppDelegate.m */; };
 		85D93D4C2476F5DF002862CA /* Voyager_Log_Book.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 85D93D4A2476F5DF002862CA /* Voyager_Log_Book.xcdatamodeld */; };
 		85D93D4F2476F5DF002862CA /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D93D4E2476F5DF002862CA /* SceneDelegate.m */; };
 		85D93D522476F5DF002862CA /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D93D512476F5DF002862CA /* MasterViewController.m */; };
 		85D93D552476F5DF002862CA /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D93D542476F5DF002862CA /* DetailViewController.m */; };
 		85D93D582476F5DF002862CA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85D93D562476F5DF002862CA /* Main.storyboard */; };
-		85D93D5A2476F5E4002862CA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85D93D592476F5E4002862CA /* Assets.xcassets */; };
 		85D93D5D2476F5E4002862CA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85D93D5B2476F5E4002862CA /* LaunchScreen.storyboard */; };
 		85D93D602476F5E4002862CA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D93D5F2476F5E4002862CA /* main.m */; };
 		85D93D692476F800002862CA /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85D93D682476F800002862CA /* CloudKit.framework */; };
 		85D93D6B24770EF6002862CA /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85D93D6A24770EF6002862CA /* CoreLocation.framework */; };
+		85FC2BC9247BDC2A00D03EA0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85FC2BC8247BDC2900D03EA0 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		09AE05A2A0DDF896355005DF /* Pods_Voyager_Log_Book.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Voyager_Log_Book.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		15BE9E2F34E2ADFEC67E68A9 /* Pods-Voyager Log Book.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Voyager Log Book.debug.xcconfig"; path = "Target Support Files/Pods-Voyager Log Book/Pods-Voyager Log Book.debug.xcconfig"; sourceTree = "<group>"; };
 		85B4E0D324780B4400869FC0 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		85B4E1022479567600869FC0 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		85D7F5B7247D48D300399D8D /* GenericDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenericDataViewController.h; sourceTree = "<group>"; };
+		85D7F5B8247D48D300399D8D /* GenericDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenericDataViewController.m; sourceTree = "<group>"; };
 		85D93D442476F5DF002862CA /* Voyager Log Book.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Voyager Log Book.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		85D93D472476F5DF002862CA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		85D93D482476F5DF002862CA /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -34,13 +42,14 @@
 		85D93D532476F5DF002862CA /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		85D93D542476F5DF002862CA /* DetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		85D93D572476F5DF002862CA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		85D93D592476F5E4002862CA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		85D93D5C2476F5E4002862CA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		85D93D5E2476F5E4002862CA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		85D93D5F2476F5E4002862CA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		85D93D662476F7FA002862CA /* Voyager Log Book.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Voyager Log Book.entitlements"; sourceTree = "<group>"; };
 		85D93D682476F800002862CA /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		85D93D6A24770EF6002862CA /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		85FC2BC8247BDC2900D03EA0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CAC3FB57D0148679E91A659A /* Pods-Voyager Log Book.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Voyager Log Book.release.xcconfig"; path = "Target Support Files/Pods-Voyager Log Book/Pods-Voyager Log Book.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,18 +60,30 @@
 				85D93D6B24770EF6002862CA /* CoreLocation.framework in Frameworks */,
 				85B4E0D424780B4400869FC0 /* CoreMotion.framework in Frameworks */,
 				85D93D692476F800002862CA /* CloudKit.framework in Frameworks */,
+				3CC59473753C9E0C49535373 /* Pods_Voyager_Log_Book.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0309B93C994195923A827E22 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				15BE9E2F34E2ADFEC67E68A9 /* Pods-Voyager Log Book.debug.xcconfig */,
+				CAC3FB57D0148679E91A659A /* Pods-Voyager Log Book.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		85D93D3B2476F5DF002862CA = {
 			isa = PBXGroup;
 			children = (
+				85B4E1022479567600869FC0 /* Podfile */,
 				85D93D462476F5DF002862CA /* Voyager Log Book */,
 				85D93D452476F5DF002862CA /* Products */,
 				85D93D672476F800002862CA /* Frameworks */,
+				0309B93C994195923A827E22 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -77,9 +98,12 @@
 		85D93D462476F5DF002862CA /* Voyager Log Book */ = {
 			isa = PBXGroup;
 			children = (
+				85FC2BC8247BDC2900D03EA0 /* Assets.xcassets */,
 				85D93D662476F7FA002862CA /* Voyager Log Book.entitlements */,
 				85D93D472476F5DF002862CA /* AppDelegate.h */,
 				85D93D482476F5DF002862CA /* AppDelegate.m */,
+				85D7F5B7247D48D300399D8D /* GenericDataViewController.h */,
+				85D7F5B8247D48D300399D8D /* GenericDataViewController.m */,
 				85D93D4D2476F5DF002862CA /* SceneDelegate.h */,
 				85D93D4E2476F5DF002862CA /* SceneDelegate.m */,
 				85D93D502476F5DF002862CA /* MasterViewController.h */,
@@ -87,7 +111,6 @@
 				85D93D532476F5DF002862CA /* DetailViewController.h */,
 				85D93D542476F5DF002862CA /* DetailViewController.m */,
 				85D93D562476F5DF002862CA /* Main.storyboard */,
-				85D93D592476F5E4002862CA /* Assets.xcassets */,
 				85D93D5B2476F5E4002862CA /* LaunchScreen.storyboard */,
 				85D93D5E2476F5E4002862CA /* Info.plist */,
 				85D93D5F2476F5E4002862CA /* main.m */,
@@ -102,6 +125,7 @@
 				85B4E0D324780B4400869FC0 /* CoreMotion.framework */,
 				85D93D6A24770EF6002862CA /* CoreLocation.framework */,
 				85D93D682476F800002862CA /* CloudKit.framework */,
+				09AE05A2A0DDF896355005DF /* Pods_Voyager_Log_Book.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -113,9 +137,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 85D93D632476F5E4002862CA /* Build configuration list for PBXNativeTarget "Voyager Log Book" */;
 			buildPhases = (
+				5C65CBD1A4A731ECC64DEF69 /* [CP] Check Pods Manifest.lock */,
 				85D93D402476F5DF002862CA /* Sources */,
 				85D93D412476F5DF002862CA /* Frameworks */,
 				85D93D422476F5DF002862CA /* Resources */,
+				6FCB3E6397C7C8B3A5EE2244 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -164,18 +190,62 @@
 			buildActionMask = 2147483647;
 			files = (
 				85D93D5D2476F5E4002862CA /* LaunchScreen.storyboard in Resources */,
-				85D93D5A2476F5E4002862CA /* Assets.xcassets in Resources */,
+				85B4E1032479567600869FC0 /* Podfile in Resources */,
+				85FC2BC9247BDC2A00D03EA0 /* Assets.xcassets in Resources */,
 				85D93D582476F5DF002862CA /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		5C65CBD1A4A731ECC64DEF69 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Voyager Log Book-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6FCB3E6397C7C8B3A5EE2244 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Voyager Log Book/Pods-Voyager Log Book-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Voyager Log Book/Pods-Voyager Log Book-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Voyager Log Book/Pods-Voyager Log Book-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		85D93D402476F5DF002862CA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85D7F5B9247D48D300399D8D /* GenericDataViewController.m in Sources */,
 				85D93D552476F5DF002862CA /* DetailViewController.m in Sources */,
 				85D93D522476F5DF002862CA /* MasterViewController.m in Sources */,
 				85D93D492476F5DF002862CA /* AppDelegate.m in Sources */,
@@ -319,6 +389,7 @@
 		};
 		85D93D642476F5E4002862CA /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 15BE9E2F34E2ADFEC67E68A9 /* Pods-Voyager Log Book.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "Voyager Log Book/Voyager Log Book.entitlements";
@@ -337,6 +408,7 @@
 		};
 		85D93D652476F5E4002862CA /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CAC3FB57D0148679E91A659A /* Pods-Voyager Log Book.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "Voyager Log Book/Voyager Log Book.entitlements";

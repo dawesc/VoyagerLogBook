@@ -1,0 +1,23 @@
+{
+  "images" : [
+    {
+      "filename" : "glyphicons-halflings-61-paragraph-left.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "glyphicons-halflings-61-paragraph-left@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "glyphicons-halflings-61-paragraph-left@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

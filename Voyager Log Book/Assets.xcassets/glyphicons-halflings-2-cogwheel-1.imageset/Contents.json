@@ -1,0 +1,23 @@
+{
+  "images" : [
+    {
+      "filename" : "glyphicons-halflings-2-cogwheel.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "glyphicons-halflings-2-cogwheel@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "glyphicons-halflings-2-cogwheel@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

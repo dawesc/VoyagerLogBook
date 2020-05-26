@@ -7,6 +7,7 @@
 //
 
 #import "DetailViewController.h"
+#import "ActionSheetPicker.h"
 
 @interface DetailViewController () {
     UILabel* l_barometer;
@@ -41,8 +42,10 @@
     UIScrollView* scrollView;
     
     bool didChange;
+    bool isIpad;
     NSMutableArray* uiFields;
     NSMutableArray* objectSetters;
+    NSMutableArray* editorActions;
 }
 
 @end
@@ -62,6 +65,9 @@
     field.borderStyle = UITextBorderStyleRoundedRect;
     field.enabled = true;
     field.delegate = self;
+    
+    [field addTarget:self action:@selector(textFieldClicked:) forControlEvents:UIControlEventTouchDown];
+    
     return field;
 }
 - (UITextView*) setupTextView
@@ -72,24 +78,6 @@
     field.layer.borderColor = [[UIColor grayColor] CGColor];
     field.editable = true;
     field.scrollEnabled = false;
-    field.delegate = self;
-    return field;
-}
-- (UITextField*) setupDatePicker
-{
-    //FIXME UIDatePicker
-    UITextField* field;
-    field = [[UITextField alloc] initWithFrame:CGRectZero];
-    field.borderStyle = UITextBorderStyleRoundedRect;
-    field.delegate = self;
-    return field;
-}
-- (UITextField*) setupPicker:(NSArray*) options
-{
-    //FIXME UIPickerView
-    UITextField* field;
-    field = [[UITextField alloc]  initWithFrame:CGRectZero];
-    field.borderStyle = UITextBorderStyleRoundedRect;
     field.delegate = self;
     return field;
 }
@@ -106,8 +94,10 @@
     if (l_barometer)
         return;
     
+    isIpad = [UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad;
     uiFields = [[NSMutableArray alloc] init];
     objectSetters = [[NSMutableArray alloc] init];
+    editorActions = [[NSMutableArray alloc] init];
     
     l_barometer = [self setupLabel:@"Barometer"];
     l_comments = [self setupLabel:@"Comments"];
@@ -126,18 +116,20 @@
     
     t_barometer = [self setupTextField];
     t_comments = [self setupTextView];
-    t_dateOfArrival = [self setupDatePicker];
-    [t_dateOfArrival.widthAnchor constraintEqualToConstant:200].active = true;
-    t_dateOfArrivalEstimated = [self setupDatePicker];
-    t_dateOfDeparture = [self setupDatePicker];
-    [t_dateOfDeparture.widthAnchor constraintEqualToConstant:200].active = true;
+    t_dateOfArrival = [self setupTextField];
+    if (isIpad)
+        [t_dateOfArrival.widthAnchor constraintEqualToConstant:200].active = true;
+    t_dateOfArrivalEstimated = [self setupTextField];
+    t_dateOfDeparture = [self setupTextField];
+    if (isIpad)
+        [t_dateOfDeparture.widthAnchor constraintEqualToConstant:200].active = true;
     t_destination = [self setupTextField];
     t_passageNotes = [self setupTextView];
     t_portOfArrival = [self setupTextField];
     t_portOfDeparture = [self setupTextField];
     t_waveHeight = [self setupTextField];
     t_weatherConditions = [self setupTextField];
-    t_windDirection = [self setupPicker:[DetailViewController windDirections]];
+    t_windDirection = [self setupTextField];
     t_windSpeed = [self setupTextField];
     
      // Update the user interface for the detail item.
@@ -189,6 +181,7 @@
     
     //Scroll view
     scrollView =[[UIScrollView alloc] initWithFrame:CGRectZero];
+    scrollView.delaysContentTouches = false;
     scrollView.translatesAutoresizingMaskIntoConstraints = false;
     
     [scrollView addSubview:stackView];
@@ -217,7 +210,9 @@ isNarrow:(bool) isNarrow
     //Stack View
     UIStackView *stackView = [[UIStackView alloc] init];
 
-    if (leftBig == rightBig) {
+    if (!isIpad) {
+        /* On iPhone we don't actually allow anything other than bog standard stacking */
+    } else if (leftBig == rightBig) {
         [leftControl setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
         [rightControl setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
         stackView.distribution = UIStackViewDistributionFillEqually;
@@ -231,39 +226,28 @@ isNarrow:(bool) isNarrow
         stackView.distribution = UIStackViewDistributionFill;
     }
     
-    stackView.axis = UILayoutConstraintAxisHorizontal;
-    stackView.alignment = UIStackViewDistributionFill;
-    if (!isNarrow)
-        stackView.spacing = 20;
+    if (isIpad) {
+        stackView.axis = UILayoutConstraintAxisHorizontal;
+    } else {
+        stackView.axis = UILayoutConstraintAxisVertical;
+    }
+    
+    stackView.alignment     = UIStackViewAlignmentFill;
+    
+    if (!isNarrow) {
+        if (isIpad) {
+            stackView.spacing = 20;
+        } else {
+            stackView.spacing = 10;
+        }
+    }
+        
 
     [stackView addArrangedSubview:leftControl];
     [stackView addArrangedSubview:rightControl];
 
     stackView.translatesAutoresizingMaskIntoConstraints = false;
     [stackView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
-    return stackView;
-}
-
-- (UIView*) makeThree:(UIView*) leftControl
-centerControl:(UIView*) centerControl
-rightControl:(UIView*) rightControl
-{
-    //Stack View
-    UIStackView *stackView = [[UIStackView alloc] init];
-
-    stackView.distribution = UIStackViewDistributionFillEqually;
-    
-    stackView.axis = UILayoutConstraintAxisHorizontal;
-    stackView.alignment = UIStackViewDistributionFill;
-    stackView.spacing = 10;
-
-    [stackView addArrangedSubview:leftControl];
-    [stackView addArrangedSubview:centerControl];
-    [stackView addArrangedSubview:rightControl];
-
-    stackView.translatesAutoresizingMaskIntoConstraints = false;
-    [stackView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
-    
     return stackView;
 }
 
@@ -271,6 +255,8 @@ rightControl:(UIView*) rightControl
 labelControl:(UILabel*) labelControl
 inputControl:(UIView*) inputControl
 {
+    if (!isIpad) horizontalStack = false;
+    
     [labelControl setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     [inputControl setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     
@@ -384,11 +370,16 @@ outputText:(NSDate *) outputText
 }
 
 - (void)linkField:(UIView*) control ultimateField:(NSObject*) ultimateField
-    objectSetter:(ObjectSetter) objectSetter {
+    objectSetter:(ObjectSetter) objectSetter
+    editorAction:(EditorAction) editorAction {
     
     [uiFields addObject:control];
     [objectSetters addObject:objectSetter];
-
+    if (editorAction)
+        [editorActions addObject:editorAction];
+    else
+        [editorActions addObject:[[NSNull alloc] init]];
+    
     if ([control isKindOfClass:[UITextField class]]) {
         ((UITextField*) control).text = [self getText:ultimateField];
     }
@@ -397,11 +388,40 @@ outputText:(NSDate *) outputText
     }
 }
 
+- (int)getArrayIndex:(int) defaultVal arrayElems:(NSArray*)arrayElems toFind:(NSString*) toFind{
+    int index = 0;
+    for (NSString* elem in arrayElems) {
+        if ([elem isEqualToString:toFind])
+            return index;
+        ++index;
+    }
+    return defaultVal;
+}
+
+- (void)linkField:(UIView*) control ultimateField:(NSObject*) ultimateField
+objectSetter:(ObjectSetter) objectSetter {
+    [self linkField:control ultimateField:ultimateField objectSetter:objectSetter editorAction:nil];
+}
+- (EditorAction)makeFixedPickerAction:(NSString*) title arrayElems:(NSArray*) arrayElems {
+    return ^(UITextField* textField) {
+        // Done block:
+        ActionStringDoneBlock done = ^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
+            textField.text = selectedValue;
+            [self aTextFieldDidEndEditing:textField fieldText:selectedValue];
+            };
+
+        ActionSheetStringPicker* picker = [[ActionSheetStringPicker alloc] initWithTitle:title rows:arrayElems initialSelection:[self getArrayIndex:0 arrayElems:arrayElems toFind:textField.text] doneBlock:done cancelBlock:nil origin:textField];
+        picker.tapDismissAction = TapActionCancel;
+        [picker showActionSheetPicker];
+    };
+}
+
 - (void)configureView {
     // Update the user interface for the detail item.
     didChange = false;
     [uiFields     removeAllObjects];
     [objectSetters removeAllObjects];
+    [editorActions removeAllObjects];
     
     if (self.detailItem) {
         [self setEnabled:true];
@@ -415,7 +435,8 @@ outputText:(NSDate *) outputText
         [self linkField:t_portOfArrival ultimateField:self.detailItem.portOfArrival objectSetter:^(NSString* newVal) { self.detailItem.portOfArrival = newVal; }];
         [self linkField:t_portOfDeparture ultimateField:self.detailItem.portOfDeparture objectSetter:^(NSString* newVal) { self.detailItem.portOfDeparture = newVal; }];
         [self linkField:t_weatherConditions ultimateField:self.detailItem.weatherConditions objectSetter:^(NSString* newVal) { self.detailItem.weatherConditions = newVal; }];
-        [self linkField:t_windDirection ultimateField:self.detailItem.windDirection objectSetter:^(NSString* newVal) { self.detailItem.windDirection = newVal; }];
+        [self linkField:t_windDirection ultimateField:self.detailItem.windDirection objectSetter:^(NSString* newVal) { self.detailItem.windDirection = newVal; }
+           editorAction:[self makeFixedPickerAction:@"Wind Direction" arrayElems:[DetailViewController windDirections]]];
         [self linkField:t_windSpeed ultimateField:self.detailItem.windSpeed objectSetter:^(NSString* newVal) { self.detailItem.windSpeed = newVal; }];
     } else {
         [self setEnabled:false];
@@ -471,24 +492,58 @@ outputText:(NSDate *) outputText
     }
 }
 
-- (void)aTextFieldDidEndEditing:(UIView*) control fieldText:(NSString*) fieldText {
+- (int)findControl:(UIView*) control {
     int index = 0;
     for (UIView* textFieldArr in uiFields) {
         if (control == textFieldArr) {
-            break;
+            return index;
         }
         ++index;
     }
-    if (index >= [objectSetters count]) {
+    return -1;
+}
+
+- (void)saveContext:(NSManagedObjectContext*) context {
+    // Save the context.
+    NSError *error = nil;
+    if (![context save:&error]) {
+        // Replace this implementation with code to handle the error appropriately.
+        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+        NSLog(@"Unresolved error %@, %@", error, error.userInfo);
+        abort();
+    }
+}
+
+- (void)aTextFieldDidEndEditing:(UIView*) control fieldText:(NSString*) fieldText {
+    int index = [self findControl:control];
+    if (index == -1) {
         NSLog(@"Couldn't find setter!");
         return;
     }
     ((ObjectSetter)[objectSetters objectAtIndex:index])(fieldText);
+    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+    [self saveContext:context];
+}
+
+-(IBAction) textFieldClicked:(id)sender {
+    UITextField* control = (UITextField*) sender;
+    int index = [self findControl:control];
+    if (index == -1) {
+        return;
+    }
+    if ([editorActions[index] isEqual:[NSNull null]]) {
+        return; //Return if no action set
+    }
+    ((EditorAction)[editorActions objectAtIndex:index])(control);
 }
 
 #pragma mark UITextFieldDelegate
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-    return true;
+    int index = [self findControl:textField];
+    if (index == -1) {
+        return true;
+    }
+    return ([editorActions[index] isEqual:[NSNull null]]);
 }
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     [self aTextFieldDidEndEditing:textField fieldText:textField.text];

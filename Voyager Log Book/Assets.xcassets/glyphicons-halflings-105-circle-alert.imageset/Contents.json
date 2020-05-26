@@ -1,0 +1,23 @@
+{
+  "images" : [
+    {
+      "filename" : "glyphicons-halflings-105-circle-alert.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "glyphicons-halflings-105-circle-alert@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "glyphicons-halflings-105-circle-alert@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

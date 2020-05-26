@@ -8,17 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
+#import "GenericDataViewController.h"
 #import "Voyager_Log_Book+CoreDataModel.h"
 
 @class DetailViewController;
 
-@interface MasterViewController : UITableViewController <NSFetchedResultsControllerDelegate>
-
-@property (strong, nonatomic) DetailViewController *detailViewController;
-
-@property (strong, nonatomic) NSFetchedResultsController<LogBookEntry *> *fetchedResultsController;
-@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
-
+@interface MasterViewController : GenericDataViewController
 
 @end
 
