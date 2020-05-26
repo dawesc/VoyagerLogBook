@@ -419,25 +419,25 @@ objectSetter:(ObjectSetter) objectSetter {
 - (void)configureView {
     // Update the user interface for the detail item.
     didChange = false;
-    [uiFields     removeAllObjects];
+    [uiFields      removeAllObjects];
     [objectSetters removeAllObjects];
     [editorActions removeAllObjects];
     
-    if (self.detailItem) {
+    if (self.logBookEntry) {
         [self setEnabled:true];
-        [self linkField:t_barometer ultimateField:self.detailItem.barometer objectSetter:^(NSString* newVal) { self.detailItem.barometer = newVal; }];
-        [self linkField:t_comments ultimateField:self.detailItem.comments objectSetter:^(NSString* newVal) { self.detailItem.comments = newVal; }];
-        [self linkField:t_dateOfArrival ultimateField:self.detailItem.dateOfArrival objectSetter:^(NSString* newVal) { self.detailItem.dateOfArrival = [self stringToDate:newVal]; }];
-        [self linkField:t_dateOfArrivalEstimated ultimateField:self.detailItem.dateOfArrivalEstimated objectSetter:^(NSString* newVal) { self.detailItem.dateOfArrivalEstimated = [self stringToDate:newVal]; }];
-        [self linkField:t_dateOfDeparture ultimateField:self.detailItem.dateOfDeparture objectSetter:^(NSString* newVal) { self.detailItem.dateOfDeparture = [self stringToDate:newVal]; }];
-        [self linkField:t_destination     ultimateField:self.detailItem.destination objectSetter:^(NSString* newVal) { self.detailItem.destination = newVal; }];
-        [self linkField:t_passageNotes ultimateField:self.detailItem.passageNotes objectSetter:^(NSString* newVal) { self.detailItem.passageNotes = newVal; }];
-        [self linkField:t_portOfArrival ultimateField:self.detailItem.portOfArrival objectSetter:^(NSString* newVal) { self.detailItem.portOfArrival = newVal; }];
-        [self linkField:t_portOfDeparture ultimateField:self.detailItem.portOfDeparture objectSetter:^(NSString* newVal) { self.detailItem.portOfDeparture = newVal; }];
-        [self linkField:t_weatherConditions ultimateField:self.detailItem.weatherConditions objectSetter:^(NSString* newVal) { self.detailItem.weatherConditions = newVal; }];
-        [self linkField:t_windDirection ultimateField:self.detailItem.windDirection objectSetter:^(NSString* newVal) { self.detailItem.windDirection = newVal; }
+        [self linkField:t_barometer ultimateField:self.logBookEntry.barometer objectSetter:^(NSString* newVal) { self.logBookEntry.barometer = newVal; }];
+        [self linkField:t_comments ultimateField:self.logBookEntry.comments objectSetter:^(NSString* newVal) { self.logBookEntry.comments = newVal; }];
+        [self linkField:t_dateOfArrival ultimateField:self.logBookEntry.dateOfArrival objectSetter:^(NSString* newVal) { self.logBookEntry.dateOfArrival = [self stringToDate:newVal]; }];
+        [self linkField:t_dateOfArrivalEstimated ultimateField:self.logBookEntry.dateOfArrivalEstimated objectSetter:^(NSString* newVal) { self.logBookEntry.dateOfArrivalEstimated = [self stringToDate:newVal]; }];
+        [self linkField:t_dateOfDeparture ultimateField:self.logBookEntry.dateOfDeparture objectSetter:^(NSString* newVal) { self.logBookEntry.dateOfDeparture = [self stringToDate:newVal]; }];
+        [self linkField:t_destination     ultimateField:self.logBookEntry.destination objectSetter:^(NSString* newVal) { self.logBookEntry.destination = newVal; }];
+        [self linkField:t_passageNotes ultimateField:self.logBookEntry.passageNotes objectSetter:^(NSString* newVal) { self.logBookEntry.passageNotes = newVal; }];
+        [self linkField:t_portOfArrival ultimateField:self.logBookEntry.portOfArrival objectSetter:^(NSString* newVal) { self.logBookEntry.portOfArrival = newVal; }];
+        [self linkField:t_portOfDeparture ultimateField:self.logBookEntry.portOfDeparture objectSetter:^(NSString* newVal) { self.logBookEntry.portOfDeparture = newVal; }];
+        [self linkField:t_weatherConditions ultimateField:self.logBookEntry.weatherConditions objectSetter:^(NSString* newVal) { self.logBookEntry.weatherConditions = newVal; }];
+        [self linkField:t_windDirection ultimateField:self.logBookEntry.windDirection objectSetter:^(NSString* newVal) { self.logBookEntry.windDirection = newVal; }
            editorAction:[self makeFixedPickerAction:@"Wind Direction" arrayElems:[DetailViewController windDirections]]];
-        [self linkField:t_windSpeed ultimateField:self.detailItem.windSpeed objectSetter:^(NSString* newVal) { self.detailItem.windSpeed = newVal; }];
+        [self linkField:t_windSpeed ultimateField:self.logBookEntry.windSpeed objectSetter:^(NSString* newVal) { self.logBookEntry.windSpeed = newVal; }];
     } else {
         [self setEnabled:false];
     }
@@ -483,13 +483,35 @@ objectSetter:(ObjectSetter) objectSetter {
 
 #pragma mark - Managing the detail item
 
-- (void)setDetailItem:(LogBookEntry *)newDetailItem {
-    if (_detailItem != newDetailItem) {
-        _detailItem = newDetailItem;
-        
-        // Update the view.
-        [self configureView];
+- (void)setDetailItem:(NSObject *)newDetailItem {
+  if (newDetailItem == nil) {
+    _logBookEntry = nil;
+    _vessel       = nil;
+    _souls        = nil;
+    // Update the view.
+    [self configureView];
+  } else if ([newDetailItem isKindOfClass:[LogBookEntry class]]) {
+    if (_logBookEntry != newDetailItem) {
+      _logBookEntry = (LogBookEntry*) newDetailItem;
+      
+      // Update the view.
+      [self configureView];
     }
+  } else if ([newDetailItem isKindOfClass:[Vessel class]]) {
+    if (_vessel != newDetailItem) {
+      _vessel = (Vessel*) newDetailItem;
+      
+      // Update the view.
+      [self configureView];
+    }
+  } else if ([newDetailItem isKindOfClass:[Soul class]]) {
+    if (_souls != newDetailItem) {
+      _souls = (Soul*) newDetailItem;
+      
+      // Update the view.
+      [self configureView];
+    }
+  }
 }
 
 - (int)findControl:(UIView*) control {

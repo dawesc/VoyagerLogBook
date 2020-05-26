@@ -7,6 +7,5 @@ target 'Voyager Log Book' do
   use_frameworks!
 
   pod 'ActionSheetPicker-3.0'
-  pod 'FontAwesome'
   # Pods for Voyager Log Book
 end

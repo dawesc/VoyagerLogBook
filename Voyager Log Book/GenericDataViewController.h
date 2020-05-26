@@ -26,11 +26,50 @@ typedef NSSortDescriptor* (^GetSortDescriptor)(void); //e.g. [[NSSortDescriptor 
   
 @interface GenericDataViewController : UITableViewController <NSFetchedResultsControllerDelegate>
 
--(id) initWithAddButton:(ActionCallback)addCallback
+-(void)setupWithAddButton:(NSString*)cacheName
+            addCallback:(ActionCallback)addCallback
 prepareForSegueCallback:(PrepareForSequeCallback)prepareForSegueCallback
   configureCellCallback:(ConfigureCell)configureCellCallback
         getFetchRequest:(GetFetchRequest)getFetchRequest
       getSortDescriptor:(GetSortDescriptor)getSortDescriptor;
+
+-(void)setupWithoutAddButton:(NSString*)cacheName
+prepareForSegueCallback:(PrepareForSequeCallback)prepareForSegueCallback
+  configureCellCallback:(ConfigureCell)configureCellCallback
+        getFetchRequest:(GetFetchRequest)getFetchRequest
+      getSortDescriptor:(GetSortDescriptor)getSortDescriptor;
+
+- (void)viewDidLoad;
+- (void)viewWillAppear:(BOOL)animated;
+- (void)saveContext:(NSManagedObjectContext*) context;
+- (void)onInsert:(id)sender;
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;
+
+#pragma mark - Table View
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath;
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath;
+
+#pragma mark - Fetched results controller
+
+- (NSFetchedResultsController<LogBookEntry *> *)fetchedResultsController;
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller;
+- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
+           atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type;
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject
+       atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type
+      newIndexPath:(NSIndexPath *)newIndexPath;
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller;
+
+
++ (NSString*) getStringOrEmpty:(NSString *) data defaultValue:(NSString *) defaultValue;
++ (NSString*) getStringOrEmptyD:(NSDate *) data defaultValue:(NSString *) defaultValue;
 
 @property (strong, nonatomic) NSFetchedResultsController* fetchedResultsController;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;

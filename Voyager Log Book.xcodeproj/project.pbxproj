@@ -11,6 +11,11 @@
 		85B4E0D424780B4400869FC0 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85B4E0D324780B4400869FC0 /* CoreMotion.framework */; };
 		85B4E1032479567600869FC0 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 85B4E1022479567600869FC0 /* Podfile */; };
 		85D7F5B9247D48D300399D8D /* GenericDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D7F5B8247D48D300399D8D /* GenericDataViewController.m */; };
+		85D7F5C1247DA92500399D8D /* Font Awesome 5 Free-Regular-400.otf in Resources */ = {isa = PBXBuildFile; fileRef = 85D7F5C0247DA92500399D8D /* Font Awesome 5 Free-Regular-400.otf */; };
+		85D7F5C4247DA94100399D8D /* Font Awesome 5 Free-Solid-900.otf in Resources */ = {isa = PBXBuildFile; fileRef = 85D7F5C2247DA94100399D8D /* Font Awesome 5 Free-Solid-900.otf */; };
+		85D7F5C5247DA94100399D8D /* Font Awesome 5 Brands-Regular-400.otf in Resources */ = {isa = PBXBuildFile; fileRef = 85D7F5C3247DA94100399D8D /* Font Awesome 5 Brands-Regular-400.otf */; };
+		85D7F5CA247DABFD00399D8D /* SoulMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D7F5C7247DABFC00399D8D /* SoulMasterViewController.m */; };
+		85D7F5CB247DABFD00399D8D /* VesselMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D7F5C8247DABFD00399D8D /* VesselMasterViewController.m */; };
 		85D93D492476F5DF002862CA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D93D482476F5DF002862CA /* AppDelegate.m */; };
 		85D93D4C2476F5DF002862CA /* Voyager_Log_Book.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 85D93D4A2476F5DF002862CA /* Voyager_Log_Book.xcdatamodeld */; };
 		85D93D4F2476F5DF002862CA /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D93D4E2476F5DF002862CA /* SceneDelegate.m */; };
@@ -31,6 +36,13 @@
 		85B4E1022479567600869FC0 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		85D7F5B7247D48D300399D8D /* GenericDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenericDataViewController.h; sourceTree = "<group>"; };
 		85D7F5B8247D48D300399D8D /* GenericDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenericDataViewController.m; sourceTree = "<group>"; };
+		85D7F5C0247DA92500399D8D /* Font Awesome 5 Free-Regular-400.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Font Awesome 5 Free-Regular-400.otf"; sourceTree = "<group>"; };
+		85D7F5C2247DA94100399D8D /* Font Awesome 5 Free-Solid-900.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Font Awesome 5 Free-Solid-900.otf"; sourceTree = "<group>"; };
+		85D7F5C3247DA94100399D8D /* Font Awesome 5 Brands-Regular-400.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Font Awesome 5 Brands-Regular-400.otf"; sourceTree = "<group>"; };
+		85D7F5C6247DABFC00399D8D /* VesselMasterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VesselMasterViewController.h; sourceTree = "<group>"; };
+		85D7F5C7247DABFC00399D8D /* SoulMasterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoulMasterViewController.m; sourceTree = "<group>"; };
+		85D7F5C8247DABFD00399D8D /* VesselMasterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VesselMasterViewController.m; sourceTree = "<group>"; };
+		85D7F5C9247DABFD00399D8D /* SoulMasterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoulMasterViewController.h; sourceTree = "<group>"; };
 		85D93D442476F5DF002862CA /* Voyager Log Book.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Voyager Log Book.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		85D93D472476F5DF002862CA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		85D93D482476F5DF002862CA /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -76,12 +88,23 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		85D7F5BA247DA3ED00399D8D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				85D7F5C3247DA94100399D8D /* Font Awesome 5 Brands-Regular-400.otf */,
+				85D7F5C2247DA94100399D8D /* Font Awesome 5 Free-Solid-900.otf */,
+				85D7F5C0247DA92500399D8D /* Font Awesome 5 Free-Regular-400.otf */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		85D93D3B2476F5DF002862CA = {
 			isa = PBXGroup;
 			children = (
 				85B4E1022479567600869FC0 /* Podfile */,
 				85D93D462476F5DF002862CA /* Voyager Log Book */,
 				85D93D452476F5DF002862CA /* Products */,
+				85D7F5BA247DA3ED00399D8D /* Resources */,
 				85D93D672476F800002862CA /* Frameworks */,
 				0309B93C994195923A827E22 /* Pods */,
 			);
@@ -98,6 +121,10 @@
 		85D93D462476F5DF002862CA /* Voyager Log Book */ = {
 			isa = PBXGroup;
 			children = (
+				85D7F5C9247DABFD00399D8D /* SoulMasterViewController.h */,
+				85D7F5C7247DABFC00399D8D /* SoulMasterViewController.m */,
+				85D7F5C6247DABFC00399D8D /* VesselMasterViewController.h */,
+				85D7F5C8247DABFD00399D8D /* VesselMasterViewController.m */,
 				85FC2BC8247BDC2900D03EA0 /* Assets.xcassets */,
 				85D93D662476F7FA002862CA /* Voyager Log Book.entitlements */,
 				85D93D472476F5DF002862CA /* AppDelegate.h */,
@@ -192,7 +219,10 @@
 				85D93D5D2476F5E4002862CA /* LaunchScreen.storyboard in Resources */,
 				85B4E1032479567600869FC0 /* Podfile in Resources */,
 				85FC2BC9247BDC2A00D03EA0 /* Assets.xcassets in Resources */,
+				85D7F5C4247DA94100399D8D /* Font Awesome 5 Free-Solid-900.otf in Resources */,
 				85D93D582476F5DF002862CA /* Main.storyboard in Resources */,
+				85D7F5C5247DA94100399D8D /* Font Awesome 5 Brands-Regular-400.otf in Resources */,
+				85D7F5C1247DA92500399D8D /* Font Awesome 5 Free-Regular-400.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -247,7 +277,9 @@
 			files = (
 				85D7F5B9247D48D300399D8D /* GenericDataViewController.m in Sources */,
 				85D93D552476F5DF002862CA /* DetailViewController.m in Sources */,
+				85D7F5CB247DABFD00399D8D /* VesselMasterViewController.m in Sources */,
 				85D93D522476F5DF002862CA /* MasterViewController.m in Sources */,
+				85D7F5CA247DABFD00399D8D /* SoulMasterViewController.m in Sources */,
 				85D93D492476F5DF002862CA /* AppDelegate.m in Sources */,
 				85D93D4F2476F5DF002862CA /* SceneDelegate.m in Sources */,
 				85D93D602476F5E4002862CA /* main.m in Sources */,

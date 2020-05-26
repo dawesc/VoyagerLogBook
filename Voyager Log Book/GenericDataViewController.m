@@ -10,7 +10,6 @@
 #import "GenericDataViewController.h"
 #import "DetailViewController.h"
 #import "ActionSheetPicker.h"
-#import "NSString+FontAwesome.h"
 
 @interface GenericDataViewController ()
 
@@ -18,6 +17,7 @@
 
 @implementation GenericDataViewController {
   bool addButtonS;
+  NSString* cacheNameS;
   ActionCallback addCallbackS;
   PrepareForSequeCallback prepareForSegueCallbackS;
   ConfigureCell       configureCellCallbackS;
@@ -25,28 +25,39 @@
   GetSortDescriptor   getSortDescriptorS;
 }
 
-- (id)
-        initWithAddButton:(ActionCallback)addCallback
+- (void)
+       setupWithAddButton:(NSString*)cacheName
+              addCallback:(ActionCallback)addCallback
   prepareForSegueCallback:(PrepareForSequeCallback)prepareForSegueCallback
     configureCellCallback:(ConfigureCell)configureCellCallback
           getFetchRequest:(GetFetchRequest)getFetchRequest
         getSortDescriptor:(GetSortDescriptor)getSortDescriptor {
-  self = [super init];
-  if (self) {
-    addButtonS                = true;
-    addCallbackS              = addCallback;
-    prepareForSegueCallbackS  = prepareForSegueCallback;
-    configureCellCallbackS    = configureCellCallback;
-    getFetchRequestS          = getFetchRequest;
-    getSortDescriptorS        = getSortDescriptor;
-  }
-  return self;
+  cacheNameS                = cacheName;
+  addButtonS                = true;
+  addCallbackS              = addCallback;
+  prepareForSegueCallbackS  = prepareForSegueCallback;
+  configureCellCallbackS    = configureCellCallback;
+  getFetchRequestS          = getFetchRequest;
+  getSortDescriptorS        = getSortDescriptor;
+}
+
+- (void)
+    setupWithoutAddButton:(NSString*)cacheName
+  prepareForSegueCallback:(PrepareForSequeCallback)prepareForSegueCallback
+    configureCellCallback:(ConfigureCell)configureCellCallback
+          getFetchRequest:(GetFetchRequest)getFetchRequest
+        getSortDescriptor:(GetSortDescriptor)getSortDescriptor {
+  cacheNameS                = cacheName;
+  addButtonS                = false;
+  prepareForSegueCallbackS  = prepareForSegueCallback;
+  configureCellCallbackS    = configureCellCallback;
+  getFetchRequestS          = getFetchRequest;
+  getSortDescriptorS        = getSortDescriptor;
 }
 
 - (void)viewDidLoad {
   [super viewDidLoad];
   // Do any additional setup after loading the view.
-  self.navigationItem.leftBarButtonItem = self.editButtonItem;
 
   if (addButtonS) {
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(onInsert:)];
@@ -142,7 +153,7 @@
 
 #pragma mark - Fetched results controller
 
-- (NSFetchedResultsController<LogBookEntry *> *)fetchedResultsController {
+- (NSFetchedResultsController*)fetchedResultsController {
     if (_fetchedResultsController != nil) {
         return _fetchedResultsController;
     }
@@ -159,7 +170,7 @@
 
     // Edit the section name key path and cache name if appropriate.
     // nil for section name key path means "no sections".
-    NSFetchedResultsController<LogBookEntry *> *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:@"Master"];
+    NSFetchedResultsController* aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:cacheNameS];
     aFetchedResultsController.delegate = self;
 
     NSError *error = nil;
@@ -231,5 +242,19 @@
     [self.tableView reloadData];
 }
  */
+
++ (NSString*) getStringOrEmpty:(NSString *) data defaultValue:(NSString *) defaultValue {
+    if (data)
+        return data.description;
+    else
+        return defaultValue;
+}
+
++ (NSString*) getStringOrEmptyD:(NSDate *) data defaultValue:(NSString *) defaultValue {
+    if (data)
+        return data.description;
+    else
+        return defaultValue;
+}
 
 @end

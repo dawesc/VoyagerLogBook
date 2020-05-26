@@ -1,5 +1,5 @@
 //
-//  MasterViewController.h
+//  VesselMasterViewController.h
 //  Voyager Log Book
 //
 //  Created by Christopher Dawes on 21/05/2020.
@@ -13,8 +13,6 @@
 
 @class DetailViewController;
 
-@interface MasterViewController : GenericDataViewController
+@interface VesselMasterViewController : GenericDataViewController
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;
 @end
-
