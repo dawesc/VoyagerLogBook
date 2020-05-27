@@ -34,7 +34,7 @@
        prepareForSegueCallback:prepareForSegue
          configureCellCallback:configureCellCallback
                getFetchRequest:^NSFetchRequest   *{ return Soul.fetchRequest; }
-             getSortDescriptor:^NSSortDescriptor *{ return [[NSSortDescriptor alloc] initWithKey:@"surname" ascending:NO]; }];
+             getSortDescriptor:^NSSortDescriptor *{ return [[NSSortDescriptor alloc] initWithKey:@"surname" ascending:YES]; }];
   [super viewDidLoad];
   
   UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewSoul:)];
@@ -42,10 +42,10 @@
 }
 
 - (void)insertNewSoul:(id)sender {
-    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-    (void) [[Soul alloc] initWithContext:context];
+  NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+  (void) [[Soul alloc] initWithContext:context];
   
-    [self saveContext:context];
+  [self saveContext:context];
 }
 
 @end

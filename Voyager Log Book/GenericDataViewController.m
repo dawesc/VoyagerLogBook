@@ -244,17 +244,17 @@
  */
 
 + (NSString*) getStringOrEmpty:(NSString *) data defaultValue:(NSString *) defaultValue {
-    if (data)
-        return data.description;
-    else
-        return defaultValue;
+  if (data)
+    return data.description;
+  else
+    return defaultValue;
 }
 
 + (NSString*) getStringOrEmptyD:(NSDate *) data defaultValue:(NSString *) defaultValue {
-    if (data)
-        return data.description;
-    else
-        return defaultValue;
+  if (data)
+    return [DetailViewController dateToString:data];
+  else
+    return defaultValue;
 }
 
 @end

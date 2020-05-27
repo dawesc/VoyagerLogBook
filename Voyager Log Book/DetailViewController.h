@@ -21,7 +21,9 @@ typedef void (^ EditorAction)(UITextField*);
 @property (strong, nonatomic) NSFetchedResultsController* fetchedResultsController;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
-+ (NSArray *)windDirections;
++ (NSArray*)  windDirections;
++ (NSDate*)   stringToDate:(NSString*) str;
++ (NSString*) dateToString:(NSDate*) date;
 
 -(void) textFieldClicked:(UITextField*)sender;
 

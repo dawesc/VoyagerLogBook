@@ -45,10 +45,10 @@
   
   UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewLogBookEntry:)];
   
-  UIBarButtonItem *soulBarButton = [[UIBarButtonItem alloc] initWithTitle:@"\uf21a" style:UIBarButtonItemStylePlain target:self action:@selector(showSouls:)];
+  UIBarButtonItem *soulBarButton = [[UIBarButtonItem alloc] initWithTitle:@"\uf0c0" style:UIBarButtonItemStylePlain target:self action:@selector(showSouls:)];
   [soulBarButton   setTitleTextAttributes:fontDictionary forState:UIControlStateNormal];
   
-  UIBarButtonItem *vesselBarButton = [[UIBarButtonItem alloc] initWithTitle:@"\uf0c0" style:UIBarButtonItemStylePlain target:self action:@selector(showVessels:)];
+  UIBarButtonItem *vesselBarButton = [[UIBarButtonItem alloc] initWithTitle:@"\uf21a" style:UIBarButtonItemStylePlain target:self action:@selector(showVessels:)];
   [vesselBarButton setTitleTextAttributes:fontDictionary forState:UIControlStateNormal];
   
   self.navigationItem.rightBarButtonItems = [[NSArray alloc] initWithObjects:soulBarButton, vesselBarButton, addButton,nil];

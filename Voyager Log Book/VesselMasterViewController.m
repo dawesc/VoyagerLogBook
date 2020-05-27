@@ -32,7 +32,7 @@
        prepareForSegueCallback:prepareForSegue
          configureCellCallback:configureCellCallback
                getFetchRequest:^NSFetchRequest   *{ return Vessel.fetchRequest; }
-             getSortDescriptor:^NSSortDescriptor *{ return [[NSSortDescriptor alloc] initWithKey:@"name" ascending:NO]; }];
+             getSortDescriptor:^NSSortDescriptor *{ return [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES]; }];
   [super viewDidLoad];
     
   
@@ -41,10 +41,10 @@
 }
 
 - (void)insertNewVessel:(id)sender {
-    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-    (void)[[Vessel alloc] initWithContext:context];
+  NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+  (void)[[Vessel alloc] initWithContext:context];
 
-    [self saveContext:context];
+  [self saveContext:context];
 }
 
 @end
