@@ -15,23 +15,47 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Voyager_Logo Final Files-1" translatesAutoresizingMaskIntoConstraints="NO" id="fpf-AH-vJR">
-                                <rect key="frame" x="20" y="32.5" width="374" height="831"/>
-                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="shM-Ej-jQD">
+                                <rect key="frame" x="20" y="64" width="374" height="812"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XAz-18-OPo">
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="270.5"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                    </view>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="bottom" translatesAutoresizingMaskIntoConstraints="NO" id="2n3-tz-Mxs">
+                                        <rect key="frame" x="0.0" y="270.5" width="374" height="271"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" ambiguous="YES" image="Voyager_Logo Final Files-1" translatesAutoresizingMaskIntoConstraints="NO" id="fpf-AH-vJR">
+                                                <rect key="frame" x="0.0" y="0.0" width="374" height="237"/>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Voyager Log Book" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bR8-ZM-GEX">
+                                                <rect key="frame" x="63.5" y="237" width="310.5" height="34"/>
+                                                <fontDescription key="fontDescription" name="Rockwell-Regular" family="Rockwell" pointSize="34"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZDS-Ue-ylK">
+                                        <rect key="frame" x="0.0" y="541.5" width="374" height="270.5"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                    </view>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="fpf-AH-vJR" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="DLu-PA-mff"/>
-                            <constraint firstItem="fpf-AH-vJR" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="20" id="e4p-Qt-has"/>
-                            <constraint firstAttribute="trailing" secondItem="fpf-AH-vJR" secondAttribute="trailing" constant="20" id="flE-BQ-I4R"/>
-                            <constraint firstItem="fpf-AH-vJR" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="vAU-mP-hjt"/>
+                            <constraint firstItem="shM-Ej-jQD" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="1sX-Ps-ZmF"/>
+                            <constraint firstAttribute="bottom" secondItem="shM-Ej-jQD" secondAttribute="bottom" constant="20" id="5Yd-3d-6Gs"/>
+                            <constraint firstItem="shM-Ej-jQD" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="kXg-fJ-0nP"/>
+                            <constraint firstAttribute="trailing" secondItem="shM-Ej-jQD" secondAttribute="trailing" constant="20" id="ldR-pw-gLI"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53" y="375"/>
+            <point key="canvasLocation" x="52.173913043478265" y="375"/>
         </scene>
     </scenes>
     <resources>
