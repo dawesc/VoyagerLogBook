@@ -47,9 +47,13 @@
   
   UIBarButtonItem *soulBarButton = [[UIBarButtonItem alloc] initWithTitle:@"\uf0c0" style:UIBarButtonItemStylePlain target:self action:@selector(showSouls:)];
   [soulBarButton   setTitleTextAttributes:fontDictionary forState:UIControlStateNormal];
+  [soulBarButton   setTitleTextAttributes:fontDictionary forState:UIControlStateHighlighted];
+  [soulBarButton   setTitleTextAttributes:fontDictionary forState:UIControlStateFocused];
   
   UIBarButtonItem *vesselBarButton = [[UIBarButtonItem alloc] initWithTitle:@"\uf21a" style:UIBarButtonItemStylePlain target:self action:@selector(showVessels:)];
   [vesselBarButton setTitleTextAttributes:fontDictionary forState:UIControlStateNormal];
+  [vesselBarButton setTitleTextAttributes:fontDictionary forState:UIControlStateHighlighted];
+  [vesselBarButton setTitleTextAttributes:fontDictionary forState:UIControlStateFocused];
   
   self.navigationItem.rightBarButtonItems = [[NSArray alloc] initWithObjects:soulBarButton, vesselBarButton, addButton,nil];
 }
@@ -63,34 +67,44 @@
 }
 
 - (void)insertNewLogBookEntry:(id)sender {
-    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-    LogBookEntry *newEvent = [[LogBookEntry alloc] initWithContext:context];
-        
-    // If appropriate, configure the new managed object.
-    newEvent.dateOfDeparture = [NSDate now];
-    AppDelegate* appDelegate = (AppDelegate*) UIApplication.sharedApplication.delegate;
-    void (^ myLocationCallback)(CLLocation*) = ^(CLLocation* newLocation) {
-        if (newLocation && !newEvent.portOfDeparture) {
-            newEvent.portOfDeparture = [AppDelegate nicePosition:newLocation];
-            [self saveContext:context];
-        }
-    };
-    void (^ myPressureCallback)(CMAltitudeData*) = ^(CMAltitudeData* newPressure) {
-        if (newPressure && !newEvent.barometer) {
-            NSNumberFormatter *formatter = [[NSNumberFormatter alloc]init];
-            formatter.maximumFractionDigits = 2;
-            formatter.minimumIntegerDigits = 1;
-            
-            newEvent.barometer = [NSString stringWithFormat:@"%@", [formatter stringFromNumber:newPressure.pressure]];
-            
-            [self saveContext:context];
-        }
-    };
-    
-    [appDelegate getLocation:myLocationCallback];
-    [appDelegate getPressure:myPressureCallback];
-    
-    [self saveContext:context];
+  NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+  LogBookEntry *newEvent = [[LogBookEntry alloc] initWithContext:context];
+      
+  // If appropriate, configure the new managed object.
+  newEvent.dateOfDeparture = [NSDate now];
+  AppDelegate* appDelegate = (AppDelegate*) UIApplication.sharedApplication.delegate;
+  void (^ myLocationCallback)(CLLocation*) = ^(CLLocation* newLocation) {
+    if (newLocation && !newEvent.portOfDeparture) {
+      newEvent.portOfDeparture = [AppDelegate nicePosition:newLocation];
+      [self saveContext:context];
+    }
+  };
+  void (^ myPressureCallback)(CMAltitudeData*) = ^(CMAltitudeData* newPressure) {
+    if (newPressure && !newEvent.barometer) {
+      NSNumberFormatter *formatter = [[NSNumberFormatter alloc]init];
+      formatter.maximumFractionDigits = 2;
+      formatter.minimumIntegerDigits = 1;
+      
+      newEvent.barometer = [NSString stringWithFormat:@"%@", [formatter stringFromNumber:newPressure.pressure]];
+      [self saveContext:context];
+    }
+  };
+  
+  [appDelegate getLocation:myLocationCallback];
+  [appDelegate getPressure:myPressureCallback];
+  
+  NSFetchRequest<Vessel *>* currentDefaultFetchRequest = Vessel.fetchRequest;
+  [currentDefaultFetchRequest setPredicate:[NSPredicate predicateWithFormat:@"defaultVessel == %@", [NSNumber numberWithBool: YES]]];
+  
+  NSError* error = nil;
+  NSArray* results = [context executeFetchRequest:currentDefaultFetchRequest error:&error];
+  if (results) {
+    for (Vessel* vessel in results) {
+      newEvent.vessel = vessel;
+    }
+  }
+  
+  [self saveContext:context];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

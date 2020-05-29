@@ -42,8 +42,8 @@
 
 - (void)insertNewVessel:(id)sender {
   NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-  (void)[[Vessel alloc] initWithContext:context];
-
+  Vessel* vessel = [[Vessel alloc] initWithContext:context];
+  vessel.defaultVessel = ([self.tableView numberOfRowsInSection:0] == 0);
   [self saveContext:context];
 }
 

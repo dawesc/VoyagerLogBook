@@ -244,7 +244,7 @@
  */
 
 + (NSString*) getStringOrEmpty:(NSString *) data defaultValue:(NSString *) defaultValue {
-  if (data)
+  if (data && [data length] > 0)
     return data.description;
   else
     return defaultValue;

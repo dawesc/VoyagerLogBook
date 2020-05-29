@@ -25,16 +25,27 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="bottom" translatesAutoresizingMaskIntoConstraints="NO" id="2n3-tz-Mxs">
                                         <rect key="frame" x="0.0" y="270.5" width="374" height="271"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" ambiguous="YES" image="Voyager_Logo Final Files-1" translatesAutoresizingMaskIntoConstraints="NO" id="fpf-AH-vJR">
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Voyager_Logo Final Files-1" translatesAutoresizingMaskIntoConstraints="NO" id="fpf-AH-vJR">
                                                 <rect key="frame" x="0.0" y="0.0" width="374" height="237"/>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Voyager Log Book" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bR8-ZM-GEX">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Voyager Log Book" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bR8-ZM-GEX">
                                                 <rect key="frame" x="63.5" y="237" width="310.5" height="34"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="34" id="asp-kG-SLH"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" name="Rockwell-Regular" family="Rockwell" pointSize="34"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
+                                        <constraints>
+                                            <constraint firstItem="bR8-ZM-GEX" firstAttribute="top" secondItem="fpf-AH-vJR" secondAttribute="bottom" id="Gb5-ze-8Q3"/>
+                                            <constraint firstItem="bR8-ZM-GEX" firstAttribute="top" secondItem="fpf-AH-vJR" secondAttribute="bottom" id="HMx-tb-Jwi"/>
+                                            <constraint firstItem="fpf-AH-vJR" firstAttribute="top" secondItem="2n3-tz-Mxs" secondAttribute="top" id="I81-kU-asz"/>
+                                            <constraint firstAttribute="trailing" secondItem="bR8-ZM-GEX" secondAttribute="trailing" id="Jbb-1Y-Nvg"/>
+                                            <constraint firstAttribute="trailing" secondItem="fpf-AH-vJR" secondAttribute="trailing" id="ges-Ze-kIw"/>
+                                            <constraint firstItem="fpf-AH-vJR" firstAttribute="leading" secondItem="2n3-tz-Mxs" secondAttribute="leading" id="xOO-Xo-bH4"/>
+                                        </constraints>
                                     </stackView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZDS-Ue-ylK">
                                         <rect key="frame" x="0.0" y="541.5" width="374" height="270.5"/>

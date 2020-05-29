@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Voyager_Log_Book+CoreDataModel.h"
 
-@interface DetailViewController : UIViewController <UITextFieldDelegate, UITextViewDelegate>
+@interface DetailViewController : UIViewController<UITextFieldDelegate>
 
 typedef void (^ ObjectSetter)(NSString*);
 typedef void (^ EditorAction)(UITextField*);
@@ -19,7 +19,7 @@ typedef void (^ EditorAction)(UITextField*);
 @property (strong, nonatomic) Vessel          *vessel;
 @property (strong, nonatomic) Soul            *souls;
 @property (strong, nonatomic) NSFetchedResultsController* fetchedResultsController;
-@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (strong, nonatomic) NSManagedObjectContext*     managedObjectContext;
 
 + (NSArray*)  windDirections;
 + (NSDate*)   stringToDate:(NSString*) str;
@@ -29,10 +29,6 @@ typedef void (^ EditorAction)(UITextField*);
 
 #pragma mark UITextFieldDelegate
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField;        // return NO to disallow editing.
-- (void)textFieldDidEndEditing:(UITextField *)textField;             // may be called if forced even if shouldEndEditing returns NO (e.g. view removed from window) or endEditing:YES called
-
-#pragma mark <UITextFieldDelegate, UITextViewDelegate>
-- (void)textViewDidEndEditing:(UITextView *)textView;
 
 @end
 
