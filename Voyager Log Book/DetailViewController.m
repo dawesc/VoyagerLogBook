@@ -8,6 +8,12 @@
 
 #import "DetailViewController.h"
 #import "ActionSheetPicker.h"
+#import "SoulsAutoCompleteDataSource.h"
+#import "SoulsAutoCompleteObject.h"
+#import <MLPAutoCompleteTextField/MLPAutoCompleteTextField.h>
+#import <TagListView-Swift.h>
+
+@class TagListView;
 
 @interface DetailViewController () {
 #pragma mark Log Book Entry Fields
@@ -21,6 +27,10 @@
   UITextView*   t_passageNotes;
   UITextField*  t_portOfArrival;
   UITextField*  t_portOfDeparture;
+  UIStackView*  l_souls;
+  TagListView*  v_souls;
+  MLPAutoCompleteTextField*
+                t_souls;
   UITextField*  t_waveHeight;
   UITextField*  t_weatherConditions;
   UITextField*  t_windDirection;
@@ -54,6 +64,11 @@
   NSMutableArray* editorActions;
   UIBarButtonItem* btnEdit;
   UIBarButtonItem* btnDone;
+  
+  NSUInteger soulAutoCompleteCharacterCount;
+  NSTimer* timer;
+  
+  SoulsAutoCompleteDataSource* soulsAutoCompleteDataSource;
 }
 
 @end
@@ -107,6 +122,7 @@
     return;
 
   lastActiveView = nil;
+  timer          = [[NSTimer alloc] init];
   
   isIpad        = [UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad;
   uiFields      = [[NSMutableArray alloc] init];
@@ -256,6 +272,20 @@
   [stackView.widthAnchor    constraintEqualToAnchor:vesselView.widthAnchor].active    = true;
 }
 
+- (UIStackView*)setupSouls {
+  UIStackView *stackView = [[UIStackView alloc] init];
+
+  stackView.axis          = UILayoutConstraintAxisHorizontal;
+  stackView.distribution  = UIStackViewDistributionEqualSpacing;
+  stackView.alignment     = UIStackViewAlignmentFirstBaseline;
+  stackView.spacing       = 5;
+
+  [stackView addArrangedSubview:[self setupLabel:@"Guests"]];
+
+  stackView.translatesAutoresizingMaskIntoConstraints = false;
+  
+  return stackView;
+}
 - (void)setupLbeFields {
   UILabel* l_vessel = [self setupLabel:@"Vessel"];
   UILabel* l_barometer = [self setupLabel:@"Barometer"];
@@ -267,6 +297,8 @@
   UILabel* l_passageNotes = [self setupLabel:@"Voyage Notes"];
   UILabel* l_portOfArrival = [self setupLabel:@"Port of Arrival"];
   UILabel* l_portOfDeparture = [self setupLabel:@"Port of Departure"];
+  l_souls = [self setupSouls];
+  
   UILabel* l_waveHeight = [self setupLabel:@"Wave Height"];
   UILabel* l_weatherConditions = [self setupLabel:@"Weather Conditions"];
   UILabel* l_windDirection = [self setupLabel:@"Wind Direction"];
@@ -286,6 +318,22 @@
   t_passageNotes = [self setupTextView];
   t_portOfArrival = [self setupTextField];
   t_portOfDeparture = [self setupTextField];
+  v_souls = [[TagListView alloc] initWithFrame:CGRectZero];
+  v_souls.alignment = AlignmentLeft;
+  v_souls.cornerRadius = 3.0f;
+  v_souls.delegate = self;
+  v_souls.tagBackgroundColor  = [[UIColor alloc] initWithRed:88.5f/255.0f green:142.0f/255.0f blue:228.9f/255.0f alpha:1.0f];
+  t_souls = [[MLPAutoCompleteTextField alloc] initWithFrame:CGRectZero];
+  t_souls.borderStyle = UITextBorderStyleRoundedRect;
+  t_souls.enabled = true;
+  t_souls.delegate = self;
+  soulsAutoCompleteDataSource = [[SoulsAutoCompleteDataSource alloc] init];
+  soulsAutoCompleteDataSource.managedObjectContext = self.managedObjectContext;
+  t_souls.applyBoldEffectToAutoCompleteSuggestions = true;
+  t_souls.showTextFieldDropShadowWhenAutoCompleteTableIsOpen = true;
+  t_souls.autoCompleteDataSource  = soulsAutoCompleteDataSource;
+  t_souls.autoCompleteDelegate    = self;
+  t_souls.autoCompleteTableBackgroundColor = [UIColor colorWithRed:130.0f/255.0f green:160.0f/255.0f blue:245.0f/255.0f alpha:1.0f];
   t_waveHeight = [self setupTextField];
   t_weatherConditions = [self setupTextField];
   t_windDirection = [self setupTextField];
@@ -299,7 +347,11 @@
   UIView *portOfArrival = [self generateLabelField:true labelControl:l_portOfArrival inputControl:t_portOfArrival];
   UIView *dateOfArrival = [self generateLabelField:true labelControl:l_dateOfArrival inputControl:t_dateOfArrival];
   UIView *dateOfArrivalEstimated = [self generateLabelField:true labelControl:l_dateOfArrivalEstimated inputControl:t_dateOfArrivalEstimated];
-//        UIView *souls = [self generateLabelFieldAndMapDate:true labelControl:l_dateOfArrivalEstimated inputControl:t_dateOfArrivalEstimated outputText:self.detailItem.dateOfArrivalEstimated];
+  UIView *souls = [self generateLabelField:false labelControl:l_souls inputControl:v_souls];
+  [t_souls setContentHuggingPriority:UILayoutPriorityDefaultLow  forAxis:UILayoutConstraintAxisHorizontal];
+  [t_souls setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
+  [(UIStackView*)souls addArrangedSubview:t_souls];
+  
   UIView *weatherConditions = [self generateLabelField:true labelControl:l_weatherConditions inputControl:t_weatherConditions];
   UIView *barometer = [self generateLabelField:true labelControl:l_barometer inputControl:t_barometer];
   UIView *waveHeight = [self generateLabelField:true labelControl:l_waveHeight inputControl:t_waveHeight];
@@ -307,12 +359,10 @@
   UIView *windDirection = [self generateLabelField:true labelControl:l_windDirection inputControl:t_windDirection];
   UIView *passageNotes = [self generateLabelField:false labelControl:l_passageNotes inputControl:t_passageNotes];
   UIView *comments = [self generateLabelField:false labelControl:l_comments inputControl:t_comments];
-  
 
   UIView* destinationAndEta = [self makeTwo:destination rightControl:dateOfArrivalEstimated leftBig:false rightBig:false isNarrow:false];
   UIView* departure = [self makeTwo:portOfDeparture rightControl:dateOfDeparture leftBig:true rightBig:false isNarrow:true];
   UIView* arrival = [self makeTwo:portOfArrival rightControl:dateOfArrival leftBig:true rightBig:false isNarrow:true];
-  
   
   UIView* wind = [self makeTwo:windSpeed rightControl:windDirection leftBig:false rightBig:false isNarrow:false];
   UIView* barometerWave = [self makeTwo:barometer rightControl:waveHeight leftBig:false rightBig:false isNarrow:false];
@@ -331,7 +381,7 @@
   [stackView addArrangedSubview:destinationAndEta];
   [stackView addArrangedSubview:departure];
   [stackView addArrangedSubview:arrival];
-  //[stackView addArrangedSubview:souls];
+  [stackView addArrangedSubview:souls];
   [stackView addArrangedSubview:weatherConditions];
   [stackView addArrangedSubview:wind];
   [stackView addArrangedSubview:barometerWave];
@@ -352,6 +402,9 @@
   [stackView.leadingAnchor constraintEqualToAnchor:lbeView.leadingAnchor].active = true;
   [stackView.trailingAnchor constraintEqualToAnchor:lbeView.trailingAnchor].active = true;
   [stackView.widthAnchor constraintEqualToAnchor:lbeView.widthAnchor].active = true;
+  
+  [[t_souls superview] bringSubviewToFront:t_souls];
+  [[souls superview] bringSubviewToFront:souls];
 }
 
 - (UIView*) makeTwo:(UIView*) leftControl
@@ -405,7 +458,7 @@ isNarrow:(bool) isNarrow
 }
 
 - (UIView*) generateLabelField:(bool) horizontalStack
-                  labelControl:(UILabel*) labelControl
+                  labelControl:(UIView*) labelControl
                   inputControl:(UIView*) inputControl {
   if (!isIpad) horizontalStack = false;
   
@@ -503,7 +556,10 @@ outputText:(NSDate *) outputText
   t_weatherConditions.enabled = isEnabled;
   t_windDirection.enabled     = isEnabled;
   t_windSpeed.enabled         = isEnabled;
-
+  t_souls.enabled             = isEnabled;
+  v_souls.enableRemoveButton  = isEnabled;
+  [self showSouls];
+  
   t_forename.enabled  = isEnabled;
   t_initials.enabled  = isEnabled;
   t_surname.enabled   = isEnabled;
@@ -723,6 +779,7 @@ objectSetter:(ObjectSetter) objectSetter {
     [self linkField:t_windDirection           ultimateField:self.logBookEntry.windDirection objectSetter:^(NSString* newVal) { self.logBookEntry.windDirection = newVal; }
        editorAction:[self makeFixedPickerAction:@"Wind Direction" arrayElems:[DetailViewController windDirections]]];
     [self linkField:t_windSpeed               ultimateField:self.logBookEntry.windSpeed objectSetter:^(NSString* newVal) { self.logBookEntry.windSpeed = newVal; }];
+    [self showSouls];
   } else if (self.vessel) {
     self.title = @"Vessel";
     [self linkField:t_captain   ultimateField:self.vessel.captain   objectSetter:^(NSString* newVal) { self.vessel.captain = newVal; }];
@@ -778,6 +835,7 @@ objectSetter:(ObjectSetter) objectSetter {
 - (void)viewDidLoad {
   [super viewDidLoad];
   // Do any additional setup after loading the view.
+  soulAutoCompleteCharacterCount = 0;
   [self registerForKeyboardNotifications];
   [self setupFields];
   [self setEnabled:[self isNew]];
@@ -927,5 +985,72 @@ objectSetter:(ObjectSetter) objectSetter {
   }
   return ([editorActions[index] isEqual:[NSNull null]]);
 }
+
+
+#pragma mark MLPAutoCompleteTextFieldDelegate
+- (void)autoCompleteTextField:(MLPAutoCompleteTextField *)textField
+  didSelectAutoCompleteString:(NSString *)selectedString
+       withAutoCompleteObject:(id<MLPAutoCompletionObject>)selectedObject
+            forRowAtIndexPath:(NSIndexPath *)indexPath {
+  if (textField != t_souls) return;
+  NSLog(@"autoCompleteTextField: %@", selectedString);
+  [((SoulsAutoCompleteObject*)selectedObject) getSoulInstance];
+}
+
+- (void)showSouls{
+  if (!self.logBookEntry) return;
+  [v_souls removeAllTags];
+  
+  for (Soul* soul in self.logBookEntry.souls) {
+    [v_souls addTag:[SoulsAutoCompleteDataSource soulToName:soul]];
+  }
+}
+- (BOOL)addSoulToData:(Soul*) soul {
+  for (Soul* soulExisting in self.logBookEntry.souls) {
+    if (soul == soulExisting)
+      return false;
+  }
+  
+  self.logBookEntry.souls = [self.logBookEntry.souls setByAddingObject:soul];
+  t_souls.text = @"";
+  [self showSouls];
+  return false;
+}
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+  if (textField != t_souls) return true;
+  if ([textField.text length] == 0) return false;
+  
+  NSArray<Soul*>* souls = [SoulsAutoCompleteDataSource findSouls:self.managedObjectContext string:textField.text];
+  if ([souls count] == 0) {
+    struct NameParts name = [SoulsAutoCompleteDataSource stringToNameString:textField.text];
+    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+    Soul* soul = [[Soul alloc] initWithContext:context];
+    soul.forename = name.forename;
+    soul.initials = name.initials;
+    soul.surname  = name.surname;
+    [self saveContext:context];
+    return [self addSoulToData:soul];
+  } else {
+    return [self addSoulToData:souls[0]];
+  }
+}
+
+#pragma mark TagListViewDelegate
+- (void)tagPressed:(NSString * _Nonnull)title tagView:(TagView * _Nonnull)tagView sender:(TagListView * _Nonnull)sender {
+  NSLog(@"Clicked: %@", title);
+}
+- (void)tagRemoveButtonPressed:(NSString * _Nonnull)title tagView:(TagView * _Nonnull)tagView sender:(TagListView * _Nonnull)sender {
+  for (Soul* soul in self.logBookEntry.souls) {
+    if ([title isEqualToString:[SoulsAutoCompleteDataSource soulToName:soul]]) {
+      NSMutableSet<Soul*>* mutableSet = [self.logBookEntry.souls mutableCopy];
+      [mutableSet removeObject:soul];
+      self.logBookEntry.souls = [mutableSet copy];
+      [self showSouls];
+      return;
+    }
+  }
+  NSLog(@"Failed to erase: %@", title);
+}
+
 
 @end

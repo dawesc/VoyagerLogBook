@@ -7,5 +7,7 @@ target 'Voyager Log Book' do
   use_frameworks!
 
   pod 'ActionSheetPicker-3.0'
+  pod 'MLPAutoCompleteTextField', git: 'https://github.com/irrcombat/MLPAutoCompleteTextField.git', :branch => 'master'
+  pod 'TagListView', git: 'https://github.com/dawesc/TagListView.git', :branch => 'master'
   # Pods for Voyager Log Book
 end

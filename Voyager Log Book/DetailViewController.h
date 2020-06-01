@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "Voyager_Log_Book+CoreDataModel.h"
+#import "MLPAutoCompleteTextFieldDelegate.h"
+#import <TagListView-Swift.h>
 
-@interface DetailViewController : UIViewController<UITextFieldDelegate>
+@interface DetailViewController :
+UIViewController<UITextFieldDelegate, MLPAutoCompleteTextFieldDelegate, TagListViewDelegate>
 
 typedef void (^ ObjectSetter)(NSString*);
 typedef void (^ EditorAction)(UITextField*);
@@ -29,6 +32,17 @@ typedef void (^ EditorAction)(UITextField*);
 
 #pragma mark UITextFieldDelegate
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField;        // return NO to disallow editing.
+- (BOOL)textFieldShouldReturn:(UITextField *)textField;
+
+#pragma mark MLPAutoCompleteTextFieldDelegate
+- (void)autoCompleteTextField:(MLPAutoCompleteTextField *)textField
+  didSelectAutoCompleteString:(NSString *)selectedString
+       withAutoCompleteObject:(id<MLPAutoCompletionObject>)selectedObject
+            forRowAtIndexPath:(NSIndexPath *)indexPath;
+
+#pragma mark TagListViewDelegate
+- (void)tagPressed:(NSString * _Nonnull)title tagView:(TagView * _Nonnull)tagView sender:(TagListView * _Nonnull)sender;
+- (void)tagRemoveButtonPressed:(NSString * _Nonnull)title tagView:(TagView * _Nonnull)tagView sender:(TagListView * _Nonnull)sender;
 
 @end
 

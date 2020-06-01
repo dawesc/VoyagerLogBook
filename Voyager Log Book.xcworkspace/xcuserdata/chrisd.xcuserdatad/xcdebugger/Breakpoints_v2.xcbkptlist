@@ -7,192 +7,128 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "494040CC-E6FC-46DC-A325-4DB9B1C9EC38"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Voyager Log Book/GenericDataViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "97"
-            endingLineNumber = "97"
-            landmarkName = "-prepareForSegue:sender:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "A797F527-C2C3-4BBB-950B-C783BD23CBF6"
+            uuid = "B7BE1460-8242-41FA-B2F1-9A87BFDF6490"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Voyager Log Book/DetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "855"
-            endingLineNumber = "855"
-            landmarkName = "-doneEditing"
+            startingLineNumber = "997"
+            endingLineNumber = "997"
+            landmarkName = "-autoCompleteTextField:didSelectAutoCompleteString:withAutoCompleteObject:forRowAtIndexPath:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "D35DE512-C2C2-47EA-BD70-0B1AE31E790B"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Voyager Log Book/VesselMasterViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "45"
-            endingLineNumber = "45"
-            landmarkName = "-insertNewVessel:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "0F0EC998-96DC-478B-BFA7-864D85F6B79A"
+            uuid = "0E8E4902-5053-4D77-8360-42871F9A0C7C"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Voyager Log Book/DetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "728"
-            endingLineNumber = "728"
-            landmarkName = "-configureView"
+            startingLineNumber = "1024"
+            endingLineNumber = "1024"
+            landmarkName = "-textFieldShouldReturn:"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "0F0EC998-96DC-478B-BFA7-864D85F6B79A - bd8839e71677ba8f"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[DetailViewController configureView]"
-                  moduleName = "Voyager Log Book"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/chrisd/git/VoyagerLogBook/Voyager%20Log%20Book/Voyager%20Log%20Book/DetailViewController.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "684"
-                  endingLineNumber = "684"
-                  offsetFromSymbolStart = "5737">
-               </Location>
-               <Location
-                  uuid = "0F0EC998-96DC-478B-BFA7-864D85F6B79A - e2ac8a9bd64ef2da"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__37-[DetailViewController configureView]_block_invoke_12"
-                  moduleName = "Voyager Log Book"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/chrisd/git/VoyagerLogBook/Voyager%20Log%20Book/Voyager%20Log%20Book/DetailViewController.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "684"
-                  endingLineNumber = "684"
-                  offsetFromSymbolStart = "12">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "6513FCC4-2E11-45F7-8D3B-4E7D32F14982"
+            uuid = "3404142A-1889-47FF-A31B-9A0E03D59EDE"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Pods/TagListView/TagListView/CloseButton.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "21"
+            endingLineNumber = "21"
+            landmarkName = "draw(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3F948676-3921-404E-A8B5-6E5A3B96BF5B"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Voyager Log Book/DetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "591"
-            endingLineNumber = "591"
-            landmarkName = "-linkField:ultimateField:objectSetter:"
+            startingLineNumber = "1052"
+            endingLineNumber = "1052"
+            landmarkName = "-tagRemoveButtonPressed:tagView:sender:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "051995CB-59DB-4711-9358-7C5B3FB2D7EE"
+            uuid = "8D32C398-109E-42F6-8233-4CE6965C0E29"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Voyager Log Book/DetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "559"
-            endingLineNumber = "559"
-            landmarkName = "-linkField:ultimateField:objectSetter:editorAction:"
+            startingLineNumber = "1047"
+            endingLineNumber = "1047"
+            landmarkName = "-tagRemoveButtonPressed:tagView:sender:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "A5790191-CF48-41CF-829B-F2CCA766B947"
+            uuid = "453E793B-72BD-4D86-9657-23773CD958AE"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Voyager Log Book/DetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "659"
-            endingLineNumber = "659"
-            landmarkName = "-boolToStr:"
+            startingLineNumber = "1040"
+            endingLineNumber = "1040"
+            landmarkName = "-tagPressed:tagView:sender:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "24932D3E-6FDA-4ED0-A433-BEC4F27124CF"
+            uuid = "03AD4065-2927-45D8-B87B-653D60A91EBE"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Voyager Log Book/MasterViewController.m"
+            filePath = "Pods/TagListView/TagListView/TagListView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "97"
-            endingLineNumber = "97"
-            landmarkName = "-insertNewLogBookEntry:"
+            startingLineNumber = "469"
+            endingLineNumber = "469"
+            landmarkName = "removeButtonPressed(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "1CFA55EA-E00C-45DB-B954-A91862ACA608"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Voyager Log Book/DetailViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "854"
-            endingLineNumber = "854"
-            landmarkName = "-doneEditing"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "A3A049E8-E35A-4845-A99B-C84B5A28CD64"
+            uuid = "94822137-61A2-41F7-A252-95963B348928"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Voyager Log Book/DetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "856"
-            endingLineNumber = "856"
-            landmarkName = "-doneEditing"
+            startingLineNumber = "316"
+            endingLineNumber = "316"
+            landmarkName = "-setupLbeFields"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

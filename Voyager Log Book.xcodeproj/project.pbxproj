@@ -10,6 +10,8 @@
 		3CC59473753C9E0C49535373 /* Pods_Voyager_Log_Book.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09AE05A2A0DDF896355005DF /* Pods_Voyager_Log_Book.framework */; };
 		85B4E0D424780B4400869FC0 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85B4E0D324780B4400869FC0 /* CoreMotion.framework */; };
 		85B4E1032479567600869FC0 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 85B4E1022479567600869FC0 /* Podfile */; };
+		85B69A1C24817F3E00002562 /* SoulsAutoCompleteDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 85B69A1A24817F3D00002562 /* SoulsAutoCompleteDataSource.m */; };
+		85B69A1F2481A5D500002562 /* SoulsAutoCompleteObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 85B69A1E2481A5D500002562 /* SoulsAutoCompleteObject.m */; };
 		85D7F5B9247D48D300399D8D /* GenericDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D7F5B8247D48D300399D8D /* GenericDataViewController.m */; };
 		85D7F5C1247DA92500399D8D /* Font Awesome 5 Free-Regular-400.otf in Resources */ = {isa = PBXBuildFile; fileRef = 85D7F5C0247DA92500399D8D /* Font Awesome 5 Free-Regular-400.otf */; };
 		85D7F5C4247DA94100399D8D /* Font Awesome 5 Free-Solid-900.otf in Resources */ = {isa = PBXBuildFile; fileRef = 85D7F5C2247DA94100399D8D /* Font Awesome 5 Free-Solid-900.otf */; };
@@ -34,6 +36,11 @@
 		15BE9E2F34E2ADFEC67E68A9 /* Pods-Voyager Log Book.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Voyager Log Book.debug.xcconfig"; path = "Target Support Files/Pods-Voyager Log Book/Pods-Voyager Log Book.debug.xcconfig"; sourceTree = "<group>"; };
 		85B4E0D324780B4400869FC0 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		85B4E1022479567600869FC0 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		85B69A14248170AB00002562 /* Voyager Log Book-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Voyager Log Book-Bridging-Header.h"; sourceTree = "<group>"; };
+		85B69A1A24817F3D00002562 /* SoulsAutoCompleteDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoulsAutoCompleteDataSource.m; sourceTree = "<group>"; };
+		85B69A1B24817F3D00002562 /* SoulsAutoCompleteDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoulsAutoCompleteDataSource.h; sourceTree = "<group>"; };
+		85B69A1D2481A5D500002562 /* SoulsAutoCompleteObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoulsAutoCompleteObject.h; sourceTree = "<group>"; };
+		85B69A1E2481A5D500002562 /* SoulsAutoCompleteObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoulsAutoCompleteObject.m; sourceTree = "<group>"; };
 		85D7F5B7247D48D300399D8D /* GenericDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenericDataViewController.h; sourceTree = "<group>"; };
 		85D7F5B8247D48D300399D8D /* GenericDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenericDataViewController.m; sourceTree = "<group>"; };
 		85D7F5C0247DA92500399D8D /* Font Awesome 5 Free-Regular-400.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Font Awesome 5 Free-Regular-400.otf"; sourceTree = "<group>"; };
@@ -121,6 +128,10 @@
 		85D93D462476F5DF002862CA /* Voyager Log Book */ = {
 			isa = PBXGroup;
 			children = (
+				85B69A1D2481A5D500002562 /* SoulsAutoCompleteObject.h */,
+				85B69A1E2481A5D500002562 /* SoulsAutoCompleteObject.m */,
+				85B69A1B24817F3D00002562 /* SoulsAutoCompleteDataSource.h */,
+				85B69A1A24817F3D00002562 /* SoulsAutoCompleteDataSource.m */,
 				85D7F5C9247DABFD00399D8D /* SoulMasterViewController.h */,
 				85D7F5C7247DABFC00399D8D /* SoulMasterViewController.m */,
 				85D7F5C6247DABFC00399D8D /* VesselMasterViewController.h */,
@@ -142,6 +153,7 @@
 				85D93D5E2476F5E4002862CA /* Info.plist */,
 				85D93D5F2476F5E4002862CA /* main.m */,
 				85D93D4A2476F5DF002862CA /* Voyager_Log_Book.xcdatamodeld */,
+				85B69A14248170AB00002562 /* Voyager Log Book-Bridging-Header.h */,
 			);
 			path = "Voyager Log Book";
 			sourceTree = "<group>";
@@ -190,6 +202,7 @@
 				TargetAttributes = {
 					85D93D432476F5DF002862CA = {
 						CreatedOnToolsVersion = 11.5;
+						LastSwiftMigration = 1150;
 					};
 				};
 			};
@@ -278,9 +291,11 @@
 				85D7F5B9247D48D300399D8D /* GenericDataViewController.m in Sources */,
 				85D93D552476F5DF002862CA /* DetailViewController.m in Sources */,
 				85D7F5CB247DABFD00399D8D /* VesselMasterViewController.m in Sources */,
+				85B69A1C24817F3E00002562 /* SoulsAutoCompleteDataSource.m in Sources */,
 				85D93D522476F5DF002862CA /* MasterViewController.m in Sources */,
 				85D7F5CA247DABFD00399D8D /* SoulMasterViewController.m in Sources */,
 				85D93D492476F5DF002862CA /* AppDelegate.m in Sources */,
+				85B69A1F2481A5D500002562 /* SoulsAutoCompleteObject.m in Sources */,
 				85D93D4F2476F5DF002862CA /* SceneDelegate.m in Sources */,
 				85D93D602476F5E4002862CA /* main.m in Sources */,
 				85D93D4C2476F5DF002862CA /* Voyager_Log_Book.xcdatamodeld in Sources */,
@@ -424,6 +439,7 @@
 			baseConfigurationReference = 15BE9E2F34E2ADFEC67E68A9 /* Pods-Voyager Log Book.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Voyager Log Book/Voyager Log Book.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BYP69ABLJ5;
@@ -434,6 +450,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "me.thedawes.Voyager-Log-Book";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Voyager Log Book/Voyager Log Book-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -443,6 +462,7 @@
 			baseConfigurationReference = CAC3FB57D0148679E91A659A /* Pods-Voyager Log Book.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Voyager Log Book/Voyager Log Book.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BYP69ABLJ5;
@@ -453,6 +473,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "me.thedawes.Voyager-Log-Book";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Voyager Log Book/Voyager Log Book-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
