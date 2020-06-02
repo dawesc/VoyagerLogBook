@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3CC59473753C9E0C49535373 /* Pods_Voyager_Log_Book.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09AE05A2A0DDF896355005DF /* Pods_Voyager_Log_Book.framework */; };
+		8519271424859F13007F7529 /* ArrayPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 8519271324859F13007F7529 /* ArrayPicker.m */; };
 		85B4E0D424780B4400869FC0 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85B4E0D324780B4400869FC0 /* CoreMotion.framework */; };
 		85B4E1032479567600869FC0 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 85B4E1022479567600869FC0 /* Podfile */; };
 		85B69A1C24817F3E00002562 /* SoulsAutoCompleteDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 85B69A1A24817F3D00002562 /* SoulsAutoCompleteDataSource.m */; };
@@ -28,12 +29,16 @@
 		85D93D602476F5E4002862CA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D93D5F2476F5E4002862CA /* main.m */; };
 		85D93D692476F800002862CA /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85D93D682476F800002862CA /* CloudKit.framework */; };
 		85D93D6B24770EF6002862CA /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85D93D6A24770EF6002862CA /* CoreLocation.framework */; };
+		85D947A52486DC110059F273 /* NSFetchRequestPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D947A42486DC110059F273 /* NSFetchRequestPicker.m */; };
+		85D947A82486E8780059F273 /* PickerToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D947A72486E8780059F273 /* PickerToolbar.m */; };
 		85FC2BC9247BDC2A00D03EA0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85FC2BC8247BDC2900D03EA0 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		09AE05A2A0DDF896355005DF /* Pods_Voyager_Log_Book.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Voyager_Log_Book.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		15BE9E2F34E2ADFEC67E68A9 /* Pods-Voyager Log Book.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Voyager Log Book.debug.xcconfig"; path = "Target Support Files/Pods-Voyager Log Book/Pods-Voyager Log Book.debug.xcconfig"; sourceTree = "<group>"; };
+		8519271224859F13007F7529 /* ArrayPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArrayPicker.h; sourceTree = "<group>"; };
+		8519271324859F13007F7529 /* ArrayPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArrayPicker.m; sourceTree = "<group>"; };
 		85B4E0D324780B4400869FC0 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		85B4E1022479567600869FC0 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		85B69A14248170AB00002562 /* Voyager Log Book-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Voyager Log Book-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -67,6 +72,10 @@
 		85D93D662476F7FA002862CA /* Voyager Log Book.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Voyager Log Book.entitlements"; sourceTree = "<group>"; };
 		85D93D682476F800002862CA /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		85D93D6A24770EF6002862CA /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		85D947A32486DC110059F273 /* NSFetchRequestPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSFetchRequestPicker.h; sourceTree = "<group>"; };
+		85D947A42486DC110059F273 /* NSFetchRequestPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSFetchRequestPicker.m; sourceTree = "<group>"; };
+		85D947A62486E8780059F273 /* PickerToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerToolbar.h; sourceTree = "<group>"; };
+		85D947A72486E8780059F273 /* PickerToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerToolbar.m; sourceTree = "<group>"; };
 		85FC2BC8247BDC2900D03EA0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CAC3FB57D0148679E91A659A /* Pods-Voyager Log Book.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Voyager Log Book.release.xcconfig"; path = "Target Support Files/Pods-Voyager Log Book/Pods-Voyager Log Book.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -128,6 +137,12 @@
 		85D93D462476F5DF002862CA /* Voyager Log Book */ = {
 			isa = PBXGroup;
 			children = (
+				85D947A62486E8780059F273 /* PickerToolbar.h */,
+				85D947A72486E8780059F273 /* PickerToolbar.m */,
+				85D947A32486DC110059F273 /* NSFetchRequestPicker.h */,
+				85D947A42486DC110059F273 /* NSFetchRequestPicker.m */,
+				8519271224859F13007F7529 /* ArrayPicker.h */,
+				8519271324859F13007F7529 /* ArrayPicker.m */,
 				85B69A1D2481A5D500002562 /* SoulsAutoCompleteObject.h */,
 				85B69A1E2481A5D500002562 /* SoulsAutoCompleteObject.m */,
 				85B69A1B24817F3D00002562 /* SoulsAutoCompleteDataSource.h */,
@@ -293,6 +308,9 @@
 				85D7F5CB247DABFD00399D8D /* VesselMasterViewController.m in Sources */,
 				85B69A1C24817F3E00002562 /* SoulsAutoCompleteDataSource.m in Sources */,
 				85D93D522476F5DF002862CA /* MasterViewController.m in Sources */,
+				8519271424859F13007F7529 /* ArrayPicker.m in Sources */,
+				85D947A52486DC110059F273 /* NSFetchRequestPicker.m in Sources */,
+				85D947A82486E8780059F273 /* PickerToolbar.m in Sources */,
 				85D7F5CA247DABFD00399D8D /* SoulMasterViewController.m in Sources */,
 				85D93D492476F5DF002862CA /* AppDelegate.m in Sources */,
 				85B69A1F2481A5D500002562 /* SoulsAutoCompleteObject.m in Sources */,

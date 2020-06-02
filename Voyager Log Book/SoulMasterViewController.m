@@ -9,7 +9,6 @@
 #import "AppDelegate.h"
 #import "SoulMasterViewController.h"
 #import "DetailViewController.h"
-#import "ActionSheetPicker.h"
 
 @interface SoulMasterViewController ()
 

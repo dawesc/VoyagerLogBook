@@ -15,7 +15,6 @@
 UIViewController<UITextFieldDelegate, MLPAutoCompleteTextFieldDelegate, TagListViewDelegate>
 
 typedef void (^ ObjectSetter)(NSString*);
-typedef void (^ EditorAction)(UITextField*);
 
 @property (strong, nonatomic) IBOutlet UIView *logBookEntryView;
 @property (strong, nonatomic) LogBookEntry    *logBookEntry;
@@ -27,11 +26,9 @@ typedef void (^ EditorAction)(UITextField*);
 + (NSArray*)  windDirections;
 + (NSDate*)   stringToDate:(NSString*) str;
 + (NSString*) dateToString:(NSDate*) date;
-
--(void) textFieldClicked:(UITextField*)sender;
++ (int)getArrayIndex:(int) defaultVal arrayElems:(NSArray*)arrayElems toFind:(NSString*) toFind;
 
 #pragma mark UITextFieldDelegate
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField;        // return NO to disallow editing.
 - (BOOL)textFieldShouldReturn:(UITextField *)textField;
 
 #pragma mark MLPAutoCompleteTextFieldDelegate

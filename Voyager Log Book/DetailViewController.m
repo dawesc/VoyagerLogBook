@@ -7,9 +7,11 @@
 //
 
 #import "DetailViewController.h"
-#import "ActionSheetPicker.h"
 #import "SoulsAutoCompleteDataSource.h"
 #import "SoulsAutoCompleteObject.h"
+#import "ArrayPicker.h"
+#import "NSFetchRequestPicker.h"
+#import "PickerToolbar.h"
 #import <MLPAutoCompleteTextField/MLPAutoCompleteTextField.h>
 #import <TagListView-Swift.h>
 
@@ -61,7 +63,6 @@
   bool isIpad;
   NSMutableArray* uiFields;
   NSMutableArray* objectSetters;
-  NSMutableArray* editorActions;
   UIBarButtonItem* btnEdit;
   UIBarButtonItem* btnDone;
   
@@ -87,9 +88,7 @@
   field.borderStyle = UITextBorderStyleRoundedRect;
   field.enabled = true;
   field.delegate = self;
-  
-  [field addTarget:self action:@selector(textFieldClicked:) forControlEvents:UIControlEventTouchDown];
-  
+    
   return field;
 }
 - (UITextView*) setupTextView {
@@ -127,7 +126,6 @@
   isIpad        = [UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad;
   uiFields      = [[NSMutableArray alloc] init];
   objectSetters = [[NSMutableArray alloc] init];
-  editorActions = [[NSMutableArray alloc] init];
   btnDone       = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(editDoneToggle:)];
   btnEdit       = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(editDoneToggle:)];
   [self setupNothingFields];
@@ -208,7 +206,6 @@
   
   //Scroll view
   soulView =[[UIScrollView alloc] initWithFrame:CGRectZero];
-  soulView.delaysContentTouches = false;
   soulView.translatesAutoresizingMaskIntoConstraints = false;
   
   [soulView addSubview:stackView];
@@ -260,7 +257,6 @@
   
   //Scroll view
   vesselView =[[UIScrollView alloc] initWithFrame:CGRectZero];
-  vesselView.delaysContentTouches = false;
   vesselView.translatesAutoresizingMaskIntoConstraints = false;
   
   [vesselView addSubview:stackView];
@@ -392,26 +388,25 @@
   
   //Scroll view
   lbeView =[[UIScrollView alloc] initWithFrame:CGRectZero];
-  lbeView.delaysContentTouches = false;
   lbeView.translatesAutoresizingMaskIntoConstraints = false;
   
   [lbeView addSubview:stackView];
   //Layout for Stack View
-  [stackView.topAnchor constraintEqualToAnchor:lbeView.topAnchor].active = true;
-  [stackView.bottomAnchor constraintEqualToAnchor:lbeView.bottomAnchor].active = true;
-  [stackView.leadingAnchor constraintEqualToAnchor:lbeView.leadingAnchor].active = true;
-  [stackView.trailingAnchor constraintEqualToAnchor:lbeView.trailingAnchor].active = true;
-  [stackView.widthAnchor constraintEqualToAnchor:lbeView.widthAnchor].active = true;
+  [stackView.topAnchor      constraintEqualToAnchor:lbeView.topAnchor].active       = true;
+  [stackView.bottomAnchor   constraintEqualToAnchor:lbeView.bottomAnchor].active    = true;
+  [stackView.leadingAnchor  constraintEqualToAnchor:lbeView.leadingAnchor].active   = true;
+  [stackView.trailingAnchor constraintEqualToAnchor:lbeView.trailingAnchor].active  = true;
+  [stackView.widthAnchor    constraintEqualToAnchor:lbeView.widthAnchor].active     = true;
   
-  [[t_souls superview] bringSubviewToFront:t_souls];
-  [[souls superview] bringSubviewToFront:souls];
+  [[t_souls superview]  bringSubviewToFront:t_souls];
+  [[souls superview]    bringSubviewToFront:souls];
 }
 
-- (UIView*) makeTwo:(UIView*) leftControl
-rightControl:(UIView*) rightControl
-leftBig:(bool) leftBig
-rightBig:(bool) rightBig
-isNarrow:(bool) isNarrow
+- (UIView*)  makeTwo:(UIView*) leftControl
+        rightControl:(UIView*) rightControl
+             leftBig:(bool) leftBig
+            rightBig:(bool) rightBig
+            isNarrow:(bool) isNarrow
 {
     //Stack View
     UIStackView *stackView = [[UIStackView alloc] init];
@@ -609,15 +604,10 @@ outputText:(NSDate *) outputText
 }
 
 - (void)linkField:(UIView*) control ultimateField:(NSObject*) ultimateField
-    objectSetter:(ObjectSetter) objectSetter
-    editorAction:(EditorAction) editorAction {
+    objectSetter:(ObjectSetter) objectSetter {
     
   [uiFields addObject:control];
   [objectSetters addObject:objectSetter];
-  if (editorAction)
-    [editorActions addObject:editorAction];
-  else
-    [editorActions addObject:[[NSNull alloc] init]];
   
   if ([control isKindOfClass:[UITextField class]]) {
     ((UITextField*) control).text = [self getText:ultimateField];
@@ -630,7 +620,7 @@ outputText:(NSDate *) outputText
   }
 }
 
-- (int)getArrayIndex:(int) defaultVal arrayElems:(NSArray*)arrayElems toFind:(NSString*) toFind{
++ (int)getArrayIndex:(int) defaultVal arrayElems:(NSArray*)arrayElems toFind:(NSString*) toFind{
   if (!toFind) return defaultVal;
   
   int index = 0;
@@ -642,62 +632,32 @@ outputText:(NSDate *) outputText
   return defaultVal;
 }
 
-- (void)linkField:(UIView*) control ultimateField:(NSObject*) ultimateField
-objectSetter:(ObjectSetter) objectSetter {
-    [self linkField:control ultimateField:ultimateField objectSetter:objectSetter editorAction:nil];
+- (void)makeFixedPickerAction:(UITextField*)textField title:(NSString*)title arrayElems:(NSArray*) arrayElems {
+  ArrayPicker* picker = [[ArrayPicker alloc]
+           initWithStrings:title rows:arrayElems initialSelection:[DetailViewController getArrayIndex:0 arrayElems:arrayElems toFind:textField.text]];
+  textField.inputView = picker;
+  textField.inputAccessoryView = [[PickerToolbar alloc] initWithTextField:textField picker:picker title:title];
 }
-- (EditorAction)makeFixedPickerAction:(NSString*) title arrayElems:(NSArray*) arrayElems {
-  return ^(UITextField* textField) {
-    // Done block:
-    ActionStringDoneBlock done = ^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
-      textField.text = selectedValue;
-    };
+- (void)makeDatePickerAction:(UITextField*)textField title:(NSString*) title {
+  UIDatePicker *datePicker = [[UIDatePicker alloc]init];
+  datePicker.datePickerMode = UIDatePickerModeDateAndTime;
+  
+  NSDate* currentDate = nil;
+  if ([textField.text length] > 0) {
+    currentDate = [DetailViewController stringToDate:textField.text];
+    [datePicker setDate:currentDate];
+  }
+  textField.inputView = datePicker;
+  textField.inputAccessoryView = [[PickerToolbar alloc] initWithTextField:textField picker:datePicker title:title];
+}
 
-    ActionSheetStringPicker* picker = [[ActionSheetStringPicker alloc] initWithTitle:title rows:arrayElems initialSelection:[self getArrayIndex:0 arrayElems:arrayElems toFind:textField.text] doneBlock:done cancelBlock:nil origin:textField];
-    picker.tapDismissAction = TapActionCancel;
-    [picker showActionSheetPicker];
-  };
-}
-- (EditorAction)makeDatePickerAction:(NSString*) title {
-  return ^(UITextField* textField) {
-    // Done block:
-    ActionDateDoneBlock done = ^(ActionSheetDatePicker *picker, id selectedDate, id origin) {
-      textField.text = [DetailViewController dateToString:(NSDate*)selectedDate] ;
-    };
-
-    NSDate* currentDate = nil;
-    if ([textField.text length] > 0)
-       currentDate = [DetailViewController stringToDate:textField.text];
-    ActionSheetDatePicker* picker = [[ActionSheetDatePicker alloc] initWithTitle:title datePickerMode:UIDatePickerModeDateAndTime selectedDate:currentDate doneBlock:done cancelBlock:nil origin:textField];
-    picker.tapDismissAction = TapActionCancel;
-    [picker showActionSheetPicker];
-  };
-}
-- (EditorAction)makeVesselPickerAction:(NSString*) title {
-  return ^(UITextField* textField) {
-    // Done block:
-    ActionStringDoneBlock done = ^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
-      textField.text = selectedValue;
-    };
-    
-    NSFetchRequest<Vessel *>* byNameFetchRequest = Vessel.fetchRequest;
-    
-    NSError* error = nil;
-    NSArray* vessels = [self.managedObjectContext executeFetchRequest:byNameFetchRequest error:&error];
-    if (!vessels) {
-        // Replace this implementation with code to handle the error appropriately.
-        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-        NSLog(@"Unresolved error %@, %@", error, error.userInfo);
-        abort();
-    }
-    NSMutableArray* vesselNames = [[NSMutableArray alloc]initWithCapacity:[vessels count]];
-    for (Vessel* vessel in vessels)
-      [vesselNames addObject:vessel.name];
-    
-    ActionSheetStringPicker* picker = [[ActionSheetStringPicker alloc] initWithTitle:title rows:vesselNames initialSelection:[self getArrayIndex:0 arrayElems:vesselNames toFind:textField.text] doneBlock:done cancelBlock:nil origin:textField];
-    picker.tapDismissAction = TapActionCancel;
-    [picker showActionSheetPicker];
-  };
+- (void)makeVesselPickerAction:(UITextField*)textField title:(NSString*)title {
+  NSFetchRequestPicker* frPicker = [[NSFetchRequestPicker alloc]
+                                    initWithStrings:title dataFetchRequest:Vessel.fetchRequest managedObjectContext:self.managedObjectContext
+                                    fetchedObjectToString:^NSString *(id object) { return ((Vessel*)object).name; }
+                                    textField:textField];
+  textField.inputView = frPicker;
+  textField.inputAccessoryView = [[PickerToolbar alloc] initWithTextField:textField picker:frPicker title:title];
 }
 
 - (UIScrollView*)getCurrentView {
@@ -745,7 +705,6 @@ objectSetter:(ObjectSetter) objectSetter {
   didChange = false;
   [uiFields      removeAllObjects];
   [objectSetters removeAllObjects];
-  [editorActions removeAllObjects];
     
   if (lastActiveView)
     [lastActiveView removeFromSuperview];
@@ -761,23 +720,23 @@ objectSetter:(ObjectSetter) objectSetter {
   
   if (self.logBookEntry) {
     self.title = @"Log Book Entry";
-    [self linkField:t_vessel                  ultimateField:self.logBookEntry.vessel.name objectSetter:^(NSString* newVal) { self.logBookEntry.vessel = [self lookupVesselByName:newVal]; }
-     editorAction:[self makeVesselPickerAction:@"Vessel"]];
+    [self linkField:t_vessel                  ultimateField:self.logBookEntry.vessel.name objectSetter:^(NSString* newVal) { self.logBookEntry.vessel = [self lookupVesselByName:newVal]; }];
+    [self makeVesselPickerAction:t_vessel title:@"Vessel"];
     [self linkField:t_barometer               ultimateField:self.logBookEntry.barometer objectSetter:^(NSString* newVal) { self.logBookEntry.barometer = newVal; }];
     [self linkField:t_comments                ultimateField:self.logBookEntry.comments objectSetter:^(NSString* newVal) { self.logBookEntry.comments = newVal; }];
-    [self linkField:t_dateOfArrival           ultimateField:self.logBookEntry.dateOfArrival objectSetter:^(NSString* newVal) { self.logBookEntry.dateOfArrival = [DetailViewController stringToDate:newVal]; }
-     editorAction:[self makeDatePickerAction:@"Arrival Date"]];
-    [self linkField:t_dateOfArrivalEstimated  ultimateField:self.logBookEntry.dateOfArrivalEstimated objectSetter:^(NSString* newVal) { self.logBookEntry.dateOfArrivalEstimated = [DetailViewController stringToDate:newVal]; }
-     editorAction:[self makeDatePickerAction:@"Arrival Date (Estimated)"]];
-    [self linkField:t_dateOfDeparture         ultimateField:self.logBookEntry.dateOfDeparture objectSetter:^(NSString* newVal) { self.logBookEntry.dateOfDeparture = [DetailViewController stringToDate:newVal]; }
-     editorAction:[self makeDatePickerAction:@"Departure Date"]];
+    [self linkField:t_dateOfArrival           ultimateField:self.logBookEntry.dateOfArrival objectSetter:^(NSString* newVal) { self.logBookEntry.dateOfArrival = [DetailViewController stringToDate:newVal]; }];
+    [self makeDatePickerAction:t_dateOfArrival title:@"Arrival Date"];
+    [self linkField:t_dateOfArrivalEstimated  ultimateField:self.logBookEntry.dateOfArrivalEstimated objectSetter:^(NSString* newVal) { self.logBookEntry.dateOfArrivalEstimated = [DetailViewController stringToDate:newVal]; }];
+    [self makeDatePickerAction:t_dateOfArrivalEstimated title:@"Arrival Date (Estimated)"];
+    [self linkField:t_dateOfDeparture         ultimateField:self.logBookEntry.dateOfDeparture objectSetter:^(NSString* newVal) { self.logBookEntry.dateOfDeparture = [DetailViewController stringToDate:newVal]; }];
+    [self makeDatePickerAction:t_dateOfDeparture title:@"Departure Date"];
     [self linkField:t_destination             ultimateField:self.logBookEntry.destination objectSetter:^(NSString* newVal) { self.logBookEntry.destination = newVal; }];
     [self linkField:t_passageNotes            ultimateField:self.logBookEntry.passageNotes objectSetter:^(NSString* newVal) { self.logBookEntry.passageNotes = newVal; }];
     [self linkField:t_portOfArrival           ultimateField:self.logBookEntry.portOfArrival objectSetter:^(NSString* newVal) { self.logBookEntry.portOfArrival = newVal; }];
     [self linkField:t_portOfDeparture         ultimateField:self.logBookEntry.portOfDeparture objectSetter:^(NSString* newVal) { self.logBookEntry.portOfDeparture = newVal; }];
     [self linkField:t_weatherConditions       ultimateField:self.logBookEntry.weatherConditions objectSetter:^(NSString* newVal) { self.logBookEntry.weatherConditions = newVal; }];
-    [self linkField:t_windDirection           ultimateField:self.logBookEntry.windDirection objectSetter:^(NSString* newVal) { self.logBookEntry.windDirection = newVal; }
-       editorAction:[self makeFixedPickerAction:@"Wind Direction" arrayElems:[DetailViewController windDirections]]];
+    [self linkField:t_windDirection           ultimateField:self.logBookEntry.windDirection objectSetter:^(NSString* newVal) { self.logBookEntry.windDirection = newVal; }];
+    [self makeFixedPickerAction:t_windDirection title:@"Wind Direction" arrayElems:[DetailViewController windDirections]];
     [self linkField:t_windSpeed               ultimateField:self.logBookEntry.windSpeed objectSetter:^(NSString* newVal) { self.logBookEntry.windSpeed = newVal; }];
     [self showSouls];
   } else if (self.vessel) {
@@ -964,28 +923,6 @@ objectSetter:(ObjectSetter) objectSetter {
     abort();
   }
 }
-
--(IBAction) textFieldClicked:(id)sender {
-  UITextField* control = (UITextField*) sender;
-  int index = [self findControl:control];
-  if (index == -1) {
-      return;
-  }
-  if ([editorActions[index] isEqual:[NSNull null]]) {
-      return; //Return if no action set
-  }
-  ((EditorAction)[editorActions objectAtIndex:index])(control);
-}
-
-#pragma mark UITextFieldDelegate
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-  int index = [self findControl:textField];
-  if (index == -1) {
-      return true;
-  }
-  return ([editorActions[index] isEqual:[NSNull null]]);
-}
-
 
 #pragma mark MLPAutoCompleteTextFieldDelegate
 - (void)autoCompleteTextField:(MLPAutoCompleteTextField *)textField
