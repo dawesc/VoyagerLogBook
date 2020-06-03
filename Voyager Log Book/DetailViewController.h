@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SoulsAutoCompleteObject.h"
 #import "Voyager_Log_Book+CoreDataModel.h"
-#import "MLPAutoCompleteTextFieldDelegate.h"
 #import <TagListView-Swift.h>
 
 @interface DetailViewController :
-UIViewController<UITextFieldDelegate, MLPAutoCompleteTextFieldDelegate, TagListViewDelegate>
+UIViewController<UITextFieldDelegate, TagListViewDelegate>
 
 typedef void (^ ObjectSetter)(NSString*);
 
@@ -33,9 +33,9 @@ typedef void (^ ObjectSetter)(NSString*);
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;
 
 #pragma mark MLPAutoCompleteTextFieldDelegate
-- (void)autoCompleteTextField:(MLPAutoCompleteTextField *)textField
+- (void)autoCompleteTextField:(UITextField *)textField
   didSelectAutoCompleteString:(NSString *)selectedString
-       withAutoCompleteObject:(id<MLPAutoCompletionObject>)selectedObject
+       withAutoCompleteObject:(SoulsAutoCompleteObject*)selectedObject
             forRowAtIndexPath:(NSIndexPath *)indexPath;
 
 #pragma mark TagListViewDelegate

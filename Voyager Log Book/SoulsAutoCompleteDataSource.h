@@ -1,6 +1,7 @@
 
 #import <Foundation/Foundation.h>
-#import <MLPAutoCompleteTextField/MLPAutoCompleteTextFieldDataSource.h>
+#import <HTAutocompleteTextField.h>
+#import <UIKit/UIKit.h>
 #import "Voyager_Log_Book+CoreDataModel.h"
 
 struct NameParts {
@@ -9,11 +10,11 @@ struct NameParts {
   NSString* surname;
 };
 
-@interface SoulsAutoCompleteDataSource : NSObject <MLPAutoCompleteTextFieldDataSource>
+@interface SoulsAutoCompleteDataSource : NSObject<HTAutocompleteDataSource>
 
-- (void)autoCompleteTextField:(MLPAutoCompleteTextField *)textField
-      possibleCompletionsForString:(NSString *)string
-                 completionHandler:(void(^)(NSArray *suggestions))handler;
+- (NSString*)textField:(HTAutocompleteTextField*)textField
+   completionForPrefix:(NSString*)prefix
+            ignoreCase:(BOOL)ignoreCase;
 
 +(struct NameParts) stringToNameParts:(NSArray<NSString*>*)parts;
 +(struct NameParts) stringToNameString:(NSString*) string;

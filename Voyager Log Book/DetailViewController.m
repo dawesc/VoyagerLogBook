@@ -13,7 +13,7 @@
 #import "NSFetchRequestPicker.h"
 #import "PickerToolbar.h"
 #import "TouchesUIScrollView.h"
-#import <MLPAutoCompleteTextField/MLPAutoCompleteTextField.h>
+#import <HTAutocompleteTextField.h>
 #import <TagListView-Swift.h>
 
 @class TagListView;
@@ -32,7 +32,7 @@
   UITextField*  t_portOfDeparture;
   UIStackView*  l_souls;
   TagListView*  v_souls;
-  MLPAutoCompleteTextField*
+  HTAutocompleteTextField*
                 t_souls;
   UITextField*  t_waveHeight;
   UITextField*  t_weatherConditions;
@@ -320,17 +320,18 @@
   v_souls.cornerRadius = 3.0f;
   v_souls.delegate = self;
   v_souls.tagBackgroundColor  = [[UIColor alloc] initWithRed:88.5f/255.0f green:142.0f/255.0f blue:228.9f/255.0f alpha:1.0f];
-  t_souls = [[MLPAutoCompleteTextField alloc] initWithFrame:CGRectZero];
+  t_souls = [[HTAutocompleteTextField alloc] initWithFrame:CGRectZero];
+  t_souls.autocompleteTextOffset = CGPointMake(10.0, 0.0);
   t_souls.borderStyle = UITextBorderStyleRoundedRect;
   t_souls.enabled = true;
   t_souls.delegate = self;
   soulsAutoCompleteDataSource = [[SoulsAutoCompleteDataSource alloc] init];
   soulsAutoCompleteDataSource.managedObjectContext = self.managedObjectContext;
-  t_souls.applyBoldEffectToAutoCompleteSuggestions = true;
-  t_souls.showTextFieldDropShadowWhenAutoCompleteTableIsOpen = true;
-  t_souls.autoCompleteDataSource  = soulsAutoCompleteDataSource;
-  t_souls.autoCompleteDelegate    = self;
-  t_souls.autoCompleteTableBackgroundColor = [UIColor colorWithRed:185.0f/255.0f green:206.0f/255.0f blue:240.0f/255.0f alpha:1.0f];
+//  t_souls.applyBoldEffectToAutoCompleteSuggestions = true;
+//  t_souls.showTextFieldDropShadowWhenAutoCompleteTableIsOpen = true;
+  t_souls.autocompleteDataSource  = soulsAutoCompleteDataSource;
+//  t_souls.autoCompleteDelegate    = self;
+//  t_souls.autoCompleteTableBackgroundColor = [UIColor colorWithRed:185.0f/255.0f green:206.0f/255.0f blue:240.0f/255.0f alpha:1.0f];
   t_waveHeight = [self setupTextField];
   t_weatherConditions = [self setupTextField];
   t_windDirection = [self setupTextField];
@@ -936,9 +937,9 @@ outputText:(NSDate *) outputText
 not the original data source.
  autoCompleteObject may be nil if the selectedString had no object associated with it.
  */
-- (void)autoCompleteTextField:(MLPAutoCompleteTextField *)textField
+- (void)autoCompleteTextField:(UITextField *)textField
   didSelectAutoCompleteString:(NSString *)selectedString
-       withAutoCompleteObject:(id<MLPAutoCompletionObject>)selectedObject
+       withAutoCompleteObject:(SoulsAutoCompleteObject*)selectedObject
             forRowAtIndexPath:(NSIndexPath *)indexPath {
   if (textField != t_souls) return;
   NSLog(@"autoCompleteTextField: %@", selectedString);
@@ -963,7 +964,7 @@ not the original data source.
   
   self.logBookEntry.souls = [self.logBookEntry.souls setByAddingObject:soul];
   t_souls.text = @"";
-  [t_souls reloadData];
+  [t_souls forceRefreshAutocompleteText];
   [self showSouls];
   return false;
 }

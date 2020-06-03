@@ -6,8 +6,10 @@ target 'Voyager Log Book' do
   source 'https://github.com/CocoaPods/Specs.git'
   use_frameworks!
 
-  pod 'MLPAutoCompleteTextField', git: 'https://github.com/irrcombat/MLPAutoCompleteTextField.git', :branch => 'master'
+  #pod 'AutoCompleteTextField'
+  #pod 'MLPAutoCompleteTextField', git: 'https://github.com/irrcombat/MLPAutoCompleteTextField.git', :branch => 'master'
   pod 'TagListView', git: 'https://github.com/dawesc/TagListView.git', :branch => 'master'
+  pod 'HTAutocompleteTextField', git:'https://github.com/hoteltonight/HTAutocompleteTextField.git', :branch => 'master'
   #pod 'AFNetworking'
   #pod 'MPAutoCompleteText', git: 'https://github.com/mpatelCAS/MPAutoCompleteText.git', :branch => 'master'
   # Pods for Voyager Log Book

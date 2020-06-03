@@ -30,6 +30,7 @@
   retval = [SoulsAutoCompleteDataSource appendStr:retval with:surname];
   return retval;
 }
+
 +(NSArray<NSString*>*) SplitSpace:(NSString*) toSplit {
   NSArray<NSString*>* split = [toSplit componentsSeparatedByString:@" "];
   NSMutableArray<NSString*>* retval = [[NSMutableArray<NSString*> alloc] init];
@@ -88,23 +89,16 @@
   return [managedObjectContext executeFetchRequest:soulsFetchRequest error:&error];
 }
 
-- (void)autoCompleteTextField:(MLPAutoCompleteTextField *)textField
-      possibleCompletionsForString:(NSString *)string
-                 completionHandler:(void(^)(NSArray *suggestions))handler {
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
-    dispatch_async(queue, ^{
-      NSArray<Soul*>* results = [SoulsAutoCompleteDataSource findSouls:self.managedObjectContext string:string];
-      NSMutableArray* soulNames = [[NSMutableArray alloc] initWithCapacity:[results count]];
-      if (results) {
-        for (Soul* soul in results) {
-          NSString* soulName = [SoulsAutoCompleteDataSource soulToName:soul];
-          if (soulName)
-            [soulNames addObject:[[SoulsAutoCompleteObject alloc] initWithSoul:soul]];
-        }
-      }
-      
-      handler(soulNames);
-    });
+- (NSString*)textField:(HTAutocompleteTextField*)textField
+   completionForPrefix:(NSString*)prefix
+            ignoreCase:(BOOL)ignoreCase {
+  NSArray<Soul*>* results = [SoulsAutoCompleteDataSource findSouls:self.managedObjectContext string:prefix];
+  if (results) {
+    for (Soul* soul in results) {
+      return [SoulsAutoCompleteDataSource soulToName:soul];
+    }
+  }
+  return nil;
 }
 
 @end
