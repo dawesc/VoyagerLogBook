@@ -30,6 +30,7 @@ typedef void (^ ObjectSetter)(NSString*);
 
 #pragma mark UITextFieldDelegate
 - (BOOL)textFieldShouldReturn:(UITextField *)textField;
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;
 
 #pragma mark MLPAutoCompleteTextFieldDelegate
 - (void)autoCompleteTextField:(MLPAutoCompleteTextField *)textField

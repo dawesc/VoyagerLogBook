@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3CC59473753C9E0C49535373 /* Pods_Voyager_Log_Book.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09AE05A2A0DDF896355005DF /* Pods_Voyager_Log_Book.framework */; };
 		8519271424859F13007F7529 /* ArrayPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 8519271324859F13007F7529 /* ArrayPicker.m */; };
+		8533025A24882AB900476F95 /* TouchesUIScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8533025824882AB800476F95 /* TouchesUIScrollView.m */; };
 		85B4E0D424780B4400869FC0 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85B4E0D324780B4400869FC0 /* CoreMotion.framework */; };
 		85B4E1032479567600869FC0 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 85B4E1022479567600869FC0 /* Podfile */; };
 		85B69A1C24817F3E00002562 /* SoulsAutoCompleteDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 85B69A1A24817F3D00002562 /* SoulsAutoCompleteDataSource.m */; };
@@ -39,6 +40,8 @@
 		15BE9E2F34E2ADFEC67E68A9 /* Pods-Voyager Log Book.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Voyager Log Book.debug.xcconfig"; path = "Target Support Files/Pods-Voyager Log Book/Pods-Voyager Log Book.debug.xcconfig"; sourceTree = "<group>"; };
 		8519271224859F13007F7529 /* ArrayPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArrayPicker.h; sourceTree = "<group>"; };
 		8519271324859F13007F7529 /* ArrayPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArrayPicker.m; sourceTree = "<group>"; };
+		8533025824882AB800476F95 /* TouchesUIScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TouchesUIScrollView.m; sourceTree = "<group>"; };
+		8533025924882AB900476F95 /* TouchesUIScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchesUIScrollView.h; sourceTree = "<group>"; };
 		85B4E0D324780B4400869FC0 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		85B4E1022479567600869FC0 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		85B69A14248170AB00002562 /* Voyager Log Book-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Voyager Log Book-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -137,6 +140,8 @@
 		85D93D462476F5DF002862CA /* Voyager Log Book */ = {
 			isa = PBXGroup;
 			children = (
+				8533025924882AB900476F95 /* TouchesUIScrollView.h */,
+				8533025824882AB800476F95 /* TouchesUIScrollView.m */,
 				85D947A62486E8780059F273 /* PickerToolbar.h */,
 				85D947A72486E8780059F273 /* PickerToolbar.m */,
 				85D947A32486DC110059F273 /* NSFetchRequestPicker.h */,
@@ -303,6 +308,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8533025A24882AB900476F95 /* TouchesUIScrollView.m in Sources */,
 				85D7F5B9247D48D300399D8D /* GenericDataViewController.m in Sources */,
 				85D93D552476F5DF002862CA /* DetailViewController.m in Sources */,
 				85D7F5CB247DABFD00399D8D /* VesselMasterViewController.m in Sources */,
@@ -460,6 +466,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Voyager Log Book/Voyager Log Book.entitlements";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = BYP69ABLJ5;
 				INFOPLIST_FILE = "Voyager Log Book/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -483,6 +490,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Voyager Log Book/Voyager Log Book.entitlements";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = BYP69ABLJ5;
 				INFOPLIST_FILE = "Voyager Log Book/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (

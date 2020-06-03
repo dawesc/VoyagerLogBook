@@ -12,6 +12,7 @@
 #import "ArrayPicker.h"
 #import "NSFetchRequestPicker.h"
 #import "PickerToolbar.h"
+#import "TouchesUIScrollView.h"
 #import <MLPAutoCompleteTextField/MLPAutoCompleteTextField.h>
 #import <TagListView-Swift.h>
 
@@ -52,11 +53,11 @@
   UITextField*  t_owner;
   
 #pragma mark Generic Fields
-  UIScrollView* lastActiveView;
-  UIScrollView* nothingView;
-  UIScrollView* vesselView;
-  UIScrollView* soulView;
-  UIScrollView* lbeView;
+  TouchesUIScrollView* lastActiveView;
+  TouchesUIScrollView* nothingView;
+  TouchesUIScrollView* vesselView;
+  TouchesUIScrollView* soulView;
+  TouchesUIScrollView* lbeView;
 
   bool editing;
   bool didChange;
@@ -158,7 +159,7 @@
   [stackView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
   
   //Scroll view
-  nothingView =[[UIScrollView alloc] initWithFrame:CGRectZero];
+  nothingView =[[TouchesUIScrollView alloc] initWithFrame:CGRectZero];
   nothingView.translatesAutoresizingMaskIntoConstraints = false;
   
   [nothingView addSubview:stackView];
@@ -205,7 +206,7 @@
   stackView.translatesAutoresizingMaskIntoConstraints = false;
   
   //Scroll view
-  soulView =[[UIScrollView alloc] initWithFrame:CGRectZero];
+  soulView =[[TouchesUIScrollView alloc] initWithFrame:CGRectZero];
   soulView.translatesAutoresizingMaskIntoConstraints = false;
   
   [soulView addSubview:stackView];
@@ -256,7 +257,7 @@
   stackView.translatesAutoresizingMaskIntoConstraints = false;
   
   //Scroll view
-  vesselView =[[UIScrollView alloc] initWithFrame:CGRectZero];
+  vesselView =[[TouchesUIScrollView alloc] initWithFrame:CGRectZero];
   vesselView.translatesAutoresizingMaskIntoConstraints = false;
   
   [vesselView addSubview:stackView];
@@ -329,7 +330,7 @@
   t_souls.showTextFieldDropShadowWhenAutoCompleteTableIsOpen = true;
   t_souls.autoCompleteDataSource  = soulsAutoCompleteDataSource;
   t_souls.autoCompleteDelegate    = self;
-  t_souls.autoCompleteTableBackgroundColor = [UIColor colorWithRed:130.0f/255.0f green:160.0f/255.0f blue:245.0f/255.0f alpha:1.0f];
+  t_souls.autoCompleteTableBackgroundColor = [UIColor colorWithRed:185.0f/255.0f green:206.0f/255.0f blue:240.0f/255.0f alpha:1.0f];
   t_waveHeight = [self setupTextField];
   t_weatherConditions = [self setupTextField];
   t_windDirection = [self setupTextField];
@@ -387,7 +388,7 @@
   stackView.translatesAutoresizingMaskIntoConstraints = false;
   
   //Scroll view
-  lbeView =[[UIScrollView alloc] initWithFrame:CGRectZero];
+  lbeView =[[TouchesUIScrollView alloc] initWithFrame:CGRectZero];
   lbeView.translatesAutoresizingMaskIntoConstraints = false;
   
   [lbeView addSubview:stackView];
@@ -660,7 +661,7 @@ outputText:(NSDate *) outputText
   textField.inputAccessoryView = [[PickerToolbar alloc] initWithTextField:textField picker:frPicker title:title];
 }
 
-- (UIScrollView*)getCurrentView {
+- (TouchesUIScrollView*)getCurrentView {
   if (self.logBookEntry) {
     return lbeView;
   } else if (self.vessel) {
@@ -762,7 +763,7 @@ outputText:(NSDate *) outputText
 
 // Called when the UIKeyboardDidShowNotification is sent.
 - (void)keyboardWasShown:(NSNotification*)aNotification {
-  UIScrollView* scrollView = [self getCurrentView];
+  TouchesUIScrollView* scrollView = [self getCurrentView];
   if (!scrollView) return;
   NSDictionary* info = [aNotification userInfo];
   CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
@@ -773,7 +774,7 @@ outputText:(NSDate *) outputText
 
 // Called when the UIKeyboardWillHideNotification is sent
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification {
-  UIScrollView* scrollView = [self getCurrentView];
+  TouchesUIScrollView* scrollView = [self getCurrentView];
   if (!scrollView) return;
   UIEdgeInsets contentInsets = UIEdgeInsetsZero;
   scrollView.contentInset = contentInsets;
@@ -801,6 +802,12 @@ outputText:(NSDate *) outputText
   [self configureView];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+  if (editing) {
+    [self doneEditing];
+    editing = false;
+  }
+}
 
 #pragma mark - Managing the detail item
 
@@ -925,6 +932,10 @@ outputText:(NSDate *) outputText
 }
 
 #pragma mark MLPAutoCompleteTextFieldDelegate
+/*IndexPath corresponds to the order of strings within the autocomplete table,
+not the original data source.
+ autoCompleteObject may be nil if the selectedString had no object associated with it.
+ */
 - (void)autoCompleteTextField:(MLPAutoCompleteTextField *)textField
   didSelectAutoCompleteString:(NSString *)selectedString
        withAutoCompleteObject:(id<MLPAutoCompletionObject>)selectedObject
@@ -933,6 +944,8 @@ outputText:(NSDate *) outputText
   NSLog(@"autoCompleteTextField: %@", selectedString);
   [((SoulsAutoCompleteObject*)selectedObject) getSoulInstance];
 }
+
+
 
 - (void)showSouls{
   if (!self.logBookEntry) return;
@@ -950,6 +963,7 @@ outputText:(NSDate *) outputText
   
   self.logBookEntry.souls = [self.logBookEntry.souls setByAddingObject:soul];
   t_souls.text = @"";
+  [t_souls reloadData];
   [self showSouls];
   return false;
 }
@@ -970,6 +984,11 @@ outputText:(NSDate *) outputText
   } else {
     return [self addSoulToData:souls[0]];
   }
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+  if (!textField.inputDelegate) return true;
+  return ![textField.inputDelegate isKindOfClass:[UIPickerView class]] && ![textField.inputDelegate isKindOfClass:[UIDatePicker class]];
 }
 
 #pragma mark TagListViewDelegate

@@ -1,5 +1,5 @@
 # Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
+platform :ios, '13.5'
 
 target 'Voyager Log Book' do
   # Comment the next line if you don't want to use dynamic frameworks
@@ -8,5 +8,7 @@ target 'Voyager Log Book' do
 
   pod 'MLPAutoCompleteTextField', git: 'https://github.com/irrcombat/MLPAutoCompleteTextField.git', :branch => 'master'
   pod 'TagListView', git: 'https://github.com/dawesc/TagListView.git', :branch => 'master'
+  #pod 'AFNetworking'
+  #pod 'MPAutoCompleteText', git: 'https://github.com/mpatelCAS/MPAutoCompleteText.git', :branch => 'master'
   # Pods for Voyager Log Book
 end

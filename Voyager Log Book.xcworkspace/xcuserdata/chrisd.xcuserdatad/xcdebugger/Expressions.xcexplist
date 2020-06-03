@@ -10,5 +10,13 @@
             </PersistentString>
          </PersistentStrings>
       </ContextState>
+      <ContextState
+         contextName = "-[DetailViewController textField:shouldChangeCharactersInRange:replacementString:]:DetailViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[textField.inputDelegate isKindOfClass:[UIPickerView class]]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
    </ContextStates>
 </VariablesViewState>

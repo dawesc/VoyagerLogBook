@@ -63,9 +63,14 @@
   [self.textFieldL resignFirstResponder];
 
   if (arrayPicker) {
-    self.textFieldL.text = [arrayPicker.dataArray objectAtIndex:[arrayPicker selectedRowInComponent:0]];
+    NSInteger row = [arrayPicker selectedRowInComponent:0];
+    if (row < [arrayPicker.dataArray count])
+      self.textFieldL.text = [arrayPicker.dataArray objectAtIndex:row];
   } else if (fetchPicker) {
-    self.textFieldL.text = [[fetchPicker getData] objectAtIndex:[fetchPicker selectedRowInComponent:0]];
+    NSArray* rows = [fetchPicker getData];
+    NSInteger row = [arrayPicker selectedRowInComponent:0];
+    if (row < [rows count])
+      self.textFieldL.text = [rows objectAtIndex:row];
   } else if (datePicker) {
     self.textFieldL.text = [DetailViewController dateToString:datePicker.date];
   }

@@ -70,15 +70,18 @@ fetchedObjectToString:(FetchedObjectToString)fetchedObjectToString
 
 // returns the number of 'columns' to display.
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
+  [self checkOk];
   return 1;
 }
 // returns the # of rows in each component..
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+  [self checkOk];
   return [dataArray count];
 }
 
 #pragma UIPickerViewDelegate
 - (nullable NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component API_UNAVAILABLE(tvos) {
+  [self checkOk];
   return dataArray[row];
 }
 
