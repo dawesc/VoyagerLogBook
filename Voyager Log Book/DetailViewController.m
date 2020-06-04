@@ -13,6 +13,7 @@
 #import "NSFetchRequestPicker.h"
 #import "PickerToolbar.h"
 #import "TouchesUIScrollView.h"
+#import "ImagePicker.h"
 #import <HTAutocompleteTextField.h>
 #import <TagListView-Swift.h>
 
@@ -51,6 +52,7 @@
   UITextField*  t_homePort;
   UITextField*  t_name;
   UITextField*  t_owner;
+  ImagePicker*  i_vesselImage;
   
 #pragma mark Generic Fields
   TouchesUIScrollView* lastActiveView;
@@ -106,6 +108,10 @@
   field = [[UISwitch alloc]  initWithFrame:CGRectZero];
   field.enabled = true;
         
+  return field;
+}
+-(ImagePicker*)setupImageView {
+  ImagePicker* field = [[ImagePicker alloc] initWithParent:self frame:CGRectMake(100, 100, 100, 100)];
   return field;
 }
 + (NSArray *)windDirections
@@ -218,18 +224,39 @@
   [stackView.widthAnchor constraintEqualToAnchor:soulView.widthAnchor].active = true;
 }
 
++ (void) constrainWidth:(NSInteger)width height:(NSInteger)height
+              superview:(UIView*)superview subview:(UIView*)subview{
+  if (width)
+    [superview  addConstraint:[NSLayoutConstraint constraintWithItem:subview
+                    attribute:NSLayoutAttributeWidth
+                    relatedBy:NSLayoutRelationEqual
+                       toItem:nil
+                    attribute:NSLayoutAttributeNotAnAttribute
+                   multiplier:1.0
+                     constant:width]];
+  if (height)
+    [superview addConstraint:[NSLayoutConstraint constraintWithItem:subview
+                   attribute:NSLayoutAttributeHeight
+                   relatedBy:NSLayoutRelationEqual
+                      toItem:nil
+                   attribute:NSLayoutAttributeNotAnAttribute
+                  multiplier:1.0
+                    constant:height]];
+}
 - (void)setupVesselFields {
   id l_captain        = [self setupLabel:@"Captain"];
   id l_defaultVessel  = [self setupLabel:@"Default Vessel"];
   id l_homePort       = [self setupLabel:@"Home Port"];
   id l_name           = [self setupLabel:@"Name"];
   id l_owner          = [self setupLabel:@"Owner"];
+  id l_vesselImage    = [self setupLabel:@"Vessel Image"];
   
   t_captain           = [self setupTextField];
   t_isDefault         = [self setupSwitch];
   t_homePort          = [self setupTextField];
   t_name              = [self setupTextField];
   t_owner             = [self setupTextField];
+  i_vesselImage       = [self setupImageView];
   
    // Update the user interface for the detail item.
   UIView *captain       = [self generateLabelField:true labelControl:l_captain        inputControl:t_captain];
@@ -237,7 +264,7 @@
   UIView *homePort      = [self generateLabelField:true labelControl:l_homePort       inputControl:t_homePort];
   UIView *name          = [self generateLabelField:true labelControl:l_name           inputControl:t_name];
   UIView *owner         = [self generateLabelField:true labelControl:l_owner          inputControl:t_owner];
-
+  
   //Stack View
   UIStackView *stackView = [[UIStackView alloc] init];
 
@@ -253,7 +280,11 @@
   [stackView addArrangedSubview:owner];
   [stackView addArrangedSubview:homePort];
   [stackView addArrangedSubview:captain];
-
+  [stackView addArrangedSubview:l_vesselImage];
+  [stackView addArrangedSubview:i_vesselImage];
+  
+  [DetailViewController constrainWidth:0 height: 200 superview:stackView subview:i_vesselImage];
+  
   stackView.translatesAutoresizingMaskIntoConstraints = false;
   
   //Scroll view
@@ -566,6 +597,7 @@ outputText:(NSDate *) outputText
   t_homePort.enabled  = isEnabled;
   t_name.enabled      = isEnabled;
   t_owner.enabled     = isEnabled;
+  [i_vesselImage setEnabled:isEnabled];
 }
 
 + (NSDateFormatter *)dateFormatter
@@ -619,6 +651,13 @@ outputText:(NSDate *) outputText
   }
   if ([control isKindOfClass:[UISwitch class]]) {
     ((UISwitch*) control).on = [self strToBool:[self getText:ultimateField]];
+  }
+  if ([control isKindOfClass:[ImagePicker class]]) {
+    ImagePicker* imagePicker = (ImagePicker*) control;
+    if (ultimateField == nil)
+      [imagePicker resetImage:nil];
+    else
+      [imagePicker resetImage:[UIImage imageWithData:(NSData*)ultimateField scale:1.0f]];
   }
 }
 
@@ -749,6 +788,8 @@ outputText:(NSDate *) outputText
     [self linkField:t_homePort  ultimateField:self.vessel.homePort  objectSetter:^(NSString* newVal) { self.vessel.homePort = newVal; }];
     [self linkField:t_name      ultimateField:self.vessel.name      objectSetter:^(NSString* newVal) { self.vessel.name = newVal; }];
     [self linkField:t_owner     ultimateField:self.vessel.owner     objectSetter:^(NSString* newVal) { self.vessel.owner = newVal; }];
+    [self linkField:i_vesselImage ultimateField:self.vessel.picture objectSetter:^(NSString* newVal)
+     { self.vessel.picture = [[NSData alloc] initWithBase64EncodedString:newVal options:0]; }];
   } else if (self.souls) {
     self.title = @"Soul";
     [self linkField:t_forename    ultimateField:self.souls.forename objectSetter:^(NSString* newVal) { self.souls.forename = newVal; }];
@@ -873,6 +914,11 @@ outputText:(NSDate *) outputText
     }
     if ([control isKindOfClass:[UISwitch class]]) {
       setter([self boolToStr:((UISwitch*) control).on]);
+    }
+    if ([control isKindOfClass:[ImagePicker class]]) {
+      ImagePicker* controlImagePicker = (ImagePicker*) control;
+      if ([controlImagePicker didChange])
+        setter([UIImageJPEGRepresentation(controlImagePicker.image, 1.0) base64EncodedStringWithOptions:0]);
     }
   }
   
@@ -1008,6 +1054,4 @@ not the original data source.
   }
   NSLog(@"Failed to erase: %@", title);
 }
-
-
 @end

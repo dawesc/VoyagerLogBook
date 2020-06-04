@@ -84,7 +84,7 @@
       formatter.maximumFractionDigits = 2;
       formatter.minimumIntegerDigits = 1;
       
-      newEvent.barometer = [NSString stringWithFormat:@"%@", [formatter stringFromNumber:newPressure.pressure]];
+      newEvent.barometer = [NSString stringWithFormat:@"%.2f hPA", newPressure.pressure.floatValue*10];
       [self saveContext:context];
     }
   };

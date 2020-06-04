@@ -27,7 +27,7 @@
         <attribute name="dateOfDeparture" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="destination" optional="YES" attributeType="String"/>
         <attribute name="passageNotes" optional="YES" attributeType="String"/>
-        <attribute name="portOfArrival" optional="YES" attributeType="String"/>
+        <attribute name="portOfArrival" optional="YES" attributeType="String" allowsExternalBinaryDataStorage="YES"/>
         <attribute name="portOfDeparture" optional="YES" attributeType="String"/>
         <attribute name="waveHeight" optional="YES" attributeType="String"/>
         <attribute name="weatherConditions" optional="YES" attributeType="String"/>
@@ -51,7 +51,7 @@
         <attribute name="homePort" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="owner" optional="YES" attributeType="String"/>
-        <attribute name="picture" optional="YES" attributeType="Binary"/>
+        <attribute name="picture" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
         <relationship name="logBookEntries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="LogBookEntry" inverseName="vessel" inverseEntity="LogBookEntry"/>
     </entity>
     <elements>
