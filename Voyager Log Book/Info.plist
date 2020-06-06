@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We take photos of your boat and voyages</string>
-	<key>NSCameraUsageDescription</key>
-	<string>We use photos of your boat and voyages to brighten your trips</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -24,12 +20,16 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>We use photos of your boat and voyages to brighten your trips</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Track your vessel and find current ports</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Track your vessel on a journey</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Find current port</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We take photos of your boat and voyages</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Font Awesome 5 Brands-Regular-400.otf</string>

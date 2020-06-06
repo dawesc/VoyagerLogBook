@@ -11,8 +11,6 @@
 #import "GenericDataViewController.h"
 #import "Voyager_Log_Book+CoreDataModel.h"
 
-@class DetailViewController;
-
 @interface SoulMasterViewController : GenericDataViewController
 
 @end

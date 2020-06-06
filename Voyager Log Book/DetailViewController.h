@@ -16,7 +16,7 @@ UIViewController<UITextFieldDelegate, TagListViewDelegate>
 
 typedef void (^ ObjectSetter)(NSString*);
 
-@property (strong, nonatomic) IBOutlet UIView *logBookEntryView;
+@property (weak, nonatomic) IBOutlet UIView   *logBookEntryView;
 @property (strong, nonatomic) LogBookEntry    *logBookEntry;
 @property (strong, nonatomic) Vessel          *vessel;
 @property (strong, nonatomic) Soul            *souls;

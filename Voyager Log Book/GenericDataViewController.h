@@ -74,6 +74,6 @@ prepareForSegueCallback:(PrepareForSequeCallback)prepareForSegueCallback
 @property (strong, nonatomic) NSFetchedResultsController* fetchedResultsController;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
-@property (strong, nonatomic) DetailViewController *detailViewController;
+@property (weak, nonatomic) DetailViewController *detailViewController;
 
 @end

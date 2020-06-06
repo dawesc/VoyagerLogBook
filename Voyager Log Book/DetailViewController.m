@@ -849,6 +849,53 @@ outputText:(NSDate *) outputText
     [self doneEditing];
     editing = false;
   }
+  //Nullify everything
+  t_barometer = nil;
+  t_comments = nil;
+  t_dateOfArrival = nil;
+  t_dateOfArrivalEstimated = nil;
+  t_dateOfDeparture = nil;
+  t_destination = nil;
+  t_passageNotes = nil;
+  t_portOfArrival = nil;
+  t_portOfDeparture = nil;
+  l_souls = nil;
+  v_souls = nil;
+  t_souls = nil;
+  t_waveHeight = nil;
+  t_weatherConditions = nil;
+  t_windDirection = nil;
+  t_windSpeed = nil;
+      
+  #pragma mark Soul Fields
+  t_forename = nil;
+  t_initials = nil;
+  t_surname = nil;
+  t_isFavourite = nil;
+
+  #pragma mark Vessel Fields
+  t_captain = nil;
+  t_isDefault = nil;
+  t_homePort = nil;
+  t_name = nil;
+  t_owner = nil;
+  i_vesselImage = nil;
+
+  #pragma mark Generic Fields
+  lastActiveView = nil;
+  nothingView = nil;
+  vesselView = nil;
+  soulView = nil;
+  lbeView = nil;
+
+  uiFields = nil;
+  objectSetters = nil;
+  btnEdit = nil;
+  btnDone = nil;
+
+  timer = nil;
+
+  soulsAutoCompleteDataSource = nil;
 }
 
 #pragma mark - Managing the detail item
