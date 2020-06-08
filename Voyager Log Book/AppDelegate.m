@@ -7,18 +7,24 @@
 //
 
 #import "AppDelegate.h"
+#import "Voyager_Log_Book+CoreDataModel.h"
 
 @interface AppDelegate ()
 
 @end
 
-@implementation AppDelegate
+@implementation AppDelegate {
+  bool firstCheckA;
+  bool firstCheckB;
+}
 
 - (instancetype)init {
-    if (self = [super init]) {
-        lCallbacks = [[NSMutableArray<LocationCallback> alloc] init];
-    }
-    return self;
+  if (self = [super init]) {
+    lCallbacks = [[NSMutableArray<LocationCallback> alloc] init];
+    firstCheckA = true;
+    firstCheckB = true;
+  }
+  return self;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -180,6 +186,14 @@
       NSLog(@"Unresolved error %@, %@", error, error.userInfo);
       abort();
   }
+}
+
+- (bool)isFirstRun {
+  NSManagedObjectContext *context = self.persistentContainer.viewContext;
+    
+  NSError* error = nil;
+  NSArray* results = [context executeFetchRequest:Vessel.fetchRequest error:&error];
+  return (!results || [results count] == 0);
 }
 
 @end

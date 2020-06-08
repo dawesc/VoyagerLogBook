@@ -30,6 +30,7 @@ didFailWithError:(NSError *)error;
 - (void)getLocation:(LocationCallback)callback;
 - (void)getPressure:(BarometricCallback)callback;
 + (NSString *)nicePosition:(CLLocation*)location;
+- (bool)isFirstRun;
 
 @end
 

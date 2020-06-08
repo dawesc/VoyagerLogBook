@@ -15,6 +15,8 @@
 
 @interface MasterViewController : GenericDataViewController
 
++ (LogBookEntry*) makeLogBookEntry:(NSManagedObjectContext*) context;
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;
+
 @end
 

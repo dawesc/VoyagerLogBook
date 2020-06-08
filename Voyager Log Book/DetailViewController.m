@@ -6,7 +6,9 @@
 //  Copyright © 2020 Camding Ltd. All rights reserved.
 //
 
+#import "AppDelegate.h"
 #import "DetailViewController.h"
+#import "MasterViewController.h"
 #import "SoulsAutoCompleteDataSource.h"
 #import "SoulsAutoCompleteObject.h"
 #import "ArrayPicker.h"
@@ -20,6 +22,8 @@
 @class TagListView;
 
 @interface DetailViewController () {
+  bool usingFirstRunView;
+  
 #pragma mark Log Book Entry Fields
   UITextField*  t_vessel;
   UITextField*  t_barometer;
@@ -54,12 +58,17 @@
   UITextField*  t_owner;
   ImagePicker*  i_vesselImage;
   
+#pragma mark Vessel Fields
+  UITextField*  t_firstCaptain;
+  UITextField*  t_firstName;
+  
 #pragma mark Generic Fields
   TouchesUIScrollView* lastActiveView;
   TouchesUIScrollView* nothingView;
   TouchesUIScrollView* vesselView;
   TouchesUIScrollView* soulView;
   TouchesUIScrollView* lbeView;
+  TouchesUIScrollView* firstRunView;
 
   bool editing;
   bool didChange;
@@ -139,6 +148,7 @@
   [self setupVesselFields];
   [self setupSoulFields];
   [self setupLbeFields];
+  [self setupFirstRunFields];
 }
 - (void)setupNothingFields {
   UILabel* title = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -299,6 +309,54 @@
   [stackView.trailingAnchor constraintEqualToAnchor:vesselView.trailingAnchor].active = true;
   [stackView.widthAnchor    constraintEqualToAnchor:vesselView.widthAnchor].active    = true;
 }
+
+- (void)setupFirstRunFields {
+  UILabel* title = [[UILabel alloc] initWithFrame:CGRectZero];
+  title.text = @"Welcome To Log Book";
+  title.font = [UIFont boldSystemFontOfSize:24.0];
+  
+  UITextView* information   = [[UITextView alloc]  initWithFrame:CGRectZero];
+  information.editable      = false;
+  information.scrollEnabled = false;
+  information.text = @"Welcome to Voyager Log Book; it appears like this is your first time running the application so we're going to get you set up with some small information to get you going. Later you can always change more information about your vessel by clicking the boat icon above the list of log book entries but let's get you started quickly. We need to know the name of the vessel you will be using to make your first log book entry and then we'll make that first log book entry and you can get started with your cruising log. Please note that this is just for keeping fun logs about cruising in your vessel and is not intended to replace a paper log for position plotting and as such is not a navigational aid and should not be treated as such.";
+  
+  t_firstCaptain        = [self setupTextField];
+  t_firstName           = [self setupTextField];
+  
+  id l_captain          = [self setupLabel:@"Your Name"];
+  id l_name             = [self setupLabel:@"Vessel Name"];
+  UIView *captain       = [self generateLabelField:true labelControl:l_captain        inputControl:t_firstCaptain];
+  UIView *name          = [self generateLabelField:true labelControl:l_name           inputControl:t_firstName];
+  
+  //Stack View
+  UIStackView *stackView  = [[UIStackView alloc] init];
+  stackView.axis          = UILayoutConstraintAxisVertical;
+  stackView.alignment     = UIStackViewAlignmentFill;
+  stackView.spacing       = 20;
+  stackView.layoutMarginsRelativeArrangement = true;
+  stackView.directionalLayoutMargins = NSDirectionalEdgeInsetsMake(20, 20, 20, 20);
+  
+  [stackView addArrangedSubview:title];
+  [stackView addArrangedSubview:information];
+  [stackView addArrangedSubview:captain];
+  [stackView addArrangedSubview:name];
+  
+  stackView.translatesAutoresizingMaskIntoConstraints = false;
+  [stackView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
+  
+  //Scroll view
+  firstRunView = [[TouchesUIScrollView alloc] initWithFrame:CGRectZero];
+  firstRunView.translatesAutoresizingMaskIntoConstraints = false;
+  
+  [firstRunView addSubview:stackView];
+  //Layout for Stack View
+  [stackView.topAnchor      constraintEqualToAnchor:firstRunView.topAnchor]      .active = true;
+  [stackView.bottomAnchor   constraintEqualToAnchor:firstRunView.bottomAnchor]   .active = true;
+  [stackView.leadingAnchor  constraintEqualToAnchor:firstRunView.leadingAnchor]  .active = true;
+  [stackView.trailingAnchor constraintEqualToAnchor:firstRunView.trailingAnchor] .active = true;
+  [stackView.widthAnchor    constraintEqualToAnchor:firstRunView.widthAnchor]    .active = true;
+}
+
 
 - (UIStackView*)setupSouls {
   UIStackView *stackView = [[UIStackView alloc] init];
@@ -553,14 +611,16 @@ outputText:(NSDate *) outputText
 }
 
 -(IBAction) editDoneToggle:(id)sender {
-  if (editing)
-    [self doneEditing];
-  [self setEnabled:!editing];
+  if (editing) {
+    [self setEnabled:[self doneEditing]];
+  } else {
+    [self setEnabled:!editing];
+  }
 }
 
 - (void)setEnabled:(bool) isEnabled {
   editing = isEnabled;
-  if (self.vessel || self.souls || self.logBookEntry) {
+  if (self.vessel || self.souls || self.logBookEntry || [self isUsingFirstRunView]) {
     if (editing)
       self.navigationItem.rightBarButtonItem = btnDone;
     else
@@ -701,7 +761,19 @@ outputText:(NSDate *) outputText
   textField.inputAccessoryView = [[PickerToolbar alloc] initWithTextField:textField picker:frPicker title:title];
 }
 
+-(bool) isUsingFirstRunView {
+  if (usingFirstRunView) return true;
+  AppDelegate* appDelegate = (AppDelegate*) UIApplication.sharedApplication.delegate;
+  if ([appDelegate isFirstRun]) {
+    usingFirstRunView = true;
+  }
+  return usingFirstRunView;
+}
+
 - (TouchesUIScrollView*)getCurrentView {
+  if ([self isUsingFirstRunView]) {
+    return firstRunView;
+  }
   if (self.logBookEntry) {
     return lbeView;
   } else if (self.vessel) {
@@ -737,6 +809,8 @@ outputText:(NSDate *) outputText
     if (isNew)
       self.souls.forename = @"";
     return isNew;
+  } else if ([self isUsingFirstRunView]) {
+    return true;
   }
   return false;
 }
@@ -887,6 +961,7 @@ outputText:(NSDate *) outputText
   vesselView = nil;
   soulView = nil;
   lbeView = nil;
+  firstRunView = nil;
 
   uiFields = nil;
   objectSetters = nil;
@@ -948,7 +1023,24 @@ outputText:(NSDate *) outputText
     return -1;
 }
 
-- (void)doneEditing {
+- (bool)doneEditing {
+  if (usingFirstRunView) {
+    if ([t_firstCaptain.text length] == 0 && [t_firstName.text length] == 0) return true;
+    usingFirstRunView = false;
+    
+    AppDelegate* appDelegate = (AppDelegate*) UIApplication.sharedApplication.delegate;
+    Vessel* vessel = [[Vessel alloc] initWithContext:appDelegate.persistentContainer.viewContext];
+    vessel.defaultVessel = true;
+    vessel.captain = t_firstCaptain.text;
+    vessel.homePort = @"";
+    vessel.name = t_firstName.text;
+    vessel.owner = t_firstCaptain.text;
+    [self saveContext:appDelegate.persistentContainer.viewContext];
+    
+    self.logBookEntry = [MasterViewController makeLogBookEntry:appDelegate.persistentContainer.viewContext];
+    [self configureView];
+    return true;
+  }
   bool wasDefault = (self.vessel && self.vessel.defaultVessel);
   for (int i=0; i<[objectSetters count]; ++i) {
     ObjectSetter setter   = [objectSetters objectAtIndex:i];
@@ -992,6 +1084,7 @@ outputText:(NSDate *) outputText
   }
   NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
   [self saveContext:context];
+  return false;
 }
 
 -(Vessel*)lookupVesselByName:(NSString*)vesselName {
@@ -1038,8 +1131,6 @@ not the original data source.
   NSLog(@"autoCompleteTextField: %@", selectedString);
   [((SoulsAutoCompleteObject*)selectedObject) getSoulInstance];
 }
-
-
 
 - (void)showSouls{
   if (!self.logBookEntry) return;

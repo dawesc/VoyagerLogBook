@@ -93,7 +93,11 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
   if ([[segue identifier] isEqualToString:@"showDetail"]) {
-    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+    NSIndexPath* indexPath = [self.tableView indexPathForSelectedRow];
+    if (indexPath == nil) {
+      [self.tableView selectRowAtIndexPath:0 animated:false scrollPosition:UITableViewScrollPositionNone];
+      indexPath = [self.tableView indexPathForSelectedRow];
+    }
     DetailViewController *controller = (DetailViewController *)[[segue destinationViewController] topViewController];
     self.detailViewController = controller;
 

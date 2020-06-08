@@ -55,6 +55,11 @@
   [vesselBarButton setTitleTextAttributes:fontDictionary forState:UIControlStateFocused];
   
   self.navigationItem.rightBarButtonItems = [[NSArray alloc] initWithObjects:soulBarButton, vesselBarButton, addButton,nil];
+  
+  AppDelegate* appDelegate = (AppDelegate*) UIApplication.sharedApplication.delegate;
+  if ([appDelegate isFirstRun]) {
+    [self performSegueWithIdentifier:@"showDetail" sender:self];
+  }
 }
 
 - (void)showSouls:(id)sender {
@@ -65,8 +70,17 @@
   [self performSegueWithIdentifier:@"vesselsSetup" sender:self];
 }
 
-- (void)insertNewLogBookEntry:(id)sender {
-  NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
++ (void)saveContextG:(NSManagedObjectContext*) context {
+  // Save the context.
+  NSError *error = nil;
+  if (![context save:&error]) {
+    // Replace this implementation with code to handle the error appropriately.
+    // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+    NSLog(@"Unresolved error %@, %@", error, error.userInfo);
+    abort();
+  }
+}
++ (LogBookEntry*) makeLogBookEntry:(NSManagedObjectContext*) context {
   LogBookEntry *newEvent = [[LogBookEntry alloc] initWithContext:context];
       
   // If appropriate, configure the new managed object.
@@ -75,7 +89,7 @@
   void (^ myLocationCallback)(CLLocation*) = ^(CLLocation* newLocation) {
     if (newLocation && !newEvent.portOfDeparture) {
       newEvent.portOfDeparture = [AppDelegate nicePosition:newLocation];
-      [self saveContext:context];
+      [MasterViewController saveContextG:context];
     }
   };
   void (^ myPressureCallback)(CMAltitudeData*) = ^(CMAltitudeData* newPressure) {
@@ -85,7 +99,7 @@
       formatter.minimumIntegerDigits = 1;
       
       newEvent.barometer = [NSString stringWithFormat:@"%.2f hPA", newPressure.pressure.floatValue*10];
-      [self saveContext:context];
+      [MasterViewController saveContextG:context];
     }
   };
   
@@ -103,7 +117,14 @@
     }
   }
   
-  [self saveContext:context];
+  [MasterViewController saveContextG:context];
+  return newEvent;
+}
+
+- (void)insertNewLogBookEntry:(id)sender {
+  NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+  [MasterViewController makeLogBookEntry:context];
+  [self performSegueWithIdentifier:@"showDetail" sender:self];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
