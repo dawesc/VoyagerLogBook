@@ -43,6 +43,12 @@
   NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
   Vessel* vessel = [[Vessel alloc] initWithContext:context];
   vessel.defaultVessel = ([self.tableView numberOfRowsInSection:0] == 0);
+  vessel.recordWindSpeed = true;
+  vessel.recordPassageVia = true;
+  vessel.recordWaveHeight = true;
+  vessel.recordEngineHours = true;
+  vessel.recordBarometricPressure = true;
+  vessel.numberOfEngines = 1;
   [self saveContext:context];
 }
 

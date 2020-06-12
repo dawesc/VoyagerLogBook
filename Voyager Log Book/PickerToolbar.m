@@ -68,7 +68,7 @@
       self.textFieldL.text = [arrayPicker.dataArray objectAtIndex:row];
   } else if (fetchPicker) {
     NSArray* rows = [fetchPicker getData];
-    NSInteger row = [arrayPicker selectedRowInComponent:0];
+    NSInteger row = [fetchPicker selectedRowInComponent:0];
     if (row < [rows count])
       self.textFieldL.text = [rows objectAtIndex:row];
   } else if (datePicker) {

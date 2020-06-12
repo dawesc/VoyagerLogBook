@@ -31,5 +31,6 @@ fetchedObjectToString:(FetchedObjectToString)fetchedObjectToString
 - (NSString*)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component API_UNAVAILABLE(tvos);
 
 - (NSMutableArray*) getData;
+- (NSMutableArray*) getRawData;
 @end
 

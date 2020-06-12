@@ -19,6 +19,8 @@
 #import <HTAutocompleteTextField.h>
 #import <TagListView-Swift.h>
 
+#define MAX_NR_ENGINES 6
+
 @class TagListView;
 
 @interface DetailViewController () {
@@ -33,6 +35,7 @@
   UITextField*  t_dateOfDeparture;
   UITextField*  t_destination;
   UITextView*   t_passageNotes;
+  UITextField*  t_passageVia;
   UITextField*  t_portOfArrival;
   UITextField*  t_portOfDeparture;
   UIStackView*  l_souls;
@@ -43,6 +46,7 @@
   UITextField*  t_weatherConditions;
   UITextField*  t_windDirection;
   UITextField*  t_windSpeed;
+  UITextField*  t_engineHours[MAX_NR_ENGINES];
     
 #pragma mark Soul Fields
   UITextField*  t_forename;
@@ -56,6 +60,12 @@
   UITextField*  t_homePort;
   UITextField*  t_name;
   UITextField*  t_owner;
+  UITextField*  t_numberOfEngines;
+  UISwitch*     t_recordWindSpeed;
+  UISwitch*     t_recordPassageVia;
+  UISwitch*     t_recordWaveHeight;
+  UISwitch*     t_recordEngineHours;
+  UISwitch*     t_recordBarometricPressure;
   ImagePicker*  i_vesselImage;
   
 #pragma mark Vessel Fields
@@ -103,6 +113,13 @@
     
   return field;
 }
+
+- (UITextField*) setupNumberField {
+  UITextField* field = [self setupTextField];
+  [field setKeyboardType:UIKeyboardTypeNumberPad];
+  return field;
+}
+
 - (UITextView*) setupTextView {
   UITextView* field;
   field = [[UITextView alloc]  initWithFrame:CGRectZero];
@@ -129,6 +146,15 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _titles = @[@"N",@"NNE",@"NE",@"ENE",@"E",@"ESE",@"SE",@"SSE",@"S",@"SSW",@"SW",@"WSW",@"W",@"WNW",@"NW",@"NNW"];
+    });
+    return _titles;
+}
++ (NSArray*)zeroToSix
+{
+    static NSArray *_titles;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _titles = @[@"0",@"1",@"2",@"3",@"4",@"5",@"6"];
     });
     return _titles;
 }
@@ -254,12 +280,18 @@
                     constant:height]];
 }
 - (void)setupVesselFields {
-  id l_captain        = [self setupLabel:@"Captain"];
-  id l_defaultVessel  = [self setupLabel:@"Default Vessel"];
-  id l_homePort       = [self setupLabel:@"Home Port"];
-  id l_name           = [self setupLabel:@"Name"];
-  id l_owner          = [self setupLabel:@"Owner"];
-  id l_vesselImage    = [self setupLabel:@"Vessel Image"];
+  id l_captain                  = [self setupLabel:@"Captain"];
+  id l_defaultVessel            = [self setupLabel:@"Default Vessel"];
+  id l_homePort                 = [self setupLabel:@"Home Port"];
+  id l_name                     = [self setupLabel:@"Name"];
+  id l_owner                    = [self setupLabel:@"Owner"];
+  id l_vesselImage              = [self setupLabel:@"Vessel Image"];
+  id l_numberOfEngines          = [self setupLabel:@"Number of Engines"];
+  id l_recordWindSpeed          = [self setupLabel:@"Wind Speed"];
+  id l_recordPassageVia         = [self setupLabel:@"Passage Via"];
+  id l_recordWaveHeight         = [self setupLabel:@"Wave Height"];
+  id l_recordEngineHours        = [self setupLabel:@"Engine Hours"];
+  id l_recordBarometricPressure = [self setupLabel:@"Barometric Pressure"];
   
   t_captain           = [self setupTextField];
   t_isDefault         = [self setupSwitch];
@@ -267,13 +299,26 @@
   t_name              = [self setupTextField];
   t_owner             = [self setupTextField];
   i_vesselImage       = [self setupImageView];
+  t_numberOfEngines   = [self setupNumberField];
+  t_recordWindSpeed   = [self setupSwitch];
+  t_recordPassageVia  = [self setupSwitch];
+  t_recordWaveHeight  = [self setupSwitch];
+  t_recordEngineHours = [self setupSwitch];
+  t_recordBarometricPressure
+                      = [self setupSwitch];
   
    // Update the user interface for the detail item.
-  UIView *captain       = [self generateLabelField:true labelControl:l_captain        inputControl:t_captain];
-  UIView *defaultVessel = [self generateLabelField:true labelControl:l_defaultVessel  inputControl:t_isDefault];
-  UIView *homePort      = [self generateLabelField:true labelControl:l_homePort       inputControl:t_homePort];
-  UIView *name          = [self generateLabelField:true labelControl:l_name           inputControl:t_name];
-  UIView *owner         = [self generateLabelField:true labelControl:l_owner          inputControl:t_owner];
+  UIView *captain                  = [self generateLabelField:true labelControl:l_captain                   inputControl:t_captain];
+  UIView *defaultVessel            = [self generateLabelField:true labelControl:l_defaultVessel             inputControl:t_isDefault];
+  UIView *homePort                 = [self generateLabelField:true labelControl:l_homePort                  inputControl:t_homePort];
+  UIView *name                     = [self generateLabelField:true labelControl:l_name                      inputControl:t_name];
+  UIView *owner                    = [self generateLabelField:true labelControl:l_owner                     inputControl:t_owner];
+  UIView *numberOfEngines          = [self generateLabelField:true labelControl:l_numberOfEngines           inputControl:t_numberOfEngines];
+  UIView *recordWindSpeed          = [self generateLabelField:true labelControl:l_recordWindSpeed           inputControl:t_recordWindSpeed];
+  UIView *recordPassageVia         = [self generateLabelField:true labelControl:l_recordPassageVia          inputControl:t_recordPassageVia];
+  UIView *recordWaveHeight         = [self generateLabelField:true labelControl:l_recordWaveHeight          inputControl:t_recordWaveHeight];
+  UIView *recordEngineHours        = [self generateLabelField:true labelControl:l_recordEngineHours         inputControl:t_recordEngineHours];
+  UIView *recordBarometricPressure = [self generateLabelField:true labelControl:l_recordBarometricPressure  inputControl:t_recordBarometricPressure];
   
   //Stack View
   UIStackView *stackView = [[UIStackView alloc] init];
@@ -292,9 +337,14 @@
   [stackView addArrangedSubview:captain];
   [stackView addArrangedSubview:l_vesselImage];
   [stackView addArrangedSubview:i_vesselImage];
+  [stackView addArrangedSubview:numberOfEngines];
+  [stackView addArrangedSubview:recordWindSpeed];
+  [stackView addArrangedSubview:recordPassageVia];
+  [stackView addArrangedSubview:recordWaveHeight];
+  [stackView addArrangedSubview:recordEngineHours];
+  [stackView addArrangedSubview:recordBarometricPressure];
   
   [DetailViewController constrainWidth:0 height: 200 superview:stackView subview:i_vesselImage];
-  
   stackView.translatesAutoresizingMaskIntoConstraints = false;
   
   //Scroll view
@@ -373,23 +423,7 @@
   return stackView;
 }
 - (void)setupLbeFields {
-  UILabel* l_vessel = [self setupLabel:@"Vessel"];
-  UILabel* l_barometer = [self setupLabel:@"Barometer"];
-  UILabel* l_comments = [self setupLabel:@"Comments"];
-  UILabel* l_dateOfArrival = [self setupLabel:@"Date of Arrival"];
-  UILabel* l_dateOfArrivalEstimated = [self setupLabel:@"Estimated Date of Arrival"];
-  UILabel* l_dateOfDeparture = [self setupLabel:@"Date of Departure"];
-  UILabel* l_destination = [self setupLabel:@"Destination"];
-  UILabel* l_passageNotes = [self setupLabel:@"Voyage Notes"];
-  UILabel* l_portOfArrival = [self setupLabel:@"Port of Arrival"];
-  UILabel* l_portOfDeparture = [self setupLabel:@"Port of Departure"];
   l_souls = [self setupSouls];
-  
-  UILabel* l_waveHeight = [self setupLabel:@"Wave Height"];
-  UILabel* l_weatherConditions = [self setupLabel:@"Weather Conditions"];
-  UILabel* l_windDirection = [self setupLabel:@"Wind Direction"];
-  UILabel* l_windSpeed = [self setupLabel:@"Wind Speed"];
-  
   t_vessel = [self setupTextField];
   t_barometer = [self setupTextField];
   t_comments = [self setupTextView];
@@ -421,39 +455,98 @@
   t_souls.autocompleteDataSource  = soulsAutoCompleteDataSource;
 //  t_souls.autoCompleteDelegate    = self;
 //  t_souls.autoCompleteTableBackgroundColor = [UIColor colorWithRed:185.0f/255.0f green:206.0f/255.0f blue:240.0f/255.0f alpha:1.0f];
-  t_waveHeight = [self setupTextField];
+  t_waveHeight        = [self setupTextField];
   t_weatherConditions = [self setupTextField];
-  t_windDirection = [self setupTextField];
-  t_windSpeed = [self setupTextField];
+  t_windDirection     = [self setupTextField];
+  t_windSpeed         = [self setupTextField];
+  for (int i=0; i<MAX_NR_ENGINES; ++i)
+    t_engineHours[i]  = [self setupNumberField];
+  t_passageVia        = [self setupTextField];
   
-   // Update the user interface for the detail item.
-  UIView *vessel = [self generateLabelField:true labelControl:l_vessel inputControl:t_vessel];
-  UIView *destination = [self generateLabelField:true labelControl:l_destination inputControl:t_destination];
-  UIView *portOfDeparture = [self generateLabelField:true labelControl:l_portOfDeparture inputControl:t_portOfDeparture];
-  UIView *dateOfDeparture = [self generateLabelField:true labelControl:l_dateOfDeparture inputControl:t_dateOfDeparture];
-  UIView *portOfArrival = [self generateLabelField:true labelControl:l_portOfArrival inputControl:t_portOfArrival];
-  UIView *dateOfArrival = [self generateLabelField:true labelControl:l_dateOfArrival inputControl:t_dateOfArrival];
+  //Scroll view
+  lbeView = [[TouchesUIScrollView alloc] initWithFrame:CGRectZero];
+  lbeView.translatesAutoresizingMaskIntoConstraints = false;
+  
+  [t_vessel addTarget:self action:@selector(lbeVesselChanged:) forControlEvents:UIControlEventEditingDidEnd];
+}
+ 
+-(void)lbeVesselChanged:(id)source {
+  UITextField* sourceText = source;
+  NSFetchRequestPicker* fetchPicker = ((NSFetchRequestPicker*)sourceText.inputView);
+  NSArray* rows = [fetchPicker getRawData];
+  NSInteger row = [fetchPicker selectedRowInComponent:0];
+  if (row < [rows count])
+    [self reLayoutLbe:[rows objectAtIndex:row]];
+}
+
+-(void)reLayoutLbe:(Vessel*)nextVessel {
+  int nrEngines = nextVessel ? nextVessel.numberOfEngines : MAX_NR_ENGINES;
+  // Update the user interface for the detail item.
+  UILabel* l_vessel                 = [self setupLabel:@"Vessel"];
+  UILabel* l_barometer              = [self setupLabel:@"Barometer"];
+  UILabel* l_comments               = [self setupLabel:@"Comments"];
+  UILabel* l_dateOfArrival          = [self setupLabel:@"Date of Arrival"];
+  UILabel* l_dateOfArrivalEstimated = [self setupLabel:@"Estimated Date of Arrival"];
+  UILabel* l_dateOfDeparture        = [self setupLabel:@"Date of Departure"];
+  UILabel* l_destination            = [self setupLabel:@"Destination"];
+  UILabel* l_passageVia             = [self setupLabel:@"Passage Via"];
+  UILabel* l_passageNotes           = [self setupLabel:@"Voyage Notes"];
+  UILabel* l_portOfArrival          = [self setupLabel:@"Port of Arrival"];
+  UILabel* l_portOfDeparture        = [self setupLabel:@"Port of Departure"];
+  
+  
+  UILabel* l_waveHeight             = [self setupLabel:@"Wave Height"];
+  UILabel* l_weatherConditions      = [self setupLabel:@"Weather Conditions"];
+  UILabel* l_windDirection          = [self setupLabel:@"Wind Direction"];
+  UILabel* l_windSpeed              = [self setupLabel:@"Wind Speed"];
+  UILabel* l_engineHours[MAX_NR_ENGINES];
+  for (int i=0; i<nrEngines; ++i)
+    l_engineHours[i]                = [self setupLabel:[NSString stringWithFormat:@"Engine %d Hours", i + 1]];
+  
+  UIView *vessel            = [self generateLabelField:true labelControl:l_vessel inputControl:t_vessel];
+  UIView *destination       = [self generateLabelField:true labelControl:l_destination inputControl:t_destination];
+  UIView *portOfDeparture   = [self generateLabelField:true labelControl:l_portOfDeparture inputControl:t_portOfDeparture];
+  UIView *dateOfDeparture   = [self generateLabelField:true labelControl:l_dateOfDeparture inputControl:t_dateOfDeparture];
+  UIView *portOfArrival     = [self generateLabelField:true labelControl:l_portOfArrival inputControl:t_portOfArrival];
+  UIView *dateOfArrival     = [self generateLabelField:true labelControl:l_dateOfArrival inputControl:t_dateOfArrival];
   UIView *dateOfArrivalEstimated = [self generateLabelField:true labelControl:l_dateOfArrivalEstimated inputControl:t_dateOfArrivalEstimated];
-  UIView *souls = [self generateLabelField:false labelControl:l_souls inputControl:v_souls];
+  UIView *souls             = [self generateLabelField:false labelControl:l_souls inputControl:v_souls];
   [t_souls setContentHuggingPriority:UILayoutPriorityDefaultLow  forAxis:UILayoutConstraintAxisHorizontal];
   [t_souls setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
   [(UIStackView*)souls addArrangedSubview:t_souls];
   
-  UIView *weatherConditions = [self generateLabelField:true labelControl:l_weatherConditions inputControl:t_weatherConditions];
-  UIView *barometer = [self generateLabelField:true labelControl:l_barometer inputControl:t_barometer];
-  UIView *waveHeight = [self generateLabelField:true labelControl:l_waveHeight inputControl:t_waveHeight];
-  UIView *windSpeed = [self generateLabelField:true labelControl:l_windSpeed inputControl:t_windSpeed];
-  UIView *windDirection = [self generateLabelField:true labelControl:l_windDirection inputControl:t_windDirection];
-  UIView *passageNotes = [self generateLabelField:false labelControl:l_passageNotes inputControl:t_passageNotes];
-  UIView *comments = [self generateLabelField:false labelControl:l_comments inputControl:t_comments];
+  UIView *weatherConditions = [self generateLabelField:true labelControl:l_weatherConditions  inputControl:t_weatherConditions];
+  UIView *windDirection     = [self generateLabelField:true labelControl:l_windDirection      inputControl:t_windDirection];
+  UIView *passageNotes      = [self generateLabelField:false labelControl:l_passageNotes      inputControl:t_passageNotes];
+  UIView *comments          = [self generateLabelField:false labelControl:l_comments          inputControl:t_comments];
 
-  UIView* destinationAndEta = [self makeTwo:destination rightControl:dateOfArrivalEstimated leftBig:false rightBig:false isNarrow:false];
-  UIView* departure = [self makeTwo:portOfDeparture rightControl:dateOfDeparture leftBig:true rightBig:false isNarrow:true];
-  UIView* arrival = [self makeTwo:portOfArrival rightControl:dateOfArrival leftBig:true rightBig:false isNarrow:true];
+  UIView* destinationAndEta = [self makeTwo:destination     rightControl:dateOfArrivalEstimated leftBig:false rightBig:false isNarrow:false];
+  UIView* departure         = [self makeTwo:portOfDeparture rightControl:dateOfDeparture        leftBig:true  rightBig:false isNarrow:true];
+  UIView* arrival           = [self makeTwo:portOfArrival   rightControl:dateOfArrival          leftBig:true  rightBig:false isNarrow:true];
   
-  UIView* wind = [self makeTwo:windSpeed rightControl:windDirection leftBig:false rightBig:false isNarrow:false];
-  UIView* barometerWave = [self makeTwo:barometer rightControl:waveHeight leftBig:false rightBig:false isNarrow:false];
-
+  UIView *barometer         = [self generateLabelField:true labelControl:l_barometer          inputControl:t_barometer];
+  UIView *waveHeight        = [self generateLabelField:true labelControl:l_waveHeight         inputControl:t_waveHeight];
+  UIView *windSpeed         = [self generateLabelField:true labelControl:l_windSpeed          inputControl:t_windSpeed];
+  UIView *engineHours[MAX_NR_ENGINES];
+  for (int i=0; i<nrEngines; ++i)
+    engineHours[i]          = [self generateLabelField:true labelControl:l_engineHours[i]     inputControl:t_engineHours[i]];
+  UIView *passageVia        = [self generateLabelField:true labelControl:l_passageVia         inputControl:t_passageVia];
+  
+  NSMutableArray<UIView*>* optionalFields = [[NSMutableArray<UIView*> alloc] init];
+  [optionalFields addObject:windDirection];
+  
+  if (!nextVessel || nextVessel.recordWindSpeed)
+    [optionalFields addObject:windSpeed];
+  if (!nextVessel || nextVessel.recordBarometricPressure)
+    [optionalFields addObject:barometer];
+  if (!nextVessel || nextVessel.recordWaveHeight)
+    [optionalFields addObject:waveHeight];
+  if (!nextVessel || nextVessel.recordPassageVia)
+    [optionalFields addObject:passageVia];
+  if (!nextVessel || nextVessel.recordEngineHours)
+    for (int i=0; i<nrEngines; ++i)
+      [optionalFields addObject:engineHours[i]];
+  
   //Stack View
   UIStackView *stackView = [[UIStackView alloc] init];
 
@@ -470,17 +563,23 @@
   [stackView addArrangedSubview:arrival];
   [stackView addArrangedSubview:souls];
   [stackView addArrangedSubview:weatherConditions];
-  [stackView addArrangedSubview:wind];
-  [stackView addArrangedSubview:barometerWave];
+  
+  for (int i=0; i<[optionalFields count]; i+=2) {
+    if (i+1 < [optionalFields count]) {
+      [stackView addArrangedSubview:
+       [self makeTwo:optionalFields[i] rightControl:optionalFields[i+1] leftBig:false rightBig:false isNarrow:false]];
+    } else {
+      [stackView addArrangedSubview:optionalFields[i]];
+    }
+  }
+  
   [stackView addArrangedSubview:passageNotes];
   [stackView addArrangedSubview:comments];
 
   stackView.translatesAutoresizingMaskIntoConstraints = false;
   
-  //Scroll view
-  lbeView =[[TouchesUIScrollView alloc] initWithFrame:CGRectZero];
-  lbeView.translatesAutoresizingMaskIntoConstraints = false;
-  
+  while([lbeView.subviews count] > 0)
+    [lbeView.subviews[0] removeFromSuperview];
   [lbeView addSubview:stackView];
   //Layout for Stack View
   [stackView.topAnchor      constraintEqualToAnchor:lbeView.topAnchor].active       = true;
@@ -644,19 +743,28 @@ outputText:(NSDate *) outputText
   t_weatherConditions.enabled = isEnabled;
   t_windDirection.enabled     = isEnabled;
   t_windSpeed.enabled         = isEnabled;
+  for (int i=0; i<MAX_NR_ENGINES; ++i)
+    t_engineHours[i].enabled  = isEnabled;
+  t_passageVia.enabled        = isEnabled;
   t_souls.enabled             = isEnabled;
   v_souls.enableRemoveButton  = isEnabled;
   [self showSouls];
   
-  t_forename.enabled  = isEnabled;
-  t_initials.enabled  = isEnabled;
-  t_surname.enabled   = isEnabled;
+  t_forename.enabled                 = isEnabled;
+  t_initials.enabled                 = isEnabled;
+  t_surname.enabled                  = isEnabled;
   
-  t_captain.enabled   = isEnabled;
-  t_isDefault.enabled = !t_isDefault.on && isEnabled;
-  t_homePort.enabled  = isEnabled;
-  t_name.enabled      = isEnabled;
-  t_owner.enabled     = isEnabled;
+  t_captain.enabled                  = isEnabled;
+  t_isDefault.enabled                = !t_isDefault.on && isEnabled;
+  t_homePort.enabled                 = isEnabled;
+  t_name.enabled                     = isEnabled;
+  t_owner.enabled                    = isEnabled;
+  t_numberOfEngines.enabled          = isEnabled;
+  t_recordWindSpeed.enabled          = isEnabled;
+  t_recordPassageVia.enabled         = isEnabled;
+  t_recordWaveHeight.enabled         = isEnabled;
+  t_recordEngineHours.enabled        = isEnabled;
+  t_recordBarometricPressure.enabled = isEnabled;
   [i_vesselImage setEnabled:isEnabled];
 }
 
@@ -752,13 +860,14 @@ outputText:(NSDate *) outputText
   textField.inputAccessoryView = [[PickerToolbar alloc] initWithTextField:textField picker:datePicker title:title];
 }
 
-- (void)makeVesselPickerAction:(UITextField*)textField title:(NSString*)title {
+- (NSFetchRequestPicker*)makeVesselPickerAction:(UITextField*)textField title:(NSString*)title {
   NSFetchRequestPicker* frPicker = [[NSFetchRequestPicker alloc]
                                     initWithStrings:title dataFetchRequest:Vessel.fetchRequest managedObjectContext:self.managedObjectContext
                                     fetchedObjectToString:^NSString *(id object) { return ((Vessel*)object).name; }
                                     textField:textField];
   textField.inputView = frPicker;
   textField.inputAccessoryView = [[PickerToolbar alloc] initWithTextField:textField picker:frPicker title:title];
+  return frPicker;
 }
 
 -(bool) isUsingFirstRunView {
@@ -815,6 +924,32 @@ outputText:(NSDate *) outputText
   return false;
 }
 
+-(NSString*) getEngineHours:(int)engineIx {
+  if (!self.logBookEntry) return @"0";
+  for (EngineHours* engineHours in self.logBookEntry.engineHours) {
+    if (engineHours.engineNumber == engineIx) {
+      return [NSString stringWithFormat:@"%@", engineHours.hours];
+    }
+  }
+  return @"0";
+}
+
+-(void) setEngineHours:(NSDecimalNumber*)hours forEngine:(int)engineIx {
+  if (!self.logBookEntry) return;
+  for (EngineHours* engineHours in self.logBookEntry.engineHours) {
+    if (engineHours.engineNumber == engineIx) {
+      engineHours.hours = hours;
+      return;
+    }
+  }
+  NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+  EngineHours* engineHours = [[EngineHours alloc] initWithContext:context];
+  engineHours.engineNumber = engineIx;
+  engineHours.hours        = hours;
+  engineHours.logBookEntry = self.logBookEntry;
+  [self saveContext:context];
+}
+
 - (void)configureView {
   // Update the user interface for the detail item.
   didChange = false;
@@ -835,6 +970,7 @@ outputText:(NSDate *) outputText
   
   if (self.logBookEntry) {
     self.title = @"Log Book Entry";
+    [self reLayoutLbe:self.logBookEntry.vessel];
     [self linkField:t_vessel                  ultimateField:self.logBookEntry.vessel.name objectSetter:^(NSString* newVal) { self.logBookEntry.vessel = [self lookupVesselByName:newVal]; }];
     [self makeVesselPickerAction:t_vessel title:@"Vessel"];
     [self linkField:t_barometer               ultimateField:self.logBookEntry.barometer objectSetter:^(NSString* newVal) { self.logBookEntry.barometer = newVal; }];
@@ -854,16 +990,33 @@ outputText:(NSDate *) outputText
     [self makeFixedPickerAction:t_windDirection title:@"Wind Direction" arrayElems:[DetailViewController windDirections]];
     [self linkField:t_windSpeed               ultimateField:self.logBookEntry.windSpeed objectSetter:^(NSString* newVal) { self.logBookEntry.windSpeed = newVal; }];
     [self showSouls];
+    for (int i=0; i<MAX_NR_ENGINES; ++i) {
+      [self linkField:t_engineHours[i]        ultimateField:[self getEngineHours:i] objectSetter:^(NSString* newVal) { [self setEngineHours:[NSDecimalNumber decimalNumberWithString:newVal] forEngine:i]; }];
+    }
   } else if (self.vessel) {
     self.title = @"Vessel";
-    [self linkField:t_captain   ultimateField:self.vessel.captain   objectSetter:^(NSString* newVal) { self.vessel.captain = newVal; }];
-    [self linkField:t_isDefault ultimateField:[self boolToStr:self.vessel.defaultVessel]
-                                                                    objectSetter:^(NSString* newVal) { self.vessel.defaultVessel = [self strToBool:newVal]; }];
-    [self linkField:t_homePort  ultimateField:self.vessel.homePort  objectSetter:^(NSString* newVal) { self.vessel.homePort = newVal; }];
-    [self linkField:t_name      ultimateField:self.vessel.name      objectSetter:^(NSString* newVal) { self.vessel.name = newVal; }];
-    [self linkField:t_owner     ultimateField:self.vessel.owner     objectSetter:^(NSString* newVal) { self.vessel.owner = newVal; }];
-    [self linkField:i_vesselImage ultimateField:self.vessel.picture objectSetter:^(NSString* newVal)
+    [self linkField:t_captain           ultimateField:self.vessel.captain         objectSetter:^(NSString* newVal) { self.vessel.captain = newVal; }];
+    [self linkField:t_isDefault         ultimateField:[self boolToStr:self.vessel.defaultVessel]
+                                                                                  objectSetter:^(NSString* newVal) { self.vessel.defaultVessel = [self strToBool:newVal]; }];
+    [self linkField:t_homePort          ultimateField:self.vessel.homePort        objectSetter:^(NSString* newVal) { self.vessel.homePort = newVal; }];
+    [self linkField:t_name              ultimateField:self.vessel.name            objectSetter:^(NSString* newVal) { self.vessel.name = newVal; }];
+    [self linkField:t_owner             ultimateField:self.vessel.owner           objectSetter:^(NSString* newVal) { self.vessel.owner = newVal; }];
+    [self linkField:i_vesselImage       ultimateField:self.vessel.picture         objectSetter:^(NSString* newVal)
      { self.vessel.picture = [[NSData alloc] initWithBase64EncodedString:newVal options:0]; }];
+    [self makeFixedPickerAction:t_numberOfEngines title:@"Nr Of Engines" arrayElems:[DetailViewController zeroToSix]];
+    [self linkField:t_numberOfEngines   ultimateField:[NSString stringWithFormat:@"%d", self.vessel.numberOfEngines]
+                                                                                  objectSetter:^(NSString* newVal) { [self.vessel setNumberOfEngines:[newVal integerValue]]; }];
+    [self linkField:t_recordWindSpeed   ultimateField:[self boolToStr:self.vessel.recordWindSpeed]
+                                                                                  objectSetter:^(NSString* newVal) { self.vessel.recordWindSpeed = [self strToBool:newVal]; }];
+    [self linkField:t_recordPassageVia  ultimateField:[self boolToStr:self.vessel.recordPassageVia]
+                                                                                  objectSetter:^(NSString* newVal) { self.vessel.recordPassageVia = [self strToBool:newVal]; }];
+    [self linkField:t_recordWaveHeight  ultimateField:[self boolToStr:self.vessel.recordWaveHeight]
+                                                                                  objectSetter:^(NSString* newVal) { self.vessel.recordWaveHeight = [self strToBool:newVal]; }];
+    [self linkField:t_recordEngineHours ultimateField:[self boolToStr:self.vessel.recordEngineHours]
+                                                                                  objectSetter:^(NSString* newVal) { self.vessel.recordEngineHours = [self strToBool:newVal]; }];
+    [self linkField:t_recordBarometricPressure
+                                        ultimateField:[self boolToStr:self.vessel.recordBarometricPressure]
+                                                                                  objectSetter:^(NSString* newVal) { self.vessel.recordBarometricPressure = [self strToBool:newVal]; }];
   } else if (self.souls) {
     self.title = @"Soul";
     [self linkField:t_forename    ultimateField:self.souls.forename objectSetter:^(NSString* newVal) { self.souls.forename = newVal; }];

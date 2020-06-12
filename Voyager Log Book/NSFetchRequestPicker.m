@@ -18,6 +18,7 @@
   NSManagedObjectContext*     managedObjectContextL;
   FetchedObjectToString       fetchedObjectToStringL;
   NSMutableArray*             dataArray;
+  NSMutableArray*             rawDataArray;
   double                      lastRefresh;
   bool                        isSetup;
 }
@@ -35,6 +36,7 @@ fetchedObjectToString:(FetchedObjectToString)fetchedObjectToString
     fetchedObjectToStringL  = fetchedObjectToString;
     lastRefresh             = 0;
     dataArray               = [[NSMutableArray alloc] init];
+    rawDataArray            = [[NSMutableArray alloc] init];
     isSetup                 = false;
     [self setDataSource: self];
     [self setDelegate:   self];
@@ -49,6 +51,7 @@ fetchedObjectToString:(FetchedObjectToString)fetchedObjectToString
   }
   
   [dataArray removeAllObjects];
+  [rawDataArray removeAllObjects];
   NSError* error = nil;
   NSArray* objects = [managedObjectContextL executeFetchRequest:dataFetchRequestL error:&error];
   if (!objects) {
@@ -57,8 +60,10 @@ fetchedObjectToString:(FetchedObjectToString)fetchedObjectToString
     NSLog(@"Unresolved error %@, %@", error, error.userInfo);
     abort();
   }
-  for (id object in objects)
+  for (id object in objects) {
     [dataArray addObject:fetchedObjectToStringL(object)];
+    [rawDataArray addObject:object];
+  }
   
   if (isSetup)
     return;
@@ -87,6 +92,10 @@ fetchedObjectToString:(FetchedObjectToString)fetchedObjectToString
 
 - (NSMutableArray*) getData {
   return dataArray;
+}
+
+- (NSMutableArray*) getRawData {
+  return rawDataArray;
 }
 
 @end
